@@ -6,11 +6,65 @@ if ($wo['loggedin'] && $IsOwnerUser) {
    $wo['pr_complition'] = Wo_ProfileCompletion();
 }
 ?>
-<style>.post-youtube iframe {overflow: hidden !important; height: 360px !important;}</style>
-<div class="row page-margin profile wo_user_profile" data-page="timeline" data-id="<?php echo $wo['user_profile']['user_id'];?>">
-	<div class="profile-container">
-		<div class="card hovercard" style="margin-bottom: 0px;">
-			<div class="cardheader user-cover">
+<style>
+.post-youtube iframe {overflow: hidden !important; height: 360px !important;}
+
+/* Gender-based avatar border gradient */
+.user-short-description-avatar.user-avatar.big .user-avatar-border-gradient {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  padding: 4px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
+/* Male: blue gradient */
+.profile-avatar-gender-male .user-avatar-border-gradient {
+  background: linear-gradient(135deg, #1e90ff, #87ceeb);
+}
+/* Female: pink gradient */
+.profile-avatar-gender-female .user-avatar-border-gradient {
+  background: linear-gradient(135deg, #ff69b4, #ffb6c1);
+}
+/* Unknown/other: purple gradient */
+.profile-avatar-gender-other .user-avatar-border-gradient,
+.profile-avatar-gender-none .user-avatar-border-gradient {
+  background: linear-gradient(135deg, #8a2be2, #da70d6);
+}
+
+/* Apply gradient border to avatar img wrapper based on gender */
+.profile-avatar-gender-male .user-short-description-avatar.user-avatar.big,
+.profile-avatar-gender-female .user-short-description-avatar.user-avatar.big,
+.profile-avatar-gender-other .user-short-description-avatar.user-avatar.big,
+.profile-avatar-gender-none .user-short-description-avatar.user-avatar.big {
+  position: relative;
+}
+.user-short-description-avatar img {
+  border-radius: 50%;
+  display: block;
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+}
+/* Gender border ring using outline/box-shadow */
+.profile-avatar-gender-male .user-short-description-avatar img {
+  box-shadow: 0 0 0 4px #1e90ff, 0 0 0 6px #87ceeb;
+}
+.profile-avatar-gender-female .user-short-description-avatar img {
+  box-shadow: 0 0 0 4px #ff69b4, 0 0 0 6px #ffb6c1;
+}
+.profile-avatar-gender-other .user-short-description-avatar img,
+.profile-avatar-gender-none .user-short-description-avatar img {
+  box-shadow: 0 0 0 4px #8a2be2, 0 0 0 6px #da70d6;
+}
+</style>
+<div class="content-grid wo_user_profile" data-page="timeline" data-id="<?php echo $wo['user_profile']['user_id'];?>">
+
+	<!-- PROFILE HEADER -->
+	<div class="profile-header">
+		<!-- PROFILE HEADER COVER -->
+		<figure class="profile-header-cover liquid">
 				<?php if($IsOwner === true) { ?>
 					<form action="#" method="post" class="profile-cover-changer">
                         <div class="input-group when-notedit profile_cover">
@@ -108,17 +162,29 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 						<div class="user-cover-uploading-progress user-repositioning-icons-container"></div>
 					</div>
 				</div>
-			</div>
+		<!-- /PROFILE HEADER COVER -->
+		</figure>
 
-			<div class="problackback"></div>
-
-			<div class="pic-info-cont">
-                <div class="user-avatar flip <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo($wo['story_seen_class']); ?><?php } ?>">
-                    <div class="user-avatar-uploading-container">
-                        <div class="user-avatar-uploading-progress">
-                            <div class="ball-pulse"><div></div><div></div><div></div></div>
-                        </div>
-                    </div>
+		<!-- PROFILE HEADER INFO -->
+		<div class="profile-header-info">
+			<!-- USER SHORT DESCRIPTION -->
+			<div class="user-short-description big">
+				<!-- USER SHORT DESCRIPTION AVATAR -->
+				<?php
+				$_gender_class = 'profile-avatar-gender-none';
+				if (!empty($wo['user_profile']['gender'])) {
+					$_g = strtolower($wo['user_profile']['gender']);
+					if ($_g == 'male' || $_g == '1') $_gender_class = 'profile-avatar-gender-male';
+					elseif ($_g == 'female' || $_g == '2') $_gender_class = 'profile-avatar-gender-female';
+					else $_gender_class = 'profile-avatar-gender-other';
+				}
+				?>
+				<div class="user-short-description-avatar user-avatar big <?php echo $_gender_class; ?>">
+					<div class="user-avatar-uploading-container">
+						<div class="user-avatar-uploading-progress">
+							<div class="ball-pulse"><div></div><div></div><div></div></div>
+						</div>
+					</div>
                     <img id="updateImage-<?php echo $wo['user_profile']['user_id']?>" class="pointer <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo($wo['story_seen_class']); ?> see_all_stories<?php } ?>" alt="<?php echo $wo['user_profile']['name']?> Profile Picture" src="<?php echo $wo['user_profile']['avatar']?>" <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?> data_story_user_id="<?php echo $wo['user_profile']['user_id']?>"  data_story_type="user" <?php } else{ ?> onclick="Wo_OpenProfilePicture('<?php echo $wo['user_profile']['avatar_org']?>');" <?php } ?> />
 
                     <?php if($IsOwner === true) { ?>
@@ -342,128 +408,617 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 						<?php } ?>
                     </div>
                     <?php } ?>
+				</div>
+				<!-- /USER SHORT DESCRIPTION AVATAR -->
+
+				<!-- USER SHORT DESCRIPTION TITLE -->
+				<p class="user-short-description-title">
+					<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'];?>">
+					<?php echo $wo['user_profile']['name']; ?>
+					</a>
+				</p>
+				<!-- /USER SHORT DESCRIPTION TITLE -->
+
+				<!-- USER SHORT DESCRIPTION TEXT -->
+				<p class="user-short-description-text">@<?php echo $wo['user_profile']['username']; ?></p>
+				<!-- /USER SHORT DESCRIPTION TEXT -->
 			</div>
+			<!-- /USER SHORT DESCRIPTION -->
+
+			<!-- PROFILE HEADER SOCIAL LINKS -->
+			<?php if (!empty($wo['user_profile']['facebook']) || !empty($wo['user_profile']['twitter']) || !empty($wo['user_profile']['instagram']) || !empty($wo['user_profile']['youtube']) || !empty($wo['user_profile']['linkedin'])) { ?>
+			<div class="profile-header-social-links-wrap">
+				<div class="profile-header-social-links">
+					<?php if (!empty($wo['user_profile']['facebook'])) { ?>
+					<div class="profile-header-social-link">
+						<a class="social-link facebook" href="https://facebook.com/<?php echo htmlspecialchars($wo['user_profile']['facebook']); ?>" target="_blank">
+							<svg class="icon-facebook"><use xlink:href="#svg-facebook"></use></svg>
+						</a>
+					</div>
+					<?php } ?>
+					<?php if (!empty($wo['user_profile']['twitter'])) { ?>
+					<div class="profile-header-social-link">
+						<a class="social-link twitter" href="https://twitter.com/<?php echo htmlspecialchars($wo['user_profile']['twitter']); ?>" target="_blank">
+							<svg class="icon-twitter"><use xlink:href="#svg-twitter"></use></svg>
+						</a>
+					</div>
+					<?php } ?>
+					<?php if (!empty($wo['user_profile']['instagram'])) { ?>
+					<div class="profile-header-social-link">
+						<a class="social-link instagram" href="https://instagram.com/<?php echo htmlspecialchars($wo['user_profile']['instagram']); ?>" target="_blank">
+							<svg class="icon-instagram"><use xlink:href="#svg-instagram"></use></svg>
+						</a>
+					</div>
+					<?php } ?>
+					<?php if (!empty($wo['user_profile']['youtube'])) { ?>
+					<div class="profile-header-social-link">
+						<a class="social-link youtube" href="https://youtube.com/<?php echo htmlspecialchars($wo['user_profile']['youtube']); ?>" target="_blank">
+							<svg class="icon-youtube"><use xlink:href="#svg-youtube"></use></svg>
+						</a>
+					</div>
+					<?php } ?>
+					<?php if (!empty($wo['user_profile']['linkedin'])) { ?>
+					<div class="profile-header-social-link">
+						<a class="social-link linkedin" href="https://linkedin.com/in/<?php echo htmlspecialchars($wo['user_profile']['linkedin']); ?>" target="_blank">
+							<svg class="icon-linkedin"><use xlink:href="#svg-linkedin"></use></svg>
+						</a>
+					</div>
+					<?php } ?>
+				</div>
+			</div>
+			<?php } ?>
+			<!-- /PROFILE HEADER SOCIAL LINKS -->
+
+			<!-- USER STATS -->
+			<div class="user-stats">
+				<div class="user-stat big">
+					<p class="user-stat-title"><?php echo $wo['user_profile']['details']['post_count']; ?></p>
+					<p class="user-stat-text"><?php echo $wo['lang']['posts']; ?></p>
+				</div>
+				<?php if ($wo['config']['connectivitySystem'] == 1) { ?>
+				<div class="user-stat big">
+					<p class="user-stat-title"><?php echo Wo_CountFriends($wo['user_profile']['user_id']); ?></p>
+					<p class="user-stat-text"><?php echo $wo['lang']['friends_btn']; ?></p>
+				</div>
+				<?php } else { ?>
+				<div class="user-stat big">
+					<p class="user-stat-title"><?php echo Wo_CountFollowing($wo['user_profile']['user_id']); ?></p>
+					<p class="user-stat-text"><?php echo $wo['lang']['following']; ?></p>
+				</div>
+				<div class="user-stat big">
+					<p class="user-stat-title"><?php echo Wo_CountFollowers($wo['user_profile']['user_id']); ?></p>
+					<p class="user-stat-text"><?php echo $wo['lang']['followers']; ?></p>
+				</div>
+				<?php } ?>
+				<?php if (!empty($wo['user_profile']['country_id'])) { ?>
+				<div class="user-stat big">
+					<img class="user-stat-image" src="<?php echo $wo['config']['theme_url']; ?>/img/flag/<?php echo strtolower($wo['countries_name'][$wo['user_profile']['country_id']] ?? ''); ?>.png" alt="flag" onerror="this.style.display='none'">
+					<p class="user-stat-text"><?php echo htmlspecialchars($wo['countries_name'][$wo['user_profile']['country_id']] ?? ''); ?></p>
+				</div>
+				<?php } ?>
+			</div>
+			<!-- /USER STATS -->
+
+			<!-- PROFILE HEADER INFO ACTIONS -->
+			<div class="profile-header-info-actions">
+				<?php if ($wo['user_profile']['banned'] != 1) { ?>
+				<div class="profile-header-info-action-buttons">
+					<span class="user-follow-button">
+					<?php echo Wo_GetFollowButton($wo['user_profile']['user_id']);?>
+					</span>
+					<span class="profile-message-btn">
+					<?php echo Wo_GetMessageButton($wo['user_profile']['user_id']);?>
+					</span>
+					<?php if ($wo['config']['notify_new_post'] == 1) { ?>
+						<span class="user-follow-button">
+						<?php echo Wo_GetNotifyButton($wo['user_profile']['user_id']);?>
+						</span>
+					<?php } ?>
+					<?php if($IsOwnerUser === true) { ?>
+						<a class="profile-header-info-action button primary" href="<?php echo Wo_SeoLink('index.php?link1=setting&user=' . $wo['user_profile']['username'] . '&page=general-setting') ?>" data-ajax="?link1=setting&user=<?php echo $wo['user_profile']['username'] . '&page=general-setting'; ?>">
+							<?php echo $wo['lang']['edit'];?>
+						</a>
+						<a class="profile-header-info-action button secondary" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=activities');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'] . '&type=activities'; ?>">
+							<?php echo $wo['lang']['activities'];?>
+						</a>
+						<?php if ($wo['config']['website_mode'] == 'linkedin') { ?>
+							<div class="dropdown">
+								<button class="profile-header-info-action button secondary dropdown-toggle" type="button" id="opento-dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+									<?php echo $wo['lang']['open_to']; ?>
+								</button>
+								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="opento-dropdownMenu">
+									<?php if ($wo['user_profile']['is_open_to_work'] == 0) { ?>
+										<li>
+											<label class="menu-item">
+												<input type="radio" value="finding_a_job" onclick="OpenToModal('#finding_a_job_modal')">
+												<?php echo $wo['lang']['finding_a_job']; ?>
+											</label>
+										</li>
+									<?php } ?>
+									<?php if ($wo['user_profile']['is_providing_service'] == 0) { ?>
+										<li>
+											<label class="menu-item">
+												<input type="radio" value="providing_services" onclick="OpenToModal('#providing_services_modal')">
+												<?php echo $wo['lang']['providing_services']; ?>
+											</label>
+										</li>
+									<?php } ?>
+									<li>
+										<label class="menu-item">
+											<input type="radio" value="hiring" onclick="OpenToModal('#create_hiring_modal')">
+											<?php echo $wo['lang']['hiring']; ?>
+										</label>
+									</li>
+								</ul>
+							</div>
+						<?php } ?>
+					<?php } else { ?>
+					<?php if($wo['loggedin'] == true) { ?>
+					<div class="dropdown">
+						<button class="profile-header-info-action button secondary dropdown-toggle" type="button" id="user-dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+						</button>
+						<ul class="dropdown-menu dropdown-menu-right detail" aria-labelledby="user-dropdownMenu">
+							<?php if($IsOwnerUser === false && $wo['loggedin'] == true) { ?>
+								<li>
+									<a class="menu-item" href="<?php echo $wo['marker'] . 'block_user=block'?>">
+										<?php echo $wo['lang']['block_user'];?>
+									</a>
+								</li>
+							<?php } ?>
+							<?php if($IsOwnerUser === false && $wo['loggedin'] == true && !$wo['user_profile']['is_reported_user']) { ?>
+								<li>
+									<a class="menu-item" href="javascript:void(0)" onclick="Wo_OpenReportBox()">
+										<?php echo $wo['lang']['report_user_text'];?>
+									</a>
+								</li>
+							<?php }elseif ($IsOwnerUser === false && $wo['loggedin'] == true && $wo['user_profile']['is_reported_user']) { ?>
+								<li>
+									<a class="menu-item" href="javascript:void(0)" onclick="Wo_UnreportReportUser()">
+										<?php echo $wo['lang']['unreport'];?>
+									</a>
+								</li>
+							<?php } ?>
+							<?php if($IsOwnerUser === false && $wo['loggedin'] == true && $wo['config']['poke_system'] == 1) { ?>
+								<li id="pokebutton" onclick="Wo_RegisterPoke(<?php echo $wo['user_profile']['user_id'];?>,<?php echo $wo['user']['user_id'];?>)">
+									<a class="menu-item"><?php echo $wo['lang']['poke_user'];?></a>
+								</li>
+							<?php } ?>
+							<?php if($IsOwnerUser === false && $wo['loggedin'] == true && !Wo_IsFamilyMemberExists($wo['user']['id'],$wo['user_profile']['id'],false) && $wo['config']['website_mode'] != 'instagram') { ?>
+								<li id="open_add_to_family_modal">
+									<a class="menu-item" onclick="$('#add_to_family').modal('show');">
+										<?php echo $wo['lang']['add_to_family'];?>
+									</a>
+								</li>
+							<?php } ?>
+							<?php if($wo['loggedin'] == true && $IsOwner) { ?>
+								<li id="open_add_to_family_modal">
+									<a class="menu-item" href="<?php echo Wo_SeoLink('index.php?link1=setting&user=' . $wo['user_profile']['username'] . '&page=general-setting') ?>">
+										<?php echo $wo['lang']['edit'];?>
+									</a>
+								</li>
+							<?php } ?>
+						</ul>
+					</div>
+					<?php } ?>
+					<?php } ?>
+				</div>
+				<?php } ?>
+			</div>
+			<!-- /PROFILE HEADER INFO ACTIONS -->
 		</div>
-		<?php if ($wo['user_profile']['banned'] != 1) { ?>
-			<div class="user-bottom-nav">
-				<ul>
-					<li>
-						<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'];?>">
-							<span class="split-link"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<!-- /PROFILE HEADER INFO -->
+	</div>
+	<!-- /PROFILE HEADER -->
+
+	<?php if ($wo['user_profile']['banned'] != 1) { ?>
+	<!-- SECTION NAVIGATION -->
+	<nav class="section-navigation">
+		<div id="section-navigation-slider" class="section-menu">
+			<a class="section-menu-item active" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'];?>">
+					<svg class="section-menu-item-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1.68687 7.06852C2.31315 4.39862 4.39783 2.31394 7.06773 1.68767C8.9959 1.23538 11.0026 1.23538 12.9307 1.68767C15.6006 2.31394 17.6853 4.39862 18.3116 7.06852C18.7639 8.99669 18.7639 11.0034 18.3116 12.9315C17.6853 15.6014 15.6006 17.6861 12.9307 18.3124C11.0026 18.7647 8.9959 18.7647 7.06773 18.3124C4.39783 17.6861 2.31315 15.6014 1.68687 12.9315C1.23458 11.0034 1.23458 8.99669 1.68687 7.06852Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M7 7H11M7 13H10M7 10H13" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
-</span>
-							<span><?php echo $wo['lang']['timeline'];?></span>
-						</a>
-					</li>
-					<?php if ($wo['config']['groups'] == 1) {?>
-					<li>
-						<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=groups');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=groups">
-							<span class="split-link"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<p class="section-menu-item-text"><?php echo $wo['lang']['timeline'];?></p>
+			</a>
+			<?php if ($wo['config']['groups'] == 1) {?>
+			<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=groups');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=groups">
+				<svg class="section-menu-item-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10 1C8.97667 1 7.95334 1.11763 6.95043 1.35288C4.17301 2.00437 2.00437 4.17301 1.35288 6.95043C0.882374 8.95626 0.882374 11.0437 1.35288 13.0496C2.00437 15.827 4.17301 17.9956 6.95044 18.6471C8.95626 19.1176 11.0437 19.1176 13.0496 18.6471C15.827 17.9956 17.9956 15.827 18.6471 13.0496C18.8824 12.0466 19 11.0233 19 9.99997" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M1.35288 13.0496C0.882374 11.0437 0.882374 8.95626 1.35288 6.95043C2.00437 4.17301 4.17301 2.00437 6.95043 1.35288C7.95334 1.11763 8.97667 1 10 1M6.95044 18.6471C8.95626 19.1176 11.0437 19.1176 13.0496 18.6471C15.827 17.9956 17.9956 15.827 18.6471 13.0496C18.8824 12.0466 19 11.0233 19 9.99997" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M19 4.5C19 5.88071 17.8807 7 16.5 7C15.1193 7 14 5.88071 14 4.5C14 3.11929 15.1193 2 16.5 2C17.8807 2 19 3.11929 19 4.5Z" class="icon_main" stroke-width="1.5"/>
 </svg>
-</span>
-							<span><?php echo $wo['lang']['groups'];?></span>
-						</a>
-					</li>
-					<?php } ?>
-					<?php if ($wo['config']['pages'] == 1) {?>
-					<li>
-						<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=likes');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=likes">
-							<span class="split-link"><svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<p class="section-menu-item-text"><?php echo $wo['lang']['groups'];?></p>
+			</a>
+			<?php } ?>
+			<?php if ($wo['config']['pages'] == 1) {?>
+			<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=likes');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=likes">
+				<svg class="section-menu-item-icon" width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1.98389 8.61057L7.11798 15.5107C8.59549 17.4964 11.4045 17.4964 12.882 15.5107L18.0161 8.61058C19.328 6.84746 19.328 4.34218 18.0161 2.57906C16.0957 -0.00189845 11.6571 0.764647 10 3.54855C8.34289 0.764647 3.90428 -0.00189818 1.9839 2.57906C0.672036 4.34218 0.672033 6.84746 1.98389 8.61057Z" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M18.0161 8.61058L12.882 15.5107C11.4045 17.4964 8.59549 17.4964 7.11798 15.5107L1.98389 8.61057C0.672033 6.84746 0.672036 4.34218 1.9839 2.57906C3.90428 -0.00189829 8.34289 0.764647 10 3.54855" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
-</span>
-							<span><?php echo $wo['lang']['likes'];?></span>
-						</a>
-					</li>
-					<?php } ?>
-					<?php if ($wo['config']['connectivitySystem'] == 1) {?>
-						<li>
-							<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=followers');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=followers">
-								<span class="split-link"><svg width="20" height="17" viewBox="0 0 20 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<p class="section-menu-item-text"><?php echo $wo['lang']['likes'];?></p>
+			</a>
+			<?php } ?>
+			<?php if ($wo['config']['connectivitySystem'] == 1) {?>
+				<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=followers');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=followers">
+					<svg class="section-menu-item-icon" width="20" height="17" viewBox="0 0 20 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1 14.531C1 12.6539 2.33361 11.055 4.14603 10.7592L4.30929 10.7326C5.76058 10.4957 7.23942 10.4957 8.69071 10.7326L8.85397 10.7592C10.6664 11.055 12 12.6539 12 14.531C12 15.3423 11.3569 16 10.5636 16H2.43639C1.64309 16 1 15.3423 1 14.531Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M9.70833 4.28125C9.70833 6.09343 8.27191 7.5625 6.5 7.5625C4.72809 7.5625 3.29167 6.09343 3.29167 4.28125C3.29167 2.46907 4.72809 1 6.5 1C8.27191 1 9.70833 2.46907 9.70833 4.28125Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M12 7.5625C14.2552 7.5625 16.0833 6.09343 16.0833 4.28125C16.0833 2.46907 14.2552 1 12 1M14.7882 16H17.1719C18.1815 16 19 15.3423 19 14.531C19 12.6539 17.3027 11.055 14.996 10.7592L14.7882 10.7326C14.2285 10.7326 14.195 10.7326 13.448 10.7326" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
-</span>
-								<span><?php echo $wo['lang']['friends_btn'];?></span>
-							</a>
-						</li>
-					<?php } ?>
-					<?php if ($wo['config']['connectivitySystem'] == 0) {?>
-						<li>
-							<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=following');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=following">
-								<span class="split-link"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<p class="section-menu-item-text"><?php echo $wo['lang']['friends_btn'];?></p>
+				</a>
+			<?php } ?>
+			<?php if ($wo['config']['connectivitySystem'] == 0) {?>
+				<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=following');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=following">
+					<svg class="section-menu-item-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M19 10H15M17 12L17 8" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M1 17.1115C1 14.6984 2.69732 12.643 5.00404 12.2627L5.21182 12.2284C7.05892 11.9239 8.94108 11.9239 10.7882 12.2284L10.996 12.2627C13.3027 12.643 15 14.6984 15 17.1115C15 18.1545 14.1815 19 13.1719 19H2.82813C1.81848 19 1 18.1545 1 17.1115Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M12.0827 4.9375C12.0827 7.11212 10.2545 8.875 7.99935 8.875C5.74419 8.875 3.91602 7.11212 3.91602 4.9375C3.91602 2.76288 5.74419 1 7.99935 1C10.2545 1 12.0827 2.76288 12.0827 4.9375Z" class="icon_main" stroke-width="1.5"/>
 </svg>
-</span>
-								<span><?php echo $wo['lang']['following'];?></span>
-							</a>
-						</li>
-						<li>
-							<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=followers');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=followers">
-								<span class="split-link"><svg width="20" height="17" viewBox="0 0 20 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<p class="section-menu-item-text"><?php echo $wo['lang']['following'];?></p>
+				</a>
+				<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=followers');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=followers">
+					<svg class="section-menu-item-icon" width="20" height="17" viewBox="0 0 20 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1 14.531C1 12.6539 2.33361 11.055 4.14603 10.7592L4.30929 10.7326C5.76058 10.4957 7.23942 10.4957 8.69071 10.7326L8.85397 10.7592C10.6664 11.055 12 12.6539 12 14.531C12 15.3423 11.3569 16 10.5636 16H2.43639C1.64309 16 1 15.3423 1 14.531Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M9.70833 4.28125C9.70833 6.09343 8.27191 7.5625 6.5 7.5625C4.72809 7.5625 3.29167 6.09343 3.29167 4.28125C3.29167 2.46907 4.72809 1 6.5 1C8.27191 1 9.70833 2.46907 9.70833 4.28125Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M12 7.5625C14.2552 7.5625 16.0833 6.09343 16.0833 4.28125C16.0833 2.46907 14.2552 1 12 1M14.7882 16H17.1719C18.1815 16 19 15.3423 19 14.531C19 12.6539 17.3027 11.055 14.996 10.7592L14.7882 10.7326C14.2285 10.7326 14.195 10.7326 13.448 10.7326" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
-</span>
-								<span><?php echo $wo['lang']['followers'];?></span>
-							</a>
-						</li>
-					<?php } ?>
-                    <li>
-						<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=photos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=photos">
-                            <span class="split-link"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<p class="section-menu-item-text"><?php echo $wo['lang']['followers'];?></p>
+				</a>
+			<?php } ?>
+			<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=photos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=photos">
+				<svg class="section-menu-item-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="11" y="5" width="4" height="4" rx="2" class="icon_main" stroke-width="1.5"/>
 <path d="M2.71809 15.2014L4.45698 13.4625C6.08199 11.8375 8.71665 11.8375 10.3417 13.4625L12.0805 15.2014M12.0805 15.2014L12.7849 14.497C14.0825 13.1994 16.2143 13.2961 17.3891 14.7059L17.802 15.2014M12.0805 15.2014L14.6812 17.802M1.35288 13.0496C0.882374 11.0437 0.882374 8.95626 1.35288 6.95043C2.00437 4.17301 4.17301 2.00437 6.95043 1.35288C8.95626 0.882375 11.0437 0.882374 13.0496 1.35288C15.827 2.00437 17.9956 4.17301 18.6471 6.95044C19.1176 8.95626 19.1176 11.0437 18.6471 13.0496C17.9956 15.827 15.827 17.9956 13.0496 18.6471C11.0437 19.1176 8.95626 19.1176 6.95044 18.6471C4.17301 17.9956 2.00437 15.827 1.35288 13.0496Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
-</span>
-							<span><?php echo $wo['lang']['photos'];?></span>
-						</a>
-					</li>
-					<?php if ($wo['config']['video_upload'] == 1) { ?>
-                    <li>
-						<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=videos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=videos">
-                            <span class="split-link"><svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<p class="section-menu-item-text"><?php echo $wo['lang']['photos'];?></p>
+			</a>
+			<?php if ($wo['config']['video_upload'] == 1) { ?>
+			<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=videos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=videos">
+				<svg class="section-menu-item-icon" width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M7 4H3" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M7 12L4 12" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M5 8H1" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M18 8.75C18.4142 8.75 18.75 8.41421 18.75 8C18.75 7.58579 18.4142 7.25 18 7.25V8.75ZM13 8.75H18V7.25H13V8.75Z" class="icon_main_fill"/>
 <path d="M21.5392 5.64505L12.8369 1.288C10.7427 0.23952 8.41866 2.22704 9.13127 4.45698L10.1705 7.70896C10.2339 7.90733 10.2338 8.12053 10.1702 8.31882L9.13677 11.5403C8.42185 13.7689 10.7426 15.7589 12.8379 14.7138L21.5356 10.3756C23.4865 9.40256 23.4886 6.62109 21.5392 5.64505Z" stroke="currentColor" stroke-width="1.5"/>
 </svg>
-</span>
-							<span><?php echo $wo['lang']['videos'];?></span>
-						</a>
-					</li>
-					<?php } ?>
-					<?php if($wo['config']['reels_upload']) {?>
-					<li>
-						<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=reels');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=reels">
-                            <span class="split-link"><svg width="24" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 6.99988H21.5M16.3 2.49988L19 6.99988M10.5 1.99988L13.5 6.99988M5.5 2.49988L8 6.99988M7.5 16.9999C7.5 17.276 7.27614 17.4999 7 17.4999C6.72386 17.4999 6.5 17.276 6.5 16.9999M7.5 16.9999C7.5 16.7237 7.27614 16.4999 7 16.4999C6.72386 16.4999 6.5 16.7237 6.5 16.9999M7.5 16.9999H6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><rect x="2" y="2" width="20" height="20" rx="5" class="icon_main" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></rect></svg></span>
-							<span><?php echo $wo['lang']['reels'];?></span>
-						</a>
-					</li>
-                    <?php } ?>
-				</ul>
+				<p class="section-menu-item-text"><?php echo $wo['lang']['videos'];?></p>
+			</a>
+			<?php } ?>
+			<?php if($wo['config']['reels_upload']) {?>
+			<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=reels');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=reels">
+				<svg class="section-menu-item-icon" width="24" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 6.99988H21.5M16.3 2.49988L19 6.99988M10.5 1.99988L13.5 6.99988M5.5 2.49988L8 6.99988M7.5 16.9999C7.5 17.276 7.27614 17.4999 7 17.4999C6.72386 17.4999 6.5 17.276 6.5 16.9999M7.5 16.9999C7.5 16.7237 7.27614 16.4999 7 16.4999C6.72386 16.4999 6.5 16.7237 6.5 16.9999M7.5 16.9999H6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><rect x="2" y="2" width="20" height="20" rx="5" class="icon_main" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></rect></svg>
+				<p class="section-menu-item-text"><?php echo $wo['lang']['reels'];?></p>
+			</a>
+			<?php } ?>
+		</div>
+		<div id="section-navigation-slider-controls" class="slider-controls">
+			<div class="slider-control left">
+				<svg class="slider-control-icon icon-small-arrow"><use xlink:href="#svg-small-arrow"></use></svg>
 			</div>
-		<?php } ?>
-	</div>
-    <?php if ($wo['user_profile']['banned'] != 1) { ?>
-		
+			<div class="slider-control right">
+				<svg class="slider-control-icon icon-small-arrow"><use xlink:href="#svg-small-arrow"></use></svg>
+			</div>
+		</div>
+	</nav>
+	<!-- /SECTION NAVIGATION -->
+
+	<!-- MAIN GRID -->
+	<div class="grid grid-3-6-3 mobile-prefer-content">
+
+		<!-- LEFT SIDEBAR COLUMN (filled after center) -->
+
+
+		<!-- LEFT SIDEBAR COLUMN -->
+		<div class="grid-column">
+        <?php if($wo['loggedin'] == true && $wo['config']['gift_system'] != 0) {  ?>
+            <?php if ($IsOwnerUser == false) { ?>
+			<div class="wow_content send_gift_btn">
+				<div>
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 7H15.5C16.8807 7 18 5.88071 18 4.5C18 3.11929 16.8807 2 15.5 2H15.4198C14.2803 2 13.2758 2.74741 12.9484 3.83881L12 7ZM12 7H8.5C7.11929 7 6 5.88071 6 4.5C6 3.11929 7.11929 2 8.5 2H8.58023C9.71968 2 10.7242 2.74741 11.0516 3.83881L12 7ZM12 7V22" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 11V17.2C20 18.8802 20 19.7202 19.673 20.362C19.3854 20.9265 18.9265 21.3854 18.362 21.673C17.7202 22 16.8802 22 15.2 22H8.8C7.11984 22 6.27976 22 5.63803 21.673C5.07354 21.3854 4.6146 20.9265 4.32698 20.362C4 19.7202 4 18.8802 4 17.2V11M4 11H20C21.1046 11 22 10.1046 22 9V9C22 7.89543 21.1046 7 20 7H4C2.89543 7 2 7.89543 2 9V9C2 10.1046 2.89543 11 4 11Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					<?php echo $wo['lang']['send_gift_user_desc']; ?>
+				</div>
+				<button type="button" class="btn btn-block btn-main btn-mat" onclick="Wo_open_send_gift();"><?php echo $wo['lang']['send_a_gift']; ?></button>
+			</div>
+            <?php } ?>
+        <?php } ?>
+
+        <ul class="page-margin wow_content negg_padd list-unstyled event-options-list right_user_info wo_prof_side_info_padd mt-0">
+            <div class="wo_page_hdng hidden">
+				<div class="wo_page_hdng_innr"><?php echo $wo['lang']['info']; ?></div>
+			</div>
+
+			<ul class="flex_stats">
+            <?php if($wo['config']['user_lastseen'] == 1 && $wo['user_profile']['showlastseen'] != 0 && $wo['loggedin'] == true) {  ?>
+            <li class="list-group-item">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3.95087 7.17881C3.70961 6.15025 3.70961 5.07983 3.95087 4.05127C4.28495 2.62706 5.39698 1.51502 6.8212 1.18095C7.84975 0.939684 8.92017 0.939684 9.94873 1.18095C11.3729 1.51502 12.485 2.62706 12.8191 4.05128C13.0603 5.07983 13.0603 6.15025 12.8191 7.1788C12.485 8.60302 11.3729 9.71505 9.94872 10.0491C8.92017 10.2904 7.84975 10.2904 6.8212 10.0491M3.95087 7.17881C4.28495 8.60302 5.39699 9.71505 6.8212 10.0491M3.95087 7.17881C3.79896 6.53119 3.7427 5.86696 3.78209 5.20705C3.72639 5.21842 3.67081 5.2306 3.61538 5.2436C2.39462 5.52995 1.44145 6.48313 1.1551 7.70388C0.9483 8.5855 0.9483 9.50301 1.1551 10.3846C1.44145 11.6054 2.39463 12.5586 3.61538 12.8449C4.49699 13.0517 5.4145 13.0517 6.29612 12.8449C7.51687 12.5586 8.47005 11.6054 8.7564 10.3846C8.7694 10.3292 8.78158 10.2736 8.79295 10.2179C8.13304 10.2573 7.46882 10.201 6.8212 10.0491" class="icon_main"/>
+<path d="M3.95048 7.1788C3.70921 6.15025 3.70922 5.07982 3.95048 4.05127C4.28456 2.62706 5.39659 1.51502 6.82081 1.18095C7.84936 0.939684 8.91978 0.939684 9.94833 1.18095C11.3725 1.51502 12.4846 2.62706 12.8187 4.05128C13.0599 5.07983 13.0599 6.15025 12.8187 7.1788C12.4846 8.60302 11.3725 9.71505 9.94833 10.0491C8.91978 10.2904 7.84936 10.2904 6.82081 10.0491M3.95048 7.1788C4.28456 8.60302 5.3966 9.71505 6.82081 10.0491M3.95048 7.1788C3.79857 6.53119 3.74231 5.86696 3.7817 5.20705M6.82081 10.0491C7.46843 10.201 8.13265 10.2573 8.79256 10.2179" stroke="currentColor"/>
+</svg>
+
+                <?php echo Wo_UserStatus($wo['user_profile']['user_id'], $wo['user_profile']['lastseen'], 'profile') ?>
+            </li>
+            <?php } ?>
+			<li class="list-group-item">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.08301 12.1174C6.08301 11.2979 6.67353 10.5998 7.47606 10.4707C8.48542 10.3082 9.51393 10.3082 10.5233 10.4707C11.3258 10.5998 11.9163 11.2979 11.9163 12.1174V12.2988C11.9163 12.7781 11.531 13.1666 11.0558 13.1666H6.94359C6.4683 13.1666 6.08301 12.7781 6.08301 12.2988V12.1174Z" class="icon_main" stroke-width="1.5"/>
+<path d="M10.7011 6.549C10.7011 7.49655 9.93933 8.26469 8.99967 8.26469C8.06002 8.26469 7.29829 7.49655 7.29829 6.549C7.29829 5.60145 8.06002 4.83331 8.99967 4.83331C9.93933 4.83331 10.7011 5.60145 10.7011 6.549Z" class="icon_main" stroke-width="1.5"/>
+<path d="M16.5 4.83333C16.5 2.99238 14.6345 1.5 12.3333 1.5M1.5 12.3333C1.5 14.6345 2.99238 16.5 4.83333 16.5M4.83333 1.5C2.99238 1.5 1.5 2.99238 1.5 4.83333M12.3333 16.5C14.6345 16.5 16.5 14.6345 16.5 12.3333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+
+                <?php
+                $gender = ucfirst(strtolower($wo['user_profile']['gender']));
+                if (in_array($wo['user_profile']['gender'], array_keys($wo['genders']))) {
+                	echo $wo['genders'][$wo['user_profile']['gender']];
+                }
+                else{
+                	echo $wo['genders'][array_keys($wo['genders'])[0]];
+                }
+                //echo ($gender == 'Male') ? $wo['lang']['male'] : $wo['lang']['female'];
+                ?>
+            </li>
+            <li class="list-group-item">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.90013 9.78608L2.38692 9.6719L1.90013 9.78608ZM1.90013 5.08574L2.38692 5.19992L1.90013 5.08574ZM15.2281 5.08574L14.7413 5.19993L15.2281 5.08574ZM15.2281 9.78608L14.7413 9.67189L15.2281 9.78608ZM10.9143 14.0999L10.8001 13.6131L10.9143 14.0999ZM6.21392 14.0999L6.32811 13.6131L6.21392 14.0999ZM6.21392 0.771947L6.09974 0.285159L6.21392 0.771947ZM10.9143 0.771947L11.0284 0.285159L10.9143 0.771947ZM2.46761 11.2613L2.90535 11.0197L2.75077 10.7396L2.43173 10.7626L2.46761 11.2613ZM4.73872 13.5324L5.23743 13.5683L5.26038 13.2492L4.98034 13.0946L4.73872 13.5324ZM2.38692 9.6719C2.04194 8.2012 2.04194 6.67062 2.38692 5.19992L1.41334 4.97155C1.03313 6.59246 1.03313 8.27936 1.41334 9.90027L2.38692 9.6719ZM14.7413 5.19993C15.0862 6.67062 15.0862 8.2012 14.7413 9.67189L15.7148 9.90026C16.0951 8.27936 16.0951 6.59246 15.7148 4.97156L14.7413 5.19993ZM10.8001 13.6131C9.32938 13.9581 7.7988 13.9581 6.32811 13.6131L6.09974 14.5867C7.72064 14.9669 9.40754 14.9669 11.0284 14.5867L10.8001 13.6131ZM6.32811 1.25873C7.7988 0.913755 9.32938 0.913755 10.8001 1.25873L11.0284 0.285159C9.40754 -0.0950531 7.72064 -0.0950531 6.09974 0.285159L6.32811 1.25873ZM6.32811 13.6131C4.37255 13.1544 2.84563 11.6275 2.38692 9.6719L1.41334 9.90027C1.95879 12.2256 3.77442 14.0412 6.09974 14.5867L6.32811 13.6131ZM11.0284 14.5867C13.3538 14.0412 15.1694 12.2256 15.7148 9.90026L14.7413 9.67189C14.2826 11.6275 12.7556 13.1544 10.8001 13.6131L11.0284 14.5867ZM10.8001 1.25873C12.7556 1.71745 14.2826 3.24437 14.7413 5.19993L15.7148 4.97156C15.1694 2.64624 13.3538 0.830605 11.0284 0.285159L10.8001 1.25873ZM6.09974 0.285159C3.77442 0.830605 1.95879 2.64623 1.41334 4.97155L2.38692 5.19992C2.84563 3.24436 4.37255 1.71745 6.32811 1.25873L6.09974 0.285159ZM2.43173 10.7626C1.0722 10.8604 0 11.9937 0 13.3779H1C1 12.5219 1.66326 11.8205 2.5035 11.76L2.43173 10.7626ZM0 13.3779C0 14.826 1.17397 16 2.62213 16V15C1.72625 15 1 14.2737 1 13.3779H0ZM2.62213 16C4.0063 16 5.1396 14.9278 5.23743 13.5683L4.24001 13.4965C4.17954 14.3367 3.47807 15 2.62213 15V16ZM4.98034 13.0946C4.10741 12.6128 3.3872 11.8926 2.90535 11.0197L2.02987 11.5029C2.60286 12.541 3.45904 13.3971 4.49709 13.9701L4.98034 13.0946Z" fill="currentColor"/>
+<path d="M5.59277 5.41266C5.17856 5.41266 4.84277 5.74845 4.84277 6.16266C4.84277 6.57687 5.17856 6.91266 5.59277 6.91266V5.41266ZM8.13933 6.91266C8.55354 6.91266 8.88933 6.57687 8.88933 6.16266C8.88933 5.74845 8.55354 5.41266 8.13933 5.41266V6.91266ZM6.44162 7.95921C6.02741 7.95921 5.69163 8.295 5.69163 8.70921C5.69163 9.12343 6.02741 9.45921 6.44162 9.45921V7.95921ZM10.6859 9.45921C11.1001 9.45921 11.4359 9.12343 11.4359 8.70921C11.4359 8.295 11.1001 7.95921 10.6859 7.95921V9.45921ZM5.59277 6.91266H8.13933V5.41266H5.59277V6.91266ZM6.44162 9.45921H10.6859V7.95921H6.44162V9.45921Z" class="icon_main_fill"/>
+</svg>
+
+               <?php echo TextForMode('posts'); ?> <span class="badge badge-danger" id="user_post_count"><?php echo number_format($wo['user_profile']['details']['post_count']);?></span>
+            </li>
+			</ul>
+            
+            <?php if ($wo['user_profile']['birthday'] != '0000-00-00' && $wo['user_profile']['birthday'] != '00-00-0000' && Wo_CanSeeBirthday($wo['user_profile']['user_id'], $wo['user_profile']['birth_privacy']) === true) {  ?>
+            <li class="list-group-item">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.55519 9.16566L2.04255 9.05396L1.55519 9.16566ZM1.55519 5.23549L2.04255 5.34719L1.55519 5.23549ZM12.4442 5.23549L11.9568 5.34719L12.4442 5.23549ZM12.4442 9.16565L11.9568 9.05395L12.4442 9.16565ZM8.91977 12.7726L9.03649 13.2588L8.91977 12.7726ZM5.07958 12.7726L5.19629 12.2864L5.07958 12.7726ZM5.07958 1.62853L5.19629 2.11472L5.07958 1.62853ZM8.91977 1.62853L9.03649 1.14234L8.91977 1.62853ZM4.87973 1C4.87973 0.723858 4.65587 0.5 4.37973 0.5C4.10359 0.5 3.87973 0.723858 3.87973 1H4.87973ZM3.87973 2.67583C3.87973 2.95197 4.10359 3.17583 4.37973 3.17583C4.65587 3.17583 4.87973 2.95197 4.87973 2.67583H3.87973ZM10.1196 1C10.1196 0.723858 9.89576 0.5 9.61962 0.5C9.34348 0.5 9.11962 0.723858 9.11962 1H10.1196ZM9.11962 2.67583C9.11962 2.95197 9.34348 3.17583 9.61962 3.17583C9.89576 3.17583 10.1196 2.95197 10.1196 2.67583H9.11962ZM2.04255 9.05396C1.76316 7.83495 1.76316 6.56619 2.04255 5.34719L1.06783 5.12378C0.754735 6.48981 0.754735 7.91133 1.06783 9.27736L2.04255 9.05396ZM11.9568 5.34719C12.2362 6.56619 12.2362 7.83495 11.9568 9.05395L12.9315 9.27736C13.2446 7.91133 13.2446 6.48981 12.9315 5.12379L11.9568 5.34719ZM8.80306 12.2864C7.61685 12.5712 6.3825 12.5712 5.19629 12.2864L4.96286 13.2588C6.30251 13.5804 7.69684 13.5804 9.03649 13.2588L8.80306 12.2864ZM5.19629 2.11472C6.3825 1.82995 7.61685 1.82995 8.80306 2.11472L9.03649 1.14234C7.69684 0.820742 6.30251 0.820742 4.96286 1.14234L5.19629 2.11472ZM5.19629 12.2864C3.63706 11.9121 2.41147 10.6635 2.04255 9.05396L1.06783 9.27736C1.51932 11.2472 3.0246 12.7935 4.96286 13.2588L5.19629 12.2864ZM9.03649 13.2588C10.9748 12.7935 12.48 11.2472 12.9315 9.27736L11.9568 9.05395C11.5879 10.6635 10.3623 11.9121 8.80306 12.2864L9.03649 13.2588ZM8.80306 2.11472C10.3623 2.48903 11.5879 3.73761 11.9568 5.34719L12.9315 5.12379C12.48 3.15393 10.9748 1.60765 9.03649 1.14234L8.80306 2.11472ZM4.96286 1.14234C3.0246 1.60765 1.51932 3.15392 1.06783 5.12378L2.04255 5.34719C2.41147 3.73761 3.63706 2.48903 5.19629 2.11472L4.96286 1.14234ZM1.75978 5.01924H12.2396V4.01924H1.75978V5.01924ZM3.87973 1V2.67583H4.87973V1H3.87973ZM9.11962 1V2.67583H10.1196V1H9.11962Z" fill="currentColor"/>
+<path d="M7.96125 8.28268C8.23125 8.09068 8.39925 7.80268 8.39925 7.41268C8.39925 6.60268 7.77525 6.18268 7.03725 6.18268C6.29925 6.18268 5.66925 6.60268 5.66925 7.41268C5.66925 7.80268 5.84325 8.09068 6.10725 8.28268C5.74125 8.50468 5.53125 8.87068 5.53125 9.29668C5.53125 10.0707 6.10125 10.5507 7.03725 10.5507C7.96725 10.5507 8.54325 10.0707 8.54325 9.29668C8.54325 8.87068 8.33325 8.50468 7.96125 8.28268ZM7.03725 6.96268C7.34925 6.96268 7.57725 7.14268 7.57725 7.45468C7.57725 7.76068 7.34925 7.95268 7.03725 7.95268C6.72525 7.95268 6.49725 7.76068 6.49725 7.45468C6.49725 7.14268 6.72525 6.96268 7.03725 6.96268ZM7.03725 9.77068C6.64125 9.77068 6.35325 9.56668 6.35325 9.18868C6.35325 8.81668 6.64125 8.61268 7.03725 8.61268C7.43325 8.61268 7.72125 8.81668 7.72125 9.18868C7.72125 9.56668 7.43325 9.77068 7.03725 9.77068Z" class="icon_main_fill"/>
+</svg>
+
+                <?php echo date($wo['config']['date_style'],strtotime($wo['user_profile']['birthday']));?>
+            </li>
+            <?php  }  ?>
+
+            <?php if(!empty(Wo_UserRelationship($wo['user_profile']['id']))) {  ?>
+            <li class="list-group-item">
+                <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.65593 5.7404L5.07865 10.3405C6.06366 11.6643 7.93633 11.6643 8.92135 10.3405L12.3441 5.7404C13.2186 4.56499 13.2186 2.89481 12.3441 1.71939C11.0638 -0.00124529 8.10474 0.509785 7 2.36572C5.89526 0.509785 2.93619 -0.00124511 1.65593 1.71939C0.781357 2.8948 0.781355 4.56499 1.65593 5.7404Z" class="icon_main" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.3441 5.7404L8.92135 10.3405C7.93633 11.6643 6.06366 11.6643 5.07865 10.3405L1.65593 5.7404C0.781355 4.56499 0.781357 2.8948 1.65593 1.71939C2.93619 -0.00124514 5.89526 0.509785 7 2.36572" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                <?php echo Wo_UserRelationship($wo['user_profile']['id']); ?>
+            </li>
+
+            <?php } ?>
+            <?php if(!empty($wo['user_profile']['working'])) {  ?>
+            <li class="list-group-item">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.2462 1.09779L6.11848 0.614379L6.11848 0.614379L6.2462 1.09779ZM7.75286 1.09779L7.62515 1.58121V1.58121L7.75286 1.09779ZM6.37391 1.5812C6.78373 1.47293 7.21533 1.47293 7.62515 1.58121L7.88058 0.614379C7.30335 0.461874 6.69571 0.461874 6.11848 0.614379L6.37391 1.5812ZM10.2842 3.70877C10.2842 2.25418 9.29414 0.987842 7.88058 0.614379L7.62515 1.58121C8.60792 1.84085 9.28422 2.71637 9.28422 3.70877L10.2842 3.70877ZM4.71484 3.70877C4.71484 2.71637 5.39115 1.84085 6.37391 1.5812L6.11848 0.614379C4.70492 0.987842 3.71484 2.25418 3.71484 3.70877L4.71484 3.70877Z" class="icon_main_fill"/>
+<path d="M1.25567 9.93536L1.73647 9.79815L1.25567 9.93536ZM1.25332 6.29071L1.73412 6.42792V6.42792L1.25332 6.29071ZM12.7467 6.29072L12.2659 6.42792V6.42792L12.7467 6.29072ZM12.7443 9.93535L13.2251 10.0726L12.7443 9.93535ZM9.66193 12.7458L9.56727 12.2548L9.66193 12.7458ZM4.33807 12.7458L4.43273 12.2548L4.33807 12.7458ZM4.84865 3.37361L4.94331 3.86457H4.94331L4.84865 3.37361ZM9.15135 3.37361L9.24601 2.88265L9.15135 3.37361ZM9.86706 3.5116L9.7724 4.00256L9.86706 3.5116ZM12.6847 6.07347L13.1655 5.93626V5.93626L12.6847 6.07347ZM4.13294 3.5116L4.03828 3.02064L4.03828 3.02064L4.13294 3.5116ZM1.31531 6.07347L0.834508 5.93626H0.834508L1.31531 6.07347ZM4.2276 4.00256L4.94331 3.86457L4.75399 2.88265L4.03828 3.02064L4.2276 4.00256ZM9.05669 3.86456L9.7724 4.00256L9.96172 3.02064L9.24601 2.88265L9.05669 3.86456ZM12.2039 6.21068L12.2659 6.42792L13.2275 6.15351L13.1655 5.93626L12.2039 6.21068ZM1.73412 6.42792L1.79612 6.21068L0.834508 5.93626L0.772512 6.1535L1.73412 6.42792ZM1.73647 9.79815C1.42256 8.69816 1.42058 7.52664 1.73412 6.42792L0.772512 6.1535C0.40742 7.43286 0.410132 8.79449 0.77486 10.0726L1.73647 9.79815ZM12.2659 6.42792C12.5794 7.52664 12.5774 8.69816 12.2635 9.79815L13.2251 10.0726C13.5899 8.79449 13.5926 7.43286 13.2275 6.15351L12.2659 6.42792ZM9.56727 12.2548C7.87182 12.5817 6.12818 12.5817 4.43273 12.2548L4.24341 13.2367C6.06393 13.5878 7.93608 13.5878 9.75659 13.2367L9.56727 12.2548ZM4.94331 3.86457C6.30157 3.60268 7.69843 3.60268 9.05669 3.86456L9.24601 2.88265C7.76269 2.59665 6.23731 2.59665 4.75399 2.88265L4.94331 3.86457ZM4.43273 12.2548C3.13662 12.0049 2.09293 11.0472 1.73647 9.79815L0.77486 10.0726C1.23553 11.6869 2.57977 12.916 4.24341 13.2367L4.43273 12.2548ZM9.75659 13.2367C11.4202 12.916 12.7645 11.6869 13.2251 10.0726L12.2635 9.79815C11.9071 11.0472 10.8634 12.0049 9.56727 12.2548L9.75659 13.2367ZM9.7724 4.00256C10.9443 4.2285 11.8826 5.08479 12.2039 6.21068L13.1655 5.93626C12.7391 4.44217 11.498 3.31686 9.96172 3.02064L9.7724 4.00256ZM4.03828 3.02064C2.50198 3.31686 1.26088 4.44217 0.834508 5.93626L1.79612 6.21068C2.11742 5.08478 3.05574 4.2285 4.2276 4.00256L4.03828 3.02064ZM1.25716 6.86116C4.95993 8.23077 9.04007 8.23077 12.7428 6.86116L12.3959 5.92327C8.91702 7.21007 5.08298 7.21007 1.60408 5.92327L1.25716 6.86116Z" fill="currentColor"/>
+<path d="M4.33301 6V8.33333" class="icon_main" stroke-linecap="round"/>
+<path d="M9.66699 6V8.33333" class="icon_main" stroke-linecap="round"/>
+</svg>
+
+                <span><?php echo $wo['lang']['working_at'];?> <?php if (!empty($wo['user_profile']['working_link'])) { ?><a href="<?php echo $wo['user_profile']['working_link']; ?>" target="_blank" rel="nofollow"><?php echo $wo['user_profile']['working']; ?></a> <?php } else { echo $wo['user_profile']['working'];} ?></span>
+            </li>
+            <?php } ?>
+            <?php if(!empty($wo['user_profile']['school'])) {  ?>
+            <li class="list-group-item">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.23525 4.96695C1.66958 3.11534 3.11534 1.66958 4.96696 1.23525C6.30417 0.921583 7.69583 0.921583 9.03305 1.23525C10.8847 1.66958 12.3304 3.11534 12.7647 4.96696C13.0784 6.30417 13.0784 7.69583 12.7647 9.03304C12.3304 10.8847 10.8847 12.3304 9.03304 12.7647C7.69583 13.0784 6.30417 13.0784 4.96696 12.7647C3.11534 12.3304 1.66958 10.8847 1.23525 9.03305C0.921583 7.69583 0.921583 6.30417 1.23525 4.96695Z" stroke="currentColor" stroke-linecap="round"/>
+<path d="M4.91992 9.08059V6.30653M9.08101 9.08059V7.00004M7.00047 8.38707V4.91949" class="icon_main" stroke-linecap="round"/>
+</svg>
+
+                <span><?php echo ($wo['user_profile']['school_completed'] == 1)   ? $wo['lang']['studied_at'] : $wo['lang']['studying_at'] ;?> <?php echo $wo['user_profile']['school']; ?></span>
+            </li>
+
+            <?php } ?>
+            <?php if($wo['config']['website_mode'] == 'linkedin' && !empty($wo['user_profile']['currently_working']) && in_array($wo['user_profile']['currently_working'], array('yes','am_looking_to_work','am_looking_for_employees'))) {  ?>
+				<li class="list-group-item">
+					<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.2462 1.09779L6.11848 0.614379L6.11848 0.614379L6.2462 1.09779ZM7.75286 1.09779L7.62515 1.58121V1.58121L7.75286 1.09779ZM6.37391 1.5812C6.78373 1.47293 7.21533 1.47293 7.62515 1.58121L7.88058 0.614379C7.30335 0.461874 6.69571 0.461874 6.11848 0.614379L6.37391 1.5812ZM10.2842 3.70877C10.2842 2.25418 9.29414 0.987842 7.88058 0.614379L7.62515 1.58121C8.60792 1.84085 9.28422 2.71637 9.28422 3.70877L10.2842 3.70877ZM4.71484 3.70877C4.71484 2.71637 5.39115 1.84085 6.37391 1.5812L6.11848 0.614379C4.70492 0.987842 3.71484 2.25418 3.71484 3.70877L4.71484 3.70877Z" class="icon_main_fill"/>
+<path d="M1.25567 9.93536L1.73647 9.79815L1.25567 9.93536ZM1.25332 6.29071L1.73412 6.42792V6.42792L1.25332 6.29071ZM12.7467 6.29072L12.2659 6.42792V6.42792L12.7467 6.29072ZM12.7443 9.93535L13.2251 10.0726L12.7443 9.93535ZM9.66193 12.7458L9.56727 12.2548L9.66193 12.7458ZM4.33807 12.7458L4.43273 12.2548L4.33807 12.7458ZM4.84865 3.37361L4.94331 3.86457H4.94331L4.84865 3.37361ZM9.15135 3.37361L9.24601 2.88265L9.15135 3.37361ZM9.86706 3.5116L9.7724 4.00256L9.86706 3.5116ZM12.6847 6.07347L13.1655 5.93626V5.93626L12.6847 6.07347ZM4.13294 3.5116L4.03828 3.02064L4.03828 3.02064L4.13294 3.5116ZM1.31531 6.07347L0.834508 5.93626H0.834508L1.31531 6.07347ZM4.2276 4.00256L4.94331 3.86457L4.75399 2.88265L4.03828 3.02064L4.2276 4.00256ZM9.05669 3.86456L9.7724 4.00256L9.96172 3.02064L9.24601 2.88265L9.05669 3.86456ZM12.2039 6.21068L12.2659 6.42792L13.2275 6.15351L13.1655 5.93626L12.2039 6.21068ZM1.73412 6.42792L1.79612 6.21068L0.834508 5.93626L0.772512 6.1535L1.73412 6.42792ZM1.73647 9.79815C1.42256 8.69816 1.42058 7.52664 1.73412 6.42792L0.772512 6.1535C0.40742 7.43286 0.410132 8.79449 0.77486 10.0726L1.73647 9.79815ZM12.2659 6.42792C12.5794 7.52664 12.5774 8.69816 12.2635 9.79815L13.2251 10.0726C13.5899 8.79449 13.5926 7.43286 13.2275 6.15351L12.2659 6.42792ZM9.56727 12.2548C7.87182 12.5817 6.12818 12.5817 4.43273 12.2548L4.24341 13.2367C6.06393 13.5878 7.93608 13.5878 9.75659 13.2367L9.56727 12.2548ZM4.94331 3.86457C6.30157 3.60268 7.69843 3.60268 9.05669 3.86456L9.24601 2.88265C7.76269 2.59665 6.23731 2.59665 4.75399 2.88265L4.94331 3.86457ZM4.43273 12.2548C3.13662 12.0049 2.09293 11.0472 1.73647 9.79815L0.77486 10.0726C1.23553 11.6869 2.57977 12.916 4.24341 13.2367L4.43273 12.2548ZM9.75659 13.2367C11.4202 12.916 12.7645 11.6869 13.2251 10.0726L12.2635 9.79815C11.9071 11.0472 10.8634 12.0049 9.56727 12.2548L9.75659 13.2367ZM9.7724 4.00256C10.9443 4.2285 11.8826 5.08479 12.2039 6.21068L13.1655 5.93626C12.7391 4.44217 11.498 3.31686 9.96172 3.02064L9.7724 4.00256ZM4.03828 3.02064C2.50198 3.31686 1.26088 4.44217 0.834508 5.93626L1.79612 6.21068C2.11742 5.08478 3.05574 4.2285 4.2276 4.00256L4.03828 3.02064ZM1.25716 6.86116C4.95993 8.23077 9.04007 8.23077 12.7428 6.86116L12.3959 5.92327C8.91702 7.21007 5.08298 7.21007 1.60408 5.92327L1.25716 6.86116Z" fill="currentColor"/>
+<path d="M4.33301 6V8.33333" class="icon_main" stroke-linecap="round"/>
+<path d="M9.66699 6V8.33333" class="icon_main" stroke-linecap="round"/>
+</svg> <span><?php echo $wo['lang'][$wo['user_profile']['currently_working']]; ?></span>
+				</li>
+			<?php } ?>
+
+            <?php
+            $country = $wo['user_profile']['country_id'];
+            if ($country > 0) {
+            ?>
+            <li class="list-group-item">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.4791 11.2135L4.98769 11.1213L4.98769 11.1213L5.4791 11.2135ZM5.492 11.1448L5.98342 11.2371L5.98342 11.2371L5.492 11.1448ZM8.50831 11.1448L8.0169 11.2371L8.0169 11.2371L8.50831 11.1448ZM8.52121 11.2135L9.01262 11.1213L9.01262 11.1213L8.52121 11.2135ZM8.32801 12.7013L8.77949 12.9161V12.9161L8.32801 12.7013ZM7.79867 12.65C7.68001 12.8993 7.78595 13.1977 8.0353 13.3163C8.28465 13.435 8.58298 13.3291 8.70164 13.0797L7.79867 12.65ZM5.6723 12.7013L5.22082 12.9161L5.22082 12.9161L5.6723 12.7013ZM5.29867 13.0797C5.41734 13.3291 5.71567 13.435 5.96501 13.3163C6.21436 13.1977 6.3203 12.8993 6.20164 12.65L5.29867 13.0797ZM6.57419 9.9617L6.44051 9.4799L6.44051 9.4799L6.57419 9.9617ZM7.42612 9.9617L7.5598 9.4799V9.4799L7.42612 9.9617ZM5.97052 11.3058L5.98342 11.2371L5.00058 11.0526L4.98769 11.1213L5.97052 11.3058ZM8.0169 11.2371L8.02979 11.3058L9.01262 11.1213L8.99973 11.0526L8.0169 11.2371ZM7.87652 12.4864L7.79867 12.65L8.70164 13.0797L8.77949 12.9161L7.87652 12.4864ZM5.22082 12.9161L5.29867 13.0797L6.20164 12.65L6.12379 12.4864L5.22082 12.9161ZM8.02979 11.3058C8.10489 11.7059 8.05111 12.1196 7.87652 12.4864L8.77949 12.9161C9.04513 12.3579 9.12672 11.7292 9.01262 11.1213L8.02979 11.3058ZM4.98769 11.1213C4.87359 11.7292 4.95518 12.3579 5.22082 12.9161L6.12379 12.4864C5.94921 12.1196 5.89542 11.7059 5.97052 11.3058L4.98769 11.1213ZM6.70788 10.4435C6.89919 10.3904 7.10112 10.3904 7.29243 10.4435L7.5598 9.4799C7.19355 9.37828 6.80676 9.37828 6.44051 9.4799L6.70788 10.4435ZM8.99973 11.0526C8.85783 10.2966 8.30043 9.6854 7.5598 9.4799L7.29243 10.4435C7.66251 10.5462 7.94479 10.853 8.0169 11.2371L8.99973 11.0526ZM5.98342 11.2371C6.05552 10.853 6.3378 10.5462 6.70788 10.4435L6.44051 9.4799C5.69988 9.6854 5.14248 10.2966 5.00058 11.0526L5.98342 11.2371Z" class="icon_main_fill"/>
+<path d="M12.36 5.47935C12.36 5.20321 12.1361 4.97936 11.86 4.97936C11.5839 4.97936 11.36 5.20321 11.36 5.47935H12.36ZM2.63999 5.47935C2.63999 5.20321 2.41614 4.97936 2.13999 4.97936C1.86385 4.97936 1.63999 5.20321 1.63999 5.47935H2.63999ZM8.6755 12.8047L8.56054 12.3181L8.6755 12.8047ZM5.32449 12.8047L5.43944 12.3181L5.32449 12.8047ZM8.88562 2.34282L8.53081 2.69512V2.69512L8.88562 2.34282ZM12.6452 6.83877C12.8398 7.03472 13.1563 7.03584 13.3523 6.84127C13.5483 6.6467 13.5494 6.33012 13.3548 6.13417L12.6452 6.83877ZM5.11438 2.34282L5.46919 2.69512L5.11438 2.34282ZM0.645196 6.13417C0.450627 6.33012 0.451749 6.6467 0.647702 6.84127C0.843655 7.03584 1.16024 7.03472 1.3548 6.83877L0.645196 6.13417ZM11.36 5.47935V8.75825H12.36V5.47935H11.36ZM2.63999 8.75825V5.47935H1.63999V8.75825H2.63999ZM8.56054 12.3181C7.53409 12.5606 6.46589 12.5606 5.43944 12.3181L5.20953 13.2913C6.38718 13.5696 7.61281 13.5696 8.79045 13.2913L8.56054 12.3181ZM5.43944 12.3181C3.80173 11.9313 2.63999 10.4585 2.63999 8.75825H1.63999C1.63999 10.9177 3.11614 12.7968 5.20953 13.2913L5.43944 12.3181ZM8.79045 13.2913C10.8838 12.7968 12.36 10.9177 12.36 8.75825H11.36C11.36 10.4585 10.1983 11.9313 8.56054 12.3181L8.79045 13.2913ZM8.53081 2.69512L12.6452 6.83877L13.3548 6.13417L9.24042 1.99052L8.53081 2.69512ZM4.75958 1.99052L0.645196 6.13417L1.3548 6.83877L5.46919 2.69512L4.75958 1.99052ZM9.24042 1.99052C8.80596 1.55297 8.44537 1.18831 8.12123 0.939234C7.7857 0.68141 7.43051 0.5 7 0.5V1.5C7.12177 1.5 7.26495 1.54239 7.51193 1.73218C7.77031 1.93071 8.07639 2.23746 8.53081 2.69512L9.24042 1.99052ZM5.46919 2.69512C5.92361 2.23746 6.22969 1.93071 6.48807 1.73218C6.73505 1.54239 6.87823 1.5 7 1.5V0.5C6.56949 0.5 6.2143 0.681409 5.87877 0.939234C5.55463 1.18831 5.19404 1.55297 4.75958 1.99052L5.46919 2.69512Z" fill="currentColor"/>
+</svg>
+
+                <?php echo $wo['lang']['living_in'];?>
+                <?php echo $wo['countries_name'][$country];?>
+            </li>
+            <?php } ?>
+            <?php if(!empty($wo['user_profile']['address']) && $wo['user_profile']['share_my_location'] == 1) {  ?>
+            <li class="list-group-item">
+                <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.3337 6.45032C11.3337 9.46045 8.94584 13 6.00033 13C3.05481 13 0.666992 9.46045 0.666992 6.45032C0.666992 3.44019 3.05481 1 6.00033 1C8.94584 1 11.3337 3.44019 11.3337 6.45032Z" stroke="currentColor"/>
+<path d="M4.33301 5.99998C4.33301 5.07951 5.0792 4.33331 5.99967 4.33331C6.92015 4.33331 7.66634 5.07951 7.66634 5.99998C7.66634 6.92045 6.92015 7.66665 5.99967 7.66665C5.0792 7.66665 4.33301 6.92045 4.33301 5.99998Z" class="icon_main"/>
+</svg>
+
+                <span><?php echo $wo['lang']['located_in'];?> <?php echo $wo['user_profile']['address'];?></span>
+                <?php if (!empty($wo['config']['google_map_api']) && $wo['config']['google_map']) { ?>
+                <iframe width="100%" class="user-location-frame" frameborder="0" style="border:0;margin-top: 10px;" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=<?php echo $wo['user_profile']['address'];?>&language=en"></iframe>
+                <?php } ?>
+                <?php if ($wo['config']['yandex_map'] == 1) { ?>
+		            <div id="place_<?php echo($wo['user_profile']['user_id']) ?>" <?php echo($wo['config']['yandex_map'] == 1 ? 'style="width: 100%; height: 300px; padding: 0; margin: 10px 0 0;"' : '') ?>></div>
+		            <script type="text/javascript">
+		                  <?php if (!empty($wo['user_profile']['address'])) { ?>
+		                    setTimeout(function () {
+		                      var myMap;
+		                      ymaps.geocode("<?php echo($wo['user_profile']['address']); ?>").then(function (res) {
+		                          myMap = new ymaps.Map('place_<?php echo($wo['user_profile']['user_id']) ?>', {
+		                              center: res.geoObjects.get(0).geometry.getCoordinates(),
+		                              zoom : 10
+		                          });
+		                          myMap.geoObjects.add(new ymaps.Placemark(res.geoObjects.get(0).geometry.getCoordinates(), {
+		                              balloonContent: ''
+		                          }));
+		                      });
+		                    },1000);
+		                  <?php } ?>
+		                </script>
+		          <?php } ?>
+            </li>
+            <?php } ?>
+			
+			<?php if(!empty($wo['user_profile']['website'])) {  ?>
+			<li class="list-group-item website">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 6.09091H15L9.16043 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 9.90909L1 9.90909L6.83957 15" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+				<a rel="nofollow" href="<?php echo $wo['user_profile']['website']?>"><?php echo $wo['user_profile']['website']?></a>
+            </li>
+			<?php } ?>
+
+			<?php if(!empty($wo['user_profile']['facebook']) || !empty($wo['user_profile']['twitter']) || !empty($wo['user_profile']['linkedin']) || !empty($wo['user_profile']['vk']) || !empty($wo['user_profile']['youtube'])) { ?>
+				<li class="list-group-item user-social-links">
+                    <?php  if(!empty($wo['user_profile']['youtube'])) {  ?>
+                    <a class="social-btn" href="https://www.youtube.com/<?php echo $wo['user_profile']['youtube']?>" target="_blank">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FF0000" d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z" /></svg>
+                    </a>
+                    <?php } if(!empty($wo['user_profile']['twitter'])) {  ?>
+                    <a class="social-btn" href="https://twitter.com/<?php echo $wo['user_profile']['twitter']?>" target="_blank">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#1d9bf0" d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+                    </a>
+                    <?php }  if(!empty($wo['user_profile']['google'])) {  ?>
+                    <!-- <a class="social-btn" rel="publisher" href="https://plus.google.com/<?php echo $wo['user_profile']['google']?>" target="_blank">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather feather-google" fill="#dc4938"><path d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M19.5,12H18V10.5H17V12H15.5V13H17V14.5H18V13H19.5V12M9.65,11.36V12.9H12.22C12.09,13.54 11.45,14.83 9.65,14.83C8.11,14.83 6.89,13.54 6.89,12C6.89,10.46 8.11,9.17 9.65,9.17C10.55,9.17 11.13,9.56 11.45,9.88L12.67,8.72C11.9,7.95 10.87,7.5 9.65,7.5C7.14,7.5 5.15,9.5 5.15,12C5.15,14.5 7.14,16.5 9.65,16.5C12.22,16.5 13.96,14.7 13.96,12.13C13.96,11.81 13.96,11.61 13.89,11.36H9.65Z"></path></svg>
+                    </a> -->
+                    <?php }  if(!empty($wo['user_profile']['facebook'])) {  ?>
+                    <a class="social-btn" rel="publisher" href="https://www.facebook.com/<?php echo $wo['user_profile']['facebook']?>" target="_blank">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#0062E0" d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z" /></svg>
+                    </a>
+                    <?php }  if(!empty($wo['user_profile']['linkedin'])) {  ?>
+                    <a class="social-btn" rel="publisher" href="https://www.linkedin.com/profile/view?id=<?php echo $wo['user_profile']['linkedin']?>" target="_blank">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#0a66c2" d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M18.5 18.5V13.2A3.26 3.26 0 0 0 15.24 9.94C14.39 9.94 13.4 10.46 12.92 11.24V10.13H10.13V18.5H12.92V13.57C12.92 12.8 13.54 12.17 14.31 12.17A1.4 1.4 0 0 1 15.71 13.57V18.5H18.5M6.88 8.56A1.68 1.68 0 0 0 8.56 6.88C8.56 5.95 7.81 5.19 6.88 5.19A1.69 1.69 0 0 0 5.19 6.88C5.19 7.81 5.95 8.56 6.88 8.56M8.27 18.5V10.13H5.5V18.5H8.27Z" /></svg>
+                    </a>
+                    <?php } ?>
+                    <?php  if(!empty($wo['user_profile']['vk'])) {  ?>
+                    <a class="social-btn" rel="publisher" href="https://vk.com/<?php echo $wo['user_profile']['vk'];?>" target="_blank">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#0077ff"><path d="M21.579 6.855c.14-.465 0-.806-.662-.806h-2.193c-.558 0-.813.295-.953.619 0 0-1.115 2.719-2.695 4.482-.51.513-.743.675-1.021.675-.139 0-.341-.162-.341-.627V6.855c0-.558-.161-.806-.626-.806H9.642c-.348 0-.558.258-.558.504 0 .528.79.65.871 2.138v3.228c0 .707-.127.836-.407.836-.743 0-2.551-2.729-3.624-5.853-.209-.607-.42-.852-.98-.852H2.752c-.627 0-.752.295-.752.619 0 .582.743 3.462 3.461 7.271 1.812 2.601 4.363 4.011 6.687 4.011 1.393 0 1.565-.313 1.565-.853v-1.966c0-.626.133-.752.574-.752.324 0 .882.164 2.183 1.417 1.486 1.486 1.732 2.153 2.567 2.153h2.192c.626 0 .939-.313.759-.931-.197-.615-.907-1.51-1.849-2.569-.512-.604-1.277-1.254-1.51-1.579-.325-.419-.231-.604 0-.976.001.001 2.672-3.761 2.95-5.04z"></path></svg>
+                    </a>
+                    <?php } ?>
+                    <?php  if(!empty($wo['user_profile']['instagram'])) {  ?>
+                    <a class="social-btn" rel="publisher" href="https://instagram.com/<?php echo $wo['user_profile']['instagram'];?>" target="_blank">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FE207A" d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" /></svg>
+                    </a>
+                    <?php } ?>
+				</li>
+			<?php } ?>
+        </ul>
+
+		<?php if($wo['loggedin'] == true) {  ?>
+			<div class="wow_content">
+				<div class="wow_form_fields mt-0 profile_search">
+					<input type="text" class="search-for-posts" placeholder="<?php echo $wo['lang']['search_for_posts']; ?>" onkeyup="Wo_SearchForPosts(this.value);" />
+					<svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="2"/>
+<path d="M14.5 15.5L18.5 19.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg>
+
+				</div>
+			</div>
+        <?php } ?>
+
+        <?php if(!empty($wo['user_profile']['about'])) {  ?>
+			<div class="page-margin wow_content">
+				<div class="wo_page_hdng profile_hdng_side pag_neg_padd">
+					<div class="wo_page_hdng_innr"><?php echo $wo['lang']['about']; ?></div>
+				</div>
+				<p class="page-margin mt-0"><?php echo $wo['user_profile']['about']; ?></p>
+			</div>
+        <?php } ?>
+
+        <?php
+        $fields = Wo_GetProfileFields('none');
+        if (count($fields) > 0) { ?>
+        <ul class="page-margin wow_content negg_padd list-unstyled event-options-list">
+			<div class="wo_page_hdng profile_hdng_side">
+				<div class="wo_page_hdng_innr"><?php echo $wo['lang']['more_info']; ?></div>
+			</div>
+            <?php
+            foreach ($fields as $key => $wo['field']) {
+                $name = $wo['field']['fid'];
+                if (!empty($wo['user_profile']['fields'][$name])) {
+                    echo Wo_LoadPage('timeline/custom-fields');
+                }
+            }
+            ?>
+        </ul>
+        <?php } ?>
+
+        <?php
+        if ($wo['config']['website_mode'] != 'instagram') {
+        	echo Wo_LoadPage('timeline/albums-sidebar');
+        }
+
+            if ($wo['config']['connectivitySystem'] == 1) {
+              echo Wo_LoadPage('timeline/friends-sidebar');
+            } else {
+              echo Wo_LoadPage('timeline/following-followers-sidebar');
+            }
+            if ($wo['config']['pages'] == 1) {
+                echo Wo_LoadPage('timeline/likes-sidebar');
+            }
+            if ($wo['config']['groups'] == 1) {
+            	echo Wo_LoadPage('timeline/groups-sidebar');
+            }
+            if ($wo['config']['store_system'] == 'on') { ?>
+            	<?php $all_products = Wo_GetProducts(array('user_id' => $wo['user_profile']['user_id'] , 'limit' => 6)); ?>
+            	<?php if (!empty($all_products)) { ?>
+            	<ul class="page-margin wow_content negg_padd list-unstyled event-options-list" id="sidebar-pages-list-container">
+					<div class="wo_page_hdng profile_hdng_side">
+						<div class="wo_page_hdng_innr">
+							<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=products');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=products"><?php echo $wo['lang']['products_for_sale'];?></a>
+						</div>
+					</div>
+					<li>
+						<div class="activities-wrapper sidebar-product-slider">
+							<?php
+							foreach ($all_products as $wo['product']) {
+								$wo['product']['name'] = mb_substr($wo['product']['name'], 0, 10, "utf-8");
+								echo Wo_LoadPage('timeline/sidebar-product-list');
+							}
+							?>
+						</div>
+					</li>
+					<li><div class="clear"></div></li>
+				</ul>
+				<?php } ?>
+            <?php } ?>
+        <?php
+            $sidebar_ad = Wo_GetAd('sidebar', false);
+            if (!empty($sidebar_ad)) {?>
+        <ul class="list-group sidebar-ad">
+            <?php echo $sidebar_ad; ?>
+        </ul>
+        <?php } ?>
+        <?php echo Wo_LoadPage('footer/sidebar-footer')?>
+		</div>
+		<!-- /LEFT SIDEBAR COLUMN -->
+		<!-- CENTER CONTENT COLUMN -->
+		<div class="grid-column">
+
 		<!-- Profile Percentage System -->
         <?php if ($IsOwnerUser === true && array_sum($wo['pr_complition']) < 100): ?>
             <?php echo Wo_LoadPage('timeline/profile-completion'); ?>
         <?php endif; ?>
-		
-    <div class="col-md-8">
+
+		<!-- MAIN CONTENT -->
 		<?php
             if (isset($_GET['type'])) {
             	if ($_GET['type'] == 'activities' && $IsOwner) {
@@ -1209,307 +1764,19 @@ if ($wo['loggedin'] && $IsOwnerUser) {
         <div id="load-more-filter">
             <span class="filter-by-more hidden" data-filter-by="all"></span>
         </div>
-    </div>
+		</div>
+		<!-- /CENTER CONTENT COLUMN -->
 
-	<div class="col-md-4">
-        <?php if($wo['loggedin'] == true && $wo['config']['gift_system'] != 0) {  ?>
-            <?php if ($IsOwnerUser == false) { ?>
-			<div class="wow_content send_gift_btn">
-				<div>
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 7H15.5C16.8807 7 18 5.88071 18 4.5C18 3.11929 16.8807 2 15.5 2H15.4198C14.2803 2 13.2758 2.74741 12.9484 3.83881L12 7ZM12 7H8.5C7.11929 7 6 5.88071 6 4.5C6 3.11929 7.11929 2 8.5 2H8.58023C9.71968 2 10.7242 2.74741 11.0516 3.83881L12 7ZM12 7V22" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 11V17.2C20 18.8802 20 19.7202 19.673 20.362C19.3854 20.9265 18.9265 21.3854 18.362 21.673C17.7202 22 16.8802 22 15.2 22H8.8C7.11984 22 6.27976 22 5.63803 21.673C5.07354 21.3854 4.6146 20.9265 4.32698 20.362C4 19.7202 4 18.8802 4 17.2V11M4 11H20C21.1046 11 22 10.1046 22 9V9C22 7.89543 21.1046 7 20 7H4C2.89543 7 2 7.89543 2 9V9C2 10.1046 2.89543 11 4 11Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-					<?php echo $wo['lang']['send_gift_user_desc']; ?>
-				</div>
-				<button type="button" class="btn btn-block btn-main btn-mat" onclick="Wo_open_send_gift();"><?php echo $wo['lang']['send_a_gift']; ?></button>
-			</div>
-            <?php } ?>
-        <?php } ?>
+		<!-- RIGHT COLUMN (empty placeholder) -->
+		<div class="grid-column"></div>
+		<!-- /RIGHT COLUMN -->
 
-        <ul class="page-margin wow_content negg_padd list-unstyled event-options-list right_user_info wo_prof_side_info_padd mt-0">
-            <div class="wo_page_hdng hidden">
-				<div class="wo_page_hdng_innr"><?php echo $wo['lang']['info']; ?></div>
-			</div>
+	</div>
+	<!-- /MAIN GRID -->
 
-			<ul class="flex_stats">
-            <?php if($wo['config']['user_lastseen'] == 1 && $wo['user_profile']['showlastseen'] != 0 && $wo['loggedin'] == true) {  ?>
-            <li class="list-group-item">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3.95087 7.17881C3.70961 6.15025 3.70961 5.07983 3.95087 4.05127C4.28495 2.62706 5.39698 1.51502 6.8212 1.18095C7.84975 0.939684 8.92017 0.939684 9.94873 1.18095C11.3729 1.51502 12.485 2.62706 12.8191 4.05128C13.0603 5.07983 13.0603 6.15025 12.8191 7.1788C12.485 8.60302 11.3729 9.71505 9.94872 10.0491C8.92017 10.2904 7.84975 10.2904 6.8212 10.0491M3.95087 7.17881C4.28495 8.60302 5.39699 9.71505 6.8212 10.0491M3.95087 7.17881C3.79896 6.53119 3.7427 5.86696 3.78209 5.20705C3.72639 5.21842 3.67081 5.2306 3.61538 5.2436C2.39462 5.52995 1.44145 6.48313 1.1551 7.70388C0.9483 8.5855 0.9483 9.50301 1.1551 10.3846C1.44145 11.6054 2.39463 12.5586 3.61538 12.8449C4.49699 13.0517 5.4145 13.0517 6.29612 12.8449C7.51687 12.5586 8.47005 11.6054 8.7564 10.3846C8.7694 10.3292 8.78158 10.2736 8.79295 10.2179C8.13304 10.2573 7.46882 10.201 6.8212 10.0491" class="icon_main"/>
-<path d="M3.95048 7.1788C3.70921 6.15025 3.70922 5.07982 3.95048 4.05127C4.28456 2.62706 5.39659 1.51502 6.82081 1.18095C7.84936 0.939684 8.91978 0.939684 9.94833 1.18095C11.3725 1.51502 12.4846 2.62706 12.8187 4.05128C13.0599 5.07983 13.0599 6.15025 12.8187 7.1788C12.4846 8.60302 11.3725 9.71505 9.94833 10.0491C8.91978 10.2904 7.84936 10.2904 6.82081 10.0491M3.95048 7.1788C4.28456 8.60302 5.3966 9.71505 6.82081 10.0491M3.95048 7.1788C3.79857 6.53119 3.74231 5.86696 3.7817 5.20705M6.82081 10.0491C7.46843 10.201 8.13265 10.2573 8.79256 10.2179" stroke="currentColor"/>
-</svg>
-
-                <?php echo Wo_UserStatus($wo['user_profile']['user_id'], $wo['user_profile']['lastseen'], 'profile') ?>
-            </li>
-            <?php } ?>
-			<li class="list-group-item">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.08301 12.1174C6.08301 11.2979 6.67353 10.5998 7.47606 10.4707C8.48542 10.3082 9.51393 10.3082 10.5233 10.4707C11.3258 10.5998 11.9163 11.2979 11.9163 12.1174V12.2988C11.9163 12.7781 11.531 13.1666 11.0558 13.1666H6.94359C6.4683 13.1666 6.08301 12.7781 6.08301 12.2988V12.1174Z" class="icon_main" stroke-width="1.5"/>
-<path d="M10.7011 6.549C10.7011 7.49655 9.93933 8.26469 8.99967 8.26469C8.06002 8.26469 7.29829 7.49655 7.29829 6.549C7.29829 5.60145 8.06002 4.83331 8.99967 4.83331C9.93933 4.83331 10.7011 5.60145 10.7011 6.549Z" class="icon_main" stroke-width="1.5"/>
-<path d="M16.5 4.83333C16.5 2.99238 14.6345 1.5 12.3333 1.5M1.5 12.3333C1.5 14.6345 2.99238 16.5 4.83333 16.5M4.83333 1.5C2.99238 1.5 1.5 2.99238 1.5 4.83333M12.3333 16.5C14.6345 16.5 16.5 14.6345 16.5 12.3333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-</svg>
-
-                <?php
-                $gender = ucfirst(strtolower($wo['user_profile']['gender']));
-                if (in_array($wo['user_profile']['gender'], array_keys($wo['genders']))) {
-                	echo $wo['genders'][$wo['user_profile']['gender']];
-                }
-                else{
-                	echo $wo['genders'][array_keys($wo['genders'])[0]];
-                }
-                //echo ($gender == 'Male') ? $wo['lang']['male'] : $wo['lang']['female'];
-                ?>
-            </li>
-            <li class="list-group-item">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.90013 9.78608L2.38692 9.6719L1.90013 9.78608ZM1.90013 5.08574L2.38692 5.19992L1.90013 5.08574ZM15.2281 5.08574L14.7413 5.19993L15.2281 5.08574ZM15.2281 9.78608L14.7413 9.67189L15.2281 9.78608ZM10.9143 14.0999L10.8001 13.6131L10.9143 14.0999ZM6.21392 14.0999L6.32811 13.6131L6.21392 14.0999ZM6.21392 0.771947L6.09974 0.285159L6.21392 0.771947ZM10.9143 0.771947L11.0284 0.285159L10.9143 0.771947ZM2.46761 11.2613L2.90535 11.0197L2.75077 10.7396L2.43173 10.7626L2.46761 11.2613ZM4.73872 13.5324L5.23743 13.5683L5.26038 13.2492L4.98034 13.0946L4.73872 13.5324ZM2.38692 9.6719C2.04194 8.2012 2.04194 6.67062 2.38692 5.19992L1.41334 4.97155C1.03313 6.59246 1.03313 8.27936 1.41334 9.90027L2.38692 9.6719ZM14.7413 5.19993C15.0862 6.67062 15.0862 8.2012 14.7413 9.67189L15.7148 9.90026C16.0951 8.27936 16.0951 6.59246 15.7148 4.97156L14.7413 5.19993ZM10.8001 13.6131C9.32938 13.9581 7.7988 13.9581 6.32811 13.6131L6.09974 14.5867C7.72064 14.9669 9.40754 14.9669 11.0284 14.5867L10.8001 13.6131ZM6.32811 1.25873C7.7988 0.913755 9.32938 0.913755 10.8001 1.25873L11.0284 0.285159C9.40754 -0.0950531 7.72064 -0.0950531 6.09974 0.285159L6.32811 1.25873ZM6.32811 13.6131C4.37255 13.1544 2.84563 11.6275 2.38692 9.6719L1.41334 9.90027C1.95879 12.2256 3.77442 14.0412 6.09974 14.5867L6.32811 13.6131ZM11.0284 14.5867C13.3538 14.0412 15.1694 12.2256 15.7148 9.90026L14.7413 9.67189C14.2826 11.6275 12.7556 13.1544 10.8001 13.6131L11.0284 14.5867ZM10.8001 1.25873C12.7556 1.71745 14.2826 3.24437 14.7413 5.19993L15.7148 4.97156C15.1694 2.64624 13.3538 0.830605 11.0284 0.285159L10.8001 1.25873ZM6.09974 0.285159C3.77442 0.830605 1.95879 2.64623 1.41334 4.97155L2.38692 5.19992C2.84563 3.24436 4.37255 1.71745 6.32811 1.25873L6.09974 0.285159ZM2.43173 10.7626C1.0722 10.8604 0 11.9937 0 13.3779H1C1 12.5219 1.66326 11.8205 2.5035 11.76L2.43173 10.7626ZM0 13.3779C0 14.826 1.17397 16 2.62213 16V15C1.72625 15 1 14.2737 1 13.3779H0ZM2.62213 16C4.0063 16 5.1396 14.9278 5.23743 13.5683L4.24001 13.4965C4.17954 14.3367 3.47807 15 2.62213 15V16ZM4.98034 13.0946C4.10741 12.6128 3.3872 11.8926 2.90535 11.0197L2.02987 11.5029C2.60286 12.541 3.45904 13.3971 4.49709 13.9701L4.98034 13.0946Z" fill="currentColor"/>
-<path d="M5.59277 5.41266C5.17856 5.41266 4.84277 5.74845 4.84277 6.16266C4.84277 6.57687 5.17856 6.91266 5.59277 6.91266V5.41266ZM8.13933 6.91266C8.55354 6.91266 8.88933 6.57687 8.88933 6.16266C8.88933 5.74845 8.55354 5.41266 8.13933 5.41266V6.91266ZM6.44162 7.95921C6.02741 7.95921 5.69163 8.295 5.69163 8.70921C5.69163 9.12343 6.02741 9.45921 6.44162 9.45921V7.95921ZM10.6859 9.45921C11.1001 9.45921 11.4359 9.12343 11.4359 8.70921C11.4359 8.295 11.1001 7.95921 10.6859 7.95921V9.45921ZM5.59277 6.91266H8.13933V5.41266H5.59277V6.91266ZM6.44162 9.45921H10.6859V7.95921H6.44162V9.45921Z" class="icon_main_fill"/>
-</svg>
-
-               <?php echo TextForMode('posts'); ?> <span class="badge badge-danger" id="user_post_count"><?php echo number_format($wo['user_profile']['details']['post_count']);?></span>
-            </li>
-			</ul>
-            
-            <?php if ($wo['user_profile']['birthday'] != '0000-00-00' && $wo['user_profile']['birthday'] != '00-00-0000' && Wo_CanSeeBirthday($wo['user_profile']['user_id'], $wo['user_profile']['birth_privacy']) === true) {  ?>
-            <li class="list-group-item">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.55519 9.16566L2.04255 9.05396L1.55519 9.16566ZM1.55519 5.23549L2.04255 5.34719L1.55519 5.23549ZM12.4442 5.23549L11.9568 5.34719L12.4442 5.23549ZM12.4442 9.16565L11.9568 9.05395L12.4442 9.16565ZM8.91977 12.7726L9.03649 13.2588L8.91977 12.7726ZM5.07958 12.7726L5.19629 12.2864L5.07958 12.7726ZM5.07958 1.62853L5.19629 2.11472L5.07958 1.62853ZM8.91977 1.62853L9.03649 1.14234L8.91977 1.62853ZM4.87973 1C4.87973 0.723858 4.65587 0.5 4.37973 0.5C4.10359 0.5 3.87973 0.723858 3.87973 1H4.87973ZM3.87973 2.67583C3.87973 2.95197 4.10359 3.17583 4.37973 3.17583C4.65587 3.17583 4.87973 2.95197 4.87973 2.67583H3.87973ZM10.1196 1C10.1196 0.723858 9.89576 0.5 9.61962 0.5C9.34348 0.5 9.11962 0.723858 9.11962 1H10.1196ZM9.11962 2.67583C9.11962 2.95197 9.34348 3.17583 9.61962 3.17583C9.89576 3.17583 10.1196 2.95197 10.1196 2.67583H9.11962ZM2.04255 9.05396C1.76316 7.83495 1.76316 6.56619 2.04255 5.34719L1.06783 5.12378C0.754735 6.48981 0.754735 7.91133 1.06783 9.27736L2.04255 9.05396ZM11.9568 5.34719C12.2362 6.56619 12.2362 7.83495 11.9568 9.05395L12.9315 9.27736C13.2446 7.91133 13.2446 6.48981 12.9315 5.12379L11.9568 5.34719ZM8.80306 12.2864C7.61685 12.5712 6.3825 12.5712 5.19629 12.2864L4.96286 13.2588C6.30251 13.5804 7.69684 13.5804 9.03649 13.2588L8.80306 12.2864ZM5.19629 2.11472C6.3825 1.82995 7.61685 1.82995 8.80306 2.11472L9.03649 1.14234C7.69684 0.820742 6.30251 0.820742 4.96286 1.14234L5.19629 2.11472ZM5.19629 12.2864C3.63706 11.9121 2.41147 10.6635 2.04255 9.05396L1.06783 9.27736C1.51932 11.2472 3.0246 12.7935 4.96286 13.2588L5.19629 12.2864ZM9.03649 13.2588C10.9748 12.7935 12.48 11.2472 12.9315 9.27736L11.9568 9.05395C11.5879 10.6635 10.3623 11.9121 8.80306 12.2864L9.03649 13.2588ZM8.80306 2.11472C10.3623 2.48903 11.5879 3.73761 11.9568 5.34719L12.9315 5.12379C12.48 3.15393 10.9748 1.60765 9.03649 1.14234L8.80306 2.11472ZM4.96286 1.14234C3.0246 1.60765 1.51932 3.15392 1.06783 5.12378L2.04255 5.34719C2.41147 3.73761 3.63706 2.48903 5.19629 2.11472L4.96286 1.14234ZM1.75978 5.01924H12.2396V4.01924H1.75978V5.01924ZM3.87973 1V2.67583H4.87973V1H3.87973ZM9.11962 1V2.67583H10.1196V1H9.11962Z" fill="currentColor"/>
-<path d="M7.96125 8.28268C8.23125 8.09068 8.39925 7.80268 8.39925 7.41268C8.39925 6.60268 7.77525 6.18268 7.03725 6.18268C6.29925 6.18268 5.66925 6.60268 5.66925 7.41268C5.66925 7.80268 5.84325 8.09068 6.10725 8.28268C5.74125 8.50468 5.53125 8.87068 5.53125 9.29668C5.53125 10.0707 6.10125 10.5507 7.03725 10.5507C7.96725 10.5507 8.54325 10.0707 8.54325 9.29668C8.54325 8.87068 8.33325 8.50468 7.96125 8.28268ZM7.03725 6.96268C7.34925 6.96268 7.57725 7.14268 7.57725 7.45468C7.57725 7.76068 7.34925 7.95268 7.03725 7.95268C6.72525 7.95268 6.49725 7.76068 6.49725 7.45468C6.49725 7.14268 6.72525 6.96268 7.03725 6.96268ZM7.03725 9.77068C6.64125 9.77068 6.35325 9.56668 6.35325 9.18868C6.35325 8.81668 6.64125 8.61268 7.03725 8.61268C7.43325 8.61268 7.72125 8.81668 7.72125 9.18868C7.72125 9.56668 7.43325 9.77068 7.03725 9.77068Z" class="icon_main_fill"/>
-</svg>
-
-                <?php echo date($wo['config']['date_style'],strtotime($wo['user_profile']['birthday']));?>
-            </li>
-            <?php  }  ?>
-
-            <?php if(!empty(Wo_UserRelationship($wo['user_profile']['id']))) {  ?>
-            <li class="list-group-item">
-                <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.65593 5.7404L5.07865 10.3405C6.06366 11.6643 7.93633 11.6643 8.92135 10.3405L12.3441 5.7404C13.2186 4.56499 13.2186 2.89481 12.3441 1.71939C11.0638 -0.00124529 8.10474 0.509785 7 2.36572C5.89526 0.509785 2.93619 -0.00124511 1.65593 1.71939C0.781357 2.8948 0.781355 4.56499 1.65593 5.7404Z" class="icon_main" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12.3441 5.7404L8.92135 10.3405C7.93633 11.6643 6.06366 11.6643 5.07865 10.3405L1.65593 5.7404C0.781355 4.56499 0.781357 2.8948 1.65593 1.71939C2.93619 -0.00124514 5.89526 0.509785 7 2.36572" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-
-                <?php echo Wo_UserRelationship($wo['user_profile']['id']); ?>
-            </li>
-
-            <?php } ?>
-            <?php if(!empty($wo['user_profile']['working'])) {  ?>
-            <li class="list-group-item">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.2462 1.09779L6.11848 0.614379L6.11848 0.614379L6.2462 1.09779ZM7.75286 1.09779L7.62515 1.58121V1.58121L7.75286 1.09779ZM6.37391 1.5812C6.78373 1.47293 7.21533 1.47293 7.62515 1.58121L7.88058 0.614379C7.30335 0.461874 6.69571 0.461874 6.11848 0.614379L6.37391 1.5812ZM10.2842 3.70877C10.2842 2.25418 9.29414 0.987842 7.88058 0.614379L7.62515 1.58121C8.60792 1.84085 9.28422 2.71637 9.28422 3.70877L10.2842 3.70877ZM4.71484 3.70877C4.71484 2.71637 5.39115 1.84085 6.37391 1.5812L6.11848 0.614379C4.70492 0.987842 3.71484 2.25418 3.71484 3.70877L4.71484 3.70877Z" class="icon_main_fill"/>
-<path d="M1.25567 9.93536L1.73647 9.79815L1.25567 9.93536ZM1.25332 6.29071L1.73412 6.42792V6.42792L1.25332 6.29071ZM12.7467 6.29072L12.2659 6.42792V6.42792L12.7467 6.29072ZM12.7443 9.93535L13.2251 10.0726L12.7443 9.93535ZM9.66193 12.7458L9.56727 12.2548L9.66193 12.7458ZM4.33807 12.7458L4.43273 12.2548L4.33807 12.7458ZM4.84865 3.37361L4.94331 3.86457H4.94331L4.84865 3.37361ZM9.15135 3.37361L9.24601 2.88265L9.15135 3.37361ZM9.86706 3.5116L9.7724 4.00256L9.86706 3.5116ZM12.6847 6.07347L13.1655 5.93626V5.93626L12.6847 6.07347ZM4.13294 3.5116L4.03828 3.02064L4.03828 3.02064L4.13294 3.5116ZM1.31531 6.07347L0.834508 5.93626H0.834508L1.31531 6.07347ZM4.2276 4.00256L4.94331 3.86457L4.75399 2.88265L4.03828 3.02064L4.2276 4.00256ZM9.05669 3.86456L9.7724 4.00256L9.96172 3.02064L9.24601 2.88265L9.05669 3.86456ZM12.2039 6.21068L12.2659 6.42792L13.2275 6.15351L13.1655 5.93626L12.2039 6.21068ZM1.73412 6.42792L1.79612 6.21068L0.834508 5.93626L0.772512 6.1535L1.73412 6.42792ZM1.73647 9.79815C1.42256 8.69816 1.42058 7.52664 1.73412 6.42792L0.772512 6.1535C0.40742 7.43286 0.410132 8.79449 0.77486 10.0726L1.73647 9.79815ZM12.2659 6.42792C12.5794 7.52664 12.5774 8.69816 12.2635 9.79815L13.2251 10.0726C13.5899 8.79449 13.5926 7.43286 13.2275 6.15351L12.2659 6.42792ZM9.56727 12.2548C7.87182 12.5817 6.12818 12.5817 4.43273 12.2548L4.24341 13.2367C6.06393 13.5878 7.93608 13.5878 9.75659 13.2367L9.56727 12.2548ZM4.94331 3.86457C6.30157 3.60268 7.69843 3.60268 9.05669 3.86456L9.24601 2.88265C7.76269 2.59665 6.23731 2.59665 4.75399 2.88265L4.94331 3.86457ZM4.43273 12.2548C3.13662 12.0049 2.09293 11.0472 1.73647 9.79815L0.77486 10.0726C1.23553 11.6869 2.57977 12.916 4.24341 13.2367L4.43273 12.2548ZM9.75659 13.2367C11.4202 12.916 12.7645 11.6869 13.2251 10.0726L12.2635 9.79815C11.9071 11.0472 10.8634 12.0049 9.56727 12.2548L9.75659 13.2367ZM9.7724 4.00256C10.9443 4.2285 11.8826 5.08479 12.2039 6.21068L13.1655 5.93626C12.7391 4.44217 11.498 3.31686 9.96172 3.02064L9.7724 4.00256ZM4.03828 3.02064C2.50198 3.31686 1.26088 4.44217 0.834508 5.93626L1.79612 6.21068C2.11742 5.08478 3.05574 4.2285 4.2276 4.00256L4.03828 3.02064ZM1.25716 6.86116C4.95993 8.23077 9.04007 8.23077 12.7428 6.86116L12.3959 5.92327C8.91702 7.21007 5.08298 7.21007 1.60408 5.92327L1.25716 6.86116Z" fill="currentColor"/>
-<path d="M4.33301 6V8.33333" class="icon_main" stroke-linecap="round"/>
-<path d="M9.66699 6V8.33333" class="icon_main" stroke-linecap="round"/>
-</svg>
-
-                <span><?php echo $wo['lang']['working_at'];?> <?php if (!empty($wo['user_profile']['working_link'])) { ?><a href="<?php echo $wo['user_profile']['working_link']; ?>" target="_blank" rel="nofollow"><?php echo $wo['user_profile']['working']; ?></a> <?php } else { echo $wo['user_profile']['working'];} ?></span>
-            </li>
-            <?php } ?>
-            <?php if(!empty($wo['user_profile']['school'])) {  ?>
-            <li class="list-group-item">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.23525 4.96695C1.66958 3.11534 3.11534 1.66958 4.96696 1.23525C6.30417 0.921583 7.69583 0.921583 9.03305 1.23525C10.8847 1.66958 12.3304 3.11534 12.7647 4.96696C13.0784 6.30417 13.0784 7.69583 12.7647 9.03304C12.3304 10.8847 10.8847 12.3304 9.03304 12.7647C7.69583 13.0784 6.30417 13.0784 4.96696 12.7647C3.11534 12.3304 1.66958 10.8847 1.23525 9.03305C0.921583 7.69583 0.921583 6.30417 1.23525 4.96695Z" stroke="currentColor" stroke-linecap="round"/>
-<path d="M4.91992 9.08059V6.30653M9.08101 9.08059V7.00004M7.00047 8.38707V4.91949" class="icon_main" stroke-linecap="round"/>
-</svg>
-
-                <span><?php echo ($wo['user_profile']['school_completed'] == 1)   ? $wo['lang']['studied_at'] : $wo['lang']['studying_at'] ;?> <?php echo $wo['user_profile']['school']; ?></span>
-            </li>
-
-            <?php } ?>
-            <?php if($wo['config']['website_mode'] == 'linkedin' && !empty($wo['user_profile']['currently_working']) && in_array($wo['user_profile']['currently_working'], array('yes','am_looking_to_work','am_looking_for_employees'))) {  ?>
-				<li class="list-group-item">
-					<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.2462 1.09779L6.11848 0.614379L6.11848 0.614379L6.2462 1.09779ZM7.75286 1.09779L7.62515 1.58121V1.58121L7.75286 1.09779ZM6.37391 1.5812C6.78373 1.47293 7.21533 1.47293 7.62515 1.58121L7.88058 0.614379C7.30335 0.461874 6.69571 0.461874 6.11848 0.614379L6.37391 1.5812ZM10.2842 3.70877C10.2842 2.25418 9.29414 0.987842 7.88058 0.614379L7.62515 1.58121C8.60792 1.84085 9.28422 2.71637 9.28422 3.70877L10.2842 3.70877ZM4.71484 3.70877C4.71484 2.71637 5.39115 1.84085 6.37391 1.5812L6.11848 0.614379C4.70492 0.987842 3.71484 2.25418 3.71484 3.70877L4.71484 3.70877Z" class="icon_main_fill"/>
-<path d="M1.25567 9.93536L1.73647 9.79815L1.25567 9.93536ZM1.25332 6.29071L1.73412 6.42792V6.42792L1.25332 6.29071ZM12.7467 6.29072L12.2659 6.42792V6.42792L12.7467 6.29072ZM12.7443 9.93535L13.2251 10.0726L12.7443 9.93535ZM9.66193 12.7458L9.56727 12.2548L9.66193 12.7458ZM4.33807 12.7458L4.43273 12.2548L4.33807 12.7458ZM4.84865 3.37361L4.94331 3.86457H4.94331L4.84865 3.37361ZM9.15135 3.37361L9.24601 2.88265L9.15135 3.37361ZM9.86706 3.5116L9.7724 4.00256L9.86706 3.5116ZM12.6847 6.07347L13.1655 5.93626V5.93626L12.6847 6.07347ZM4.13294 3.5116L4.03828 3.02064L4.03828 3.02064L4.13294 3.5116ZM1.31531 6.07347L0.834508 5.93626H0.834508L1.31531 6.07347ZM4.2276 4.00256L4.94331 3.86457L4.75399 2.88265L4.03828 3.02064L4.2276 4.00256ZM9.05669 3.86456L9.7724 4.00256L9.96172 3.02064L9.24601 2.88265L9.05669 3.86456ZM12.2039 6.21068L12.2659 6.42792L13.2275 6.15351L13.1655 5.93626L12.2039 6.21068ZM1.73412 6.42792L1.79612 6.21068L0.834508 5.93626L0.772512 6.1535L1.73412 6.42792ZM1.73647 9.79815C1.42256 8.69816 1.42058 7.52664 1.73412 6.42792L0.772512 6.1535C0.40742 7.43286 0.410132 8.79449 0.77486 10.0726L1.73647 9.79815ZM12.2659 6.42792C12.5794 7.52664 12.5774 8.69816 12.2635 9.79815L13.2251 10.0726C13.5899 8.79449 13.5926 7.43286 13.2275 6.15351L12.2659 6.42792ZM9.56727 12.2548C7.87182 12.5817 6.12818 12.5817 4.43273 12.2548L4.24341 13.2367C6.06393 13.5878 7.93608 13.5878 9.75659 13.2367L9.56727 12.2548ZM4.94331 3.86457C6.30157 3.60268 7.69843 3.60268 9.05669 3.86456L9.24601 2.88265C7.76269 2.59665 6.23731 2.59665 4.75399 2.88265L4.94331 3.86457ZM4.43273 12.2548C3.13662 12.0049 2.09293 11.0472 1.73647 9.79815L0.77486 10.0726C1.23553 11.6869 2.57977 12.916 4.24341 13.2367L4.43273 12.2548ZM9.75659 13.2367C11.4202 12.916 12.7645 11.6869 13.2251 10.0726L12.2635 9.79815C11.9071 11.0472 10.8634 12.0049 9.56727 12.2548L9.75659 13.2367ZM9.7724 4.00256C10.9443 4.2285 11.8826 5.08479 12.2039 6.21068L13.1655 5.93626C12.7391 4.44217 11.498 3.31686 9.96172 3.02064L9.7724 4.00256ZM4.03828 3.02064C2.50198 3.31686 1.26088 4.44217 0.834508 5.93626L1.79612 6.21068C2.11742 5.08478 3.05574 4.2285 4.2276 4.00256L4.03828 3.02064ZM1.25716 6.86116C4.95993 8.23077 9.04007 8.23077 12.7428 6.86116L12.3959 5.92327C8.91702 7.21007 5.08298 7.21007 1.60408 5.92327L1.25716 6.86116Z" fill="currentColor"/>
-<path d="M4.33301 6V8.33333" class="icon_main" stroke-linecap="round"/>
-<path d="M9.66699 6V8.33333" class="icon_main" stroke-linecap="round"/>
-</svg> <span><?php echo $wo['lang'][$wo['user_profile']['currently_working']]; ?></span>
-				</li>
-			<?php } ?>
-
-            <?php
-            $country = $wo['user_profile']['country_id'];
-            if ($country > 0) {
-            ?>
-            <li class="list-group-item">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M5.4791 11.2135L4.98769 11.1213L4.98769 11.1213L5.4791 11.2135ZM5.492 11.1448L5.98342 11.2371L5.98342 11.2371L5.492 11.1448ZM8.50831 11.1448L8.0169 11.2371L8.0169 11.2371L8.50831 11.1448ZM8.52121 11.2135L9.01262 11.1213L9.01262 11.1213L8.52121 11.2135ZM8.32801 12.7013L8.77949 12.9161V12.9161L8.32801 12.7013ZM7.79867 12.65C7.68001 12.8993 7.78595 13.1977 8.0353 13.3163C8.28465 13.435 8.58298 13.3291 8.70164 13.0797L7.79867 12.65ZM5.6723 12.7013L5.22082 12.9161L5.22082 12.9161L5.6723 12.7013ZM5.29867 13.0797C5.41734 13.3291 5.71567 13.435 5.96501 13.3163C6.21436 13.1977 6.3203 12.8993 6.20164 12.65L5.29867 13.0797ZM6.57419 9.9617L6.44051 9.4799L6.44051 9.4799L6.57419 9.9617ZM7.42612 9.9617L7.5598 9.4799V9.4799L7.42612 9.9617ZM5.97052 11.3058L5.98342 11.2371L5.00058 11.0526L4.98769 11.1213L5.97052 11.3058ZM8.0169 11.2371L8.02979 11.3058L9.01262 11.1213L8.99973 11.0526L8.0169 11.2371ZM7.87652 12.4864L7.79867 12.65L8.70164 13.0797L8.77949 12.9161L7.87652 12.4864ZM5.22082 12.9161L5.29867 13.0797L6.20164 12.65L6.12379 12.4864L5.22082 12.9161ZM8.02979 11.3058C8.10489 11.7059 8.05111 12.1196 7.87652 12.4864L8.77949 12.9161C9.04513 12.3579 9.12672 11.7292 9.01262 11.1213L8.02979 11.3058ZM4.98769 11.1213C4.87359 11.7292 4.95518 12.3579 5.22082 12.9161L6.12379 12.4864C5.94921 12.1196 5.89542 11.7059 5.97052 11.3058L4.98769 11.1213ZM6.70788 10.4435C6.89919 10.3904 7.10112 10.3904 7.29243 10.4435L7.5598 9.4799C7.19355 9.37828 6.80676 9.37828 6.44051 9.4799L6.70788 10.4435ZM8.99973 11.0526C8.85783 10.2966 8.30043 9.6854 7.5598 9.4799L7.29243 10.4435C7.66251 10.5462 7.94479 10.853 8.0169 11.2371L8.99973 11.0526ZM5.98342 11.2371C6.05552 10.853 6.3378 10.5462 6.70788 10.4435L6.44051 9.4799C5.69988 9.6854 5.14248 10.2966 5.00058 11.0526L5.98342 11.2371Z" class="icon_main_fill"/>
-<path d="M12.36 5.47935C12.36 5.20321 12.1361 4.97936 11.86 4.97936C11.5839 4.97936 11.36 5.20321 11.36 5.47935H12.36ZM2.63999 5.47935C2.63999 5.20321 2.41614 4.97936 2.13999 4.97936C1.86385 4.97936 1.63999 5.20321 1.63999 5.47935H2.63999ZM8.6755 12.8047L8.56054 12.3181L8.6755 12.8047ZM5.32449 12.8047L5.43944 12.3181L5.32449 12.8047ZM8.88562 2.34282L8.53081 2.69512V2.69512L8.88562 2.34282ZM12.6452 6.83877C12.8398 7.03472 13.1563 7.03584 13.3523 6.84127C13.5483 6.6467 13.5494 6.33012 13.3548 6.13417L12.6452 6.83877ZM5.11438 2.34282L5.46919 2.69512L5.11438 2.34282ZM0.645196 6.13417C0.450627 6.33012 0.451749 6.6467 0.647702 6.84127C0.843655 7.03584 1.16024 7.03472 1.3548 6.83877L0.645196 6.13417ZM11.36 5.47935V8.75825H12.36V5.47935H11.36ZM2.63999 8.75825V5.47935H1.63999V8.75825H2.63999ZM8.56054 12.3181C7.53409 12.5606 6.46589 12.5606 5.43944 12.3181L5.20953 13.2913C6.38718 13.5696 7.61281 13.5696 8.79045 13.2913L8.56054 12.3181ZM5.43944 12.3181C3.80173 11.9313 2.63999 10.4585 2.63999 8.75825H1.63999C1.63999 10.9177 3.11614 12.7968 5.20953 13.2913L5.43944 12.3181ZM8.79045 13.2913C10.8838 12.7968 12.36 10.9177 12.36 8.75825H11.36C11.36 10.4585 10.1983 11.9313 8.56054 12.3181L8.79045 13.2913ZM8.53081 2.69512L12.6452 6.83877L13.3548 6.13417L9.24042 1.99052L8.53081 2.69512ZM4.75958 1.99052L0.645196 6.13417L1.3548 6.83877L5.46919 2.69512L4.75958 1.99052ZM9.24042 1.99052C8.80596 1.55297 8.44537 1.18831 8.12123 0.939234C7.7857 0.68141 7.43051 0.5 7 0.5V1.5C7.12177 1.5 7.26495 1.54239 7.51193 1.73218C7.77031 1.93071 8.07639 2.23746 8.53081 2.69512L9.24042 1.99052ZM5.46919 2.69512C5.92361 2.23746 6.22969 1.93071 6.48807 1.73218C6.73505 1.54239 6.87823 1.5 7 1.5V0.5C6.56949 0.5 6.2143 0.681409 5.87877 0.939234C5.55463 1.18831 5.19404 1.55297 4.75958 1.99052L5.46919 2.69512Z" fill="currentColor"/>
-</svg>
-
-                <?php echo $wo['lang']['living_in'];?>
-                <?php echo $wo['countries_name'][$country];?>
-            </li>
-            <?php } ?>
-            <?php if(!empty($wo['user_profile']['address']) && $wo['user_profile']['share_my_location'] == 1) {  ?>
-            <li class="list-group-item">
-                <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M11.3337 6.45032C11.3337 9.46045 8.94584 13 6.00033 13C3.05481 13 0.666992 9.46045 0.666992 6.45032C0.666992 3.44019 3.05481 1 6.00033 1C8.94584 1 11.3337 3.44019 11.3337 6.45032Z" stroke="currentColor"/>
-<path d="M4.33301 5.99998C4.33301 5.07951 5.0792 4.33331 5.99967 4.33331C6.92015 4.33331 7.66634 5.07951 7.66634 5.99998C7.66634 6.92045 6.92015 7.66665 5.99967 7.66665C5.0792 7.66665 4.33301 6.92045 4.33301 5.99998Z" class="icon_main"/>
-</svg>
-
-                <span><?php echo $wo['lang']['located_in'];?> <?php echo $wo['user_profile']['address'];?></span>
-                <?php if (!empty($wo['config']['google_map_api']) && $wo['config']['google_map']) { ?>
-                <iframe width="100%" class="user-location-frame" frameborder="0" style="border:0;margin-top: 10px;" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=<?php echo $wo['user_profile']['address'];?>&language=en"></iframe>
-                <?php } ?>
-                <?php if ($wo['config']['yandex_map'] == 1) { ?>
-		            <div id="place_<?php echo($wo['user_profile']['user_id']) ?>" <?php echo($wo['config']['yandex_map'] == 1 ? 'style="width: 100%; height: 300px; padding: 0; margin: 10px 0 0;"' : '') ?>></div>
-		            <script type="text/javascript">
-		                  <?php if (!empty($wo['user_profile']['address'])) { ?>
-		                    setTimeout(function () {
-		                      var myMap;
-		                      ymaps.geocode("<?php echo($wo['user_profile']['address']); ?>").then(function (res) {
-		                          myMap = new ymaps.Map('place_<?php echo($wo['user_profile']['user_id']) ?>', {
-		                              center: res.geoObjects.get(0).geometry.getCoordinates(),
-		                              zoom : 10
-		                          });
-		                          myMap.geoObjects.add(new ymaps.Placemark(res.geoObjects.get(0).geometry.getCoordinates(), {
-		                              balloonContent: ''
-		                          }));
-		                      });
-		                    },1000);
-		                  <?php } ?>
-		                </script>
-		          <?php } ?>
-            </li>
-            <?php } ?>
-			
-			<?php if(!empty($wo['user_profile']['website'])) {  ?>
-			<li class="list-group-item website">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1 6.09091H15L9.16043 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15 9.90909L1 9.90909L6.83957 15" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-
-				<a rel="nofollow" href="<?php echo $wo['user_profile']['website']?>"><?php echo $wo['user_profile']['website']?></a>
-            </li>
-			<?php } ?>
-
-			<?php if(!empty($wo['user_profile']['facebook']) || !empty($wo['user_profile']['twitter']) || !empty($wo['user_profile']['linkedin']) || !empty($wo['user_profile']['vk']) || !empty($wo['user_profile']['youtube'])) { ?>
-				<li class="list-group-item user-social-links">
-                    <?php  if(!empty($wo['user_profile']['youtube'])) {  ?>
-                    <a class="social-btn" href="https://www.youtube.com/<?php echo $wo['user_profile']['youtube']?>" target="_blank">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FF0000" d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z" /></svg>
-                    </a>
-                    <?php } if(!empty($wo['user_profile']['twitter'])) {  ?>
-                    <a class="social-btn" href="https://twitter.com/<?php echo $wo['user_profile']['twitter']?>" target="_blank">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#1d9bf0" d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
-                    </a>
-                    <?php }  if(!empty($wo['user_profile']['google'])) {  ?>
-                    <!-- <a class="social-btn" rel="publisher" href="https://plus.google.com/<?php echo $wo['user_profile']['google']?>" target="_blank">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather feather-google" fill="#dc4938"><path d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M19.5,12H18V10.5H17V12H15.5V13H17V14.5H18V13H19.5V12M9.65,11.36V12.9H12.22C12.09,13.54 11.45,14.83 9.65,14.83C8.11,14.83 6.89,13.54 6.89,12C6.89,10.46 8.11,9.17 9.65,9.17C10.55,9.17 11.13,9.56 11.45,9.88L12.67,8.72C11.9,7.95 10.87,7.5 9.65,7.5C7.14,7.5 5.15,9.5 5.15,12C5.15,14.5 7.14,16.5 9.65,16.5C12.22,16.5 13.96,14.7 13.96,12.13C13.96,11.81 13.96,11.61 13.89,11.36H9.65Z"></path></svg>
-                    </a> -->
-                    <?php }  if(!empty($wo['user_profile']['facebook'])) {  ?>
-                    <a class="social-btn" rel="publisher" href="https://www.facebook.com/<?php echo $wo['user_profile']['facebook']?>" target="_blank">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#0062E0" d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z" /></svg>
-                    </a>
-                    <?php }  if(!empty($wo['user_profile']['linkedin'])) {  ?>
-                    <a class="social-btn" rel="publisher" href="https://www.linkedin.com/profile/view?id=<?php echo $wo['user_profile']['linkedin']?>" target="_blank">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#0a66c2" d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M18.5 18.5V13.2A3.26 3.26 0 0 0 15.24 9.94C14.39 9.94 13.4 10.46 12.92 11.24V10.13H10.13V18.5H12.92V13.57C12.92 12.8 13.54 12.17 14.31 12.17A1.4 1.4 0 0 1 15.71 13.57V18.5H18.5M6.88 8.56A1.68 1.68 0 0 0 8.56 6.88C8.56 5.95 7.81 5.19 6.88 5.19A1.69 1.69 0 0 0 5.19 6.88C5.19 7.81 5.95 8.56 6.88 8.56M8.27 18.5V10.13H5.5V18.5H8.27Z" /></svg>
-                    </a>
-                    <?php } ?>
-                    <?php  if(!empty($wo['user_profile']['vk'])) {  ?>
-                    <a class="social-btn" rel="publisher" href="https://vk.com/<?php echo $wo['user_profile']['vk'];?>" target="_blank">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#0077ff"><path d="M21.579 6.855c.14-.465 0-.806-.662-.806h-2.193c-.558 0-.813.295-.953.619 0 0-1.115 2.719-2.695 4.482-.51.513-.743.675-1.021.675-.139 0-.341-.162-.341-.627V6.855c0-.558-.161-.806-.626-.806H9.642c-.348 0-.558.258-.558.504 0 .528.79.65.871 2.138v3.228c0 .707-.127.836-.407.836-.743 0-2.551-2.729-3.624-5.853-.209-.607-.42-.852-.98-.852H2.752c-.627 0-.752.295-.752.619 0 .582.743 3.462 3.461 7.271 1.812 2.601 4.363 4.011 6.687 4.011 1.393 0 1.565-.313 1.565-.853v-1.966c0-.626.133-.752.574-.752.324 0 .882.164 2.183 1.417 1.486 1.486 1.732 2.153 2.567 2.153h2.192c.626 0 .939-.313.759-.931-.197-.615-.907-1.51-1.849-2.569-.512-.604-1.277-1.254-1.51-1.579-.325-.419-.231-.604 0-.976.001.001 2.672-3.761 2.95-5.04z"></path></svg>
-                    </a>
-                    <?php } ?>
-                    <?php  if(!empty($wo['user_profile']['instagram'])) {  ?>
-                    <a class="social-btn" rel="publisher" href="https://instagram.com/<?php echo $wo['user_profile']['instagram'];?>" target="_blank">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FE207A" d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" /></svg>
-                    </a>
-                    <?php } ?>
-				</li>
-			<?php } ?>
-        </ul>
-
-		<?php if($wo['loggedin'] == true) {  ?>
-			<div class="wow_content">
-				<div class="wow_form_fields mt-0 profile_search">
-					<input type="text" class="search-for-posts" placeholder="<?php echo $wo['lang']['search_for_posts']; ?>" onkeyup="Wo_SearchForPosts(this.value);" />
-					<svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="2"/>
-<path d="M14.5 15.5L18.5 19.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-</svg>
-
-				</div>
-			</div>
-        <?php } ?>
-
-        <?php if(!empty($wo['user_profile']['about'])) {  ?>
-			<div class="page-margin wow_content">
-				<div class="wo_page_hdng profile_hdng_side pag_neg_padd">
-					<div class="wo_page_hdng_innr"><?php echo $wo['lang']['about']; ?></div>
-				</div>
-				<p class="page-margin mt-0"><?php echo $wo['user_profile']['about']; ?></p>
-			</div>
-        <?php } ?>
-
-        <?php
-        $fields = Wo_GetProfileFields('none');
-        if (count($fields) > 0) { ?>
-        <ul class="page-margin wow_content negg_padd list-unstyled event-options-list">
-			<div class="wo_page_hdng profile_hdng_side">
-				<div class="wo_page_hdng_innr"><?php echo $wo['lang']['more_info']; ?></div>
-			</div>
-            <?php
-            foreach ($fields as $key => $wo['field']) {
-                $name = $wo['field']['fid'];
-                if (!empty($wo['user_profile']['fields'][$name])) {
-                    echo Wo_LoadPage('timeline/custom-fields');
-                }
-            }
-            ?>
-        </ul>
-        <?php } ?>
-
-        <?php
-        if ($wo['config']['website_mode'] != 'instagram') {
-        	echo Wo_LoadPage('timeline/albums-sidebar');
-        }
-
-            if ($wo['config']['connectivitySystem'] == 1) {
-              echo Wo_LoadPage('timeline/friends-sidebar');
-            } else {
-              echo Wo_LoadPage('timeline/following-followers-sidebar');
-            }
-            if ($wo['config']['pages'] == 1) {
-                echo Wo_LoadPage('timeline/likes-sidebar');
-            }
-            if ($wo['config']['groups'] == 1) {
-            	echo Wo_LoadPage('timeline/groups-sidebar');
-            }
-            if ($wo['config']['store_system'] == 'on') { ?>
-            	<?php $all_products = Wo_GetProducts(array('user_id' => $wo['user_profile']['user_id'] , 'limit' => 6)); ?>
-            	<?php if (!empty($all_products)) { ?>
-            	<ul class="page-margin wow_content negg_padd list-unstyled event-options-list" id="sidebar-pages-list-container">
-					<div class="wo_page_hdng profile_hdng_side">
-						<div class="wo_page_hdng_innr">
-							<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=products');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=products"><?php echo $wo['lang']['products_for_sale'];?></a>
-						</div>
-					</div>
-					<li>
-						<div class="activities-wrapper sidebar-product-slider">
-							<?php
-							foreach ($all_products as $wo['product']) {
-								$wo['product']['name'] = mb_substr($wo['product']['name'], 0, 10, "utf-8");
-								echo Wo_LoadPage('timeline/sidebar-product-list');
-							}
-							?>
-						</div>
-					</li>
-					<li><div class="clear"></div></li>
-				</ul>
-				<?php } ?>
-            <?php } ?>
-        <?php
-            $sidebar_ad = Wo_GetAd('sidebar', false);
-            if (!empty($sidebar_ad)) {?>
-        <ul class="list-group sidebar-ad">
-            <?php echo $sidebar_ad; ?>
-        </ul>
-        <?php } ?>
-        <?php echo Wo_LoadPage('footer/sidebar-footer')?>
-    </div>
-    <?php }else{ ?>
-    	<div class="col-sm-12">
-			<div class="list-group wo_profile_banned_user">
+	<?php }else{ ?>
+		<div class="grid-column">
+			<div class="widget-box wo_profile_banned_user">
 				<img src="<?php echo $wo['config']['theme_url'];?>/img/banned.png">&nbsp;&nbsp;&nbsp;
 				<div>
 					<p><?php echo $wo['lang']['user_profile_banned']; ?></p>
@@ -1517,7 +1784,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 				</div>
 			</div>
 		</div>
-    <?php } ?>
+	<?php } ?>
 </div>
 <?php echo Wo_LoadPage('modals/unfriend');?>
 <?php echo Wo_LoadPage('modals/profile-picture');?>
@@ -1995,10 +2262,10 @@ $(function(){
     var url = window.location.pathname,
         urlRegExp = new RegExp(url.replace(/\/$/,'') + "$"); // create regexp to match current url pathname and remove trailing slash if present as it could collide with the link in navigation in case trailing slash wasn't present there
         // now grab every link from the navigation
-        $('.user-bottom-nav a').each(function(){
+        $('.section-navigation .section-menu-item').each(function(){
             // and test its normalized href against the url pathname regexp
             if(urlRegExp.test(this.href.replace(/\/$/,''))){
-                $(this).addClass('menuactive');
+                $(this).addClass('active');
             }
         });
     <?php if ($wo['nodejs_send_notification'] == true) { ?>
