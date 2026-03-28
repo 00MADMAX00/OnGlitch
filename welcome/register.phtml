@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | GAMEZONE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap');
+        :root { --purple:#a855f7; --pink:#ec4899; --blue:#3b82f6; --bg:#05050f; --card-bg:rgba(10,8,25,0.75); }
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{background:var(--bg);color:white;font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;}
+        #gz-star-field{position:fixed;inset:0;z-index:1;pointer-events:none;}
+        .gz-star{position:absolute;background:white;border-radius:50%;}
+        #gz-spaceship{position:fixed;left:50%;transform:translateX(-50%);z-index:2;pointer-events:none;top:-300px;}
+        .gz-ship-inner{position:relative;display:flex;flex-direction:column;align-items:center;}
+        .gz-trail-wrap{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:160px;height:1600px;}
+        .gz-trail-nebula{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:140px;height:100%;background:linear-gradient(to top,rgba(59,130,246,.3) 0%,rgba(168,85,247,.15) 20%,rgba(139,92,246,.06) 50%,transparent 80%);filter:blur(30px);border-radius:9999px;animation:gz-breathe 2.4s ease-in-out infinite;}
+        .gz-trail-mid{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:36px;height:85%;background:linear-gradient(to top,rgba(147,197,253,.55) 0%,rgba(168,85,247,.25) 25%,transparent 80%);filter:blur(8px);border-radius:9999px;animation:gz-breathe 1.8s ease-in-out infinite reverse;}
+        .gz-trail-core{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:3px;height:70%;background:linear-gradient(to top,rgba(255,255,255,.9),rgba(191,219,254,.6),transparent);filter:blur(1px);border-radius:9999px;}
+        @keyframes gz-breathe{0%,100%{opacity:1;transform:translateX(-50%) scaleX(1)}50%{opacity:.6;transform:translateX(-50%) scaleX(.8)}}
+        .gz-jet-wrap{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:60px;height:120px;}
+        .gz-jet-halo{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:55px;height:100px;background:radial-gradient(ellipse at 50% 100%,rgba(59,130,246,.7) 0%,rgba(168,85,247,.4) 35%,transparent 75%);filter:blur(12px);border-radius:9999px 9999px 0 0;animation:gz-fdance .18s ease-in-out infinite;}
+        .gz-jet-flame{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:22px;height:75px;background:radial-gradient(ellipse at 50% 100%,#fff 0%,#93c5fd 15%,#3b82f6 40%,rgba(168,85,247,.6) 65%,transparent 90%);filter:blur(2px);border-radius:9999px 9999px 0 0;animation:gz-fmain .12s ease-in-out infinite;}
+        .gz-jet-core{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:7px;height:30px;background:linear-gradient(to top,#fff,#bfdbfe,transparent);filter:blur(1px);border-radius:9999px;animation:gz-fcore .08s ease-in-out infinite;}
+        @keyframes gz-fdance{0%,100%{transform:translateX(-50%) scaleX(1) scaleY(1);opacity:.9}25%{transform:translateX(-50%) scaleX(1.1) scaleY(.95);opacity:1}75%{transform:translateX(-50%) scaleX(.9) scaleY(1.05);opacity:.8}}
+        @keyframes gz-fmain{0%,100%{transform:translateX(-50%) scaleX(1) scaleY(1)}33%{transform:translateX(-50%) scaleX(1.15) scaleY(.92)}66%{transform:translateX(-50%) scaleX(.88) scaleY(1.08)}}
+        @keyframes gz-fcore{0%,100%{opacity:1}50%{opacity:.75}}
+        #gz-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;}
+        .gz-back-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 16px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:white;text-decoration:none;transition:all .2s;}
+        .gz-back-btn:hover{background:rgba(168,85,247,.1);border-color:rgba(168,85,247,.3);}
+        .gz-brand{font-family:'Orbitron',sans-serif;font-weight:900;font-size:18px;text-transform:uppercase;letter-spacing:.05em;}
+        .gz-brand span{color:var(--purple);}
+        .gz-main{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;padding:0 20px 60px;}
+        .gz-card{position:relative;border-radius:18px;background:var(--card-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(168,85,247,.2);overflow:hidden;transition:transform .3s,box-shadow .3s;}
+        .gz-card::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:linear-gradient(135deg,rgba(168,85,247,.8),rgba(236,72,153,.5),rgba(59,130,246,.6),rgba(168,85,247,.4));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;animation:gz-bspin 6s linear infinite;}
+        @keyframes gz-bspin{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+        .gz-card-glow{position:absolute;top:-40%;left:-20%;width:60%;height:80%;background:radial-gradient(ellipse,rgba(168,85,247,.12) 0%,transparent 70%);pointer-events:none;}
+        .gz-wrap{width:100%;max-width:600px;}
+        .gz-body{padding:48px 52px;display:flex;flex-direction:column;align-items:center;}
+        @media(max-width:640px){.gz-body{padding:32px 24px;}}
+        .gz-icon-box{width:76px;height:76px;border-radius:18px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);display:flex;align-items:center;justify-content:center;margin-bottom:28px;color:var(--purple);}
+        .gz-heading{font-family:'Orbitron',sans-serif;font-weight:700;font-size:clamp(1.5rem,4vw,2rem);text-transform:uppercase;text-align:center;margin-bottom:8px;letter-spacing:.05em;}
+        .gz-sub{font-size:13px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:36px;}
+        .gz-field{width:100%;margin-bottom:20px;}
+        .gz-label{display:block;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px;}
+        .gz-input{width:100%;background:rgba(10,8,25,0.85);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 18px;font-size:15px;color:white;outline:none;transition:border-color .2s,box-shadow .2s;font-family:'Inter',sans-serif;} select.gz-input option{background:#0d0b1e;color:white;}
+        .gz-input::placeholder{color:rgba(255,255,255,.25);}
+        .gz-input:focus{border-color:rgba(168,85,247,.5);box-shadow:0 0 0 3px rgba(168,85,247,.08);}
+        select.gz-input{appearance:none;cursor:pointer;}
+        .gz-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;}
+        @media(max-width:480px){.gz-row{grid-template-columns:1fr;}}
+        .gz-terms{display:flex;align-items:flex-start;gap:10px;margin-bottom:24px;width:100%;}
+        .gz-terms input[type=checkbox]{width:18px;height:18px;flex-shrink:0;appearance:none;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:4px;cursor:pointer;margin-top:2px;}
+        .gz-terms label{font-size:13px;color:rgba(255,255,255,.5);line-height:1.5;cursor:pointer;}
+        .gz-terms a{color:var(--purple);text-decoration:none;}
+        .gz-submit-btn{white-space:nowrap;width:100%;padding:18px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--purple),var(--pink));font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:.15em;text-transform:uppercase;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 32px rgba(168,85,247,.35);margin-bottom:20px;animation:gz-btngrad 3s linear infinite;background-size:200% 200%;}
+        @keyframes gz-btngrad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+        .gz-submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(168,85,247,.5);}
+        .gz-submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+        .gz-alert{width:100%;padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:16px;}
+        .gz-alert-danger{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
+        .gz-alert-success{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#86efac;}
+        .gz-signin-link{font-size:13px;color:rgba(255,255,255,.4);text-align:center;}
+        .gz-signin-link a{color:var(--purple);text-decoration:none;}
+        .helper-text{display:none;margin-top:6px;font-size:12px;line-height:22px;color:rgba(255,255,255,.4);padding-left:0;list-style:none;}
+        li.valid{color:#22c55e;}
+        body, .wrapper, .login { background-image: none !important; }
+    </style>
+</head>
+<body>
+
+    <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:url('https://zlab.me/oo.jpeg') center/cover no-repeat;"></div>
+<?php $fields = Wo_GetWelcomeFileds(); ?>
+
+    <div id="gz-star-field"></div>
+
+    <div id="gz-spaceship">
+        <div class="gz-ship-inner">
+            <div class="gz-trail-wrap"><div class="gz-trail-nebula"></div><div class="gz-trail-mid"></div><div class="gz-trail-core"></div></div>
+            <div class="gz-jet-wrap"><div class="gz-jet-halo"></div><div class="gz-jet-flame"></div><div class="gz-jet-core"></div></div>
+            <img src="https://zlab.me/sp.png" alt="Spaceship" style="width:140px;position:relative;z-index:2;filter:drop-shadow(0 0 60px rgba(168,85,247,0.9));">
+        </div>
+    </div>
+
+    <nav id="gz-nav">
+        <a href="<?php echo $wo['config']['site_url']; ?>" class="gz-back-btn">
+            <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+            <?php echo $wo['lang']['login_here'] ?? 'Back to Login'; ?>
+        </a>
+        
+    </nav>
+
+        <!-- ONGLITCH hero title - same as welcome page -->
+    <div style="position:relative;z-index:10;text-align:center;padding-top:68px;padding-bottom:0;">
+        <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(4rem,12vw,9rem);letter-spacing:-0.02em;line-height:1;text-transform:uppercase;margin-bottom:16px;">
+            <span style="color:#ffffff;">ON</span><span style="color:#a855f7;text-shadow:0 0 20px rgba(168,85,247,0.8),0 0 60px rgba(168,85,247,0.4);">GLITCH</span>
+        </div>
+        <p style="font-family:'Rajdhani',sans-serif;font-weight:600;font-size:14px;letter-spacing:0.4em;text-transform:uppercase;color:#67e8f9;margin-bottom:20px;text-shadow:0 0 20px rgba(6,182,212,0.5);">The Social Network for Gamers</p>
+    </div>
+
+<main class="gz-main">
+        <div class="gz-wrap gz-card">
+            <div class="gz-card-glow"></div>
+            <div class="gz-body">
+                <div class="gz-icon-box"><i data-lucide="user-plus" style="width:36px;height:36px;"></i></div>
+                <h2 class="gz-heading"><?php echo $wo['lang']['register'] ?? 'Create Account'; ?> 🚀</h2>
+                <p class="gz-sub"><?php echo $wo['lang']['if_you_have_account'] ?? 'Already have an account?'; ?>
+                    <a href="<?php echo $wo['config']['site_url']; ?>" style="color:var(--purple);text-decoration:none;">
+                        <?php echo $wo['lang']['login_here'] ?? 'Sign in here'; ?>
+                    </a>
+                </p>
+
+                <form id="gz-register-form" method="post" style="width:100%;">
+                    <div class="gz-alert gz-alert-danger errors" style="display:none;"></div>
+
+                    <?php if ($wo['config']['auto_username'] == 1): ?>
+                    <div class="gz-row">
+                        <div class="gz-field">
+                            <label class="gz-label"><?php echo $wo['lang']['first_name'] ?? 'First Name'; ?></label>
+                            <input name="first_name" type="text" autocomplete="off" placeholder="<?php echo $wo['lang']['first_name'] ?? 'First'; ?>" class="gz-input" autofocus>
+                        </div>
+                        <div class="gz-field">
+                            <label class="gz-label"><?php echo $wo['lang']['last_name'] ?? 'Last Name'; ?></label>
+                            <input name="last_name" type="text" autocomplete="off" placeholder="<?php echo $wo['lang']['last_name'] ?? 'Last'; ?>" class="gz-input">
+                        </div>
+                    </div>
+                    <?php else: ?>
+                    <div class="gz-field">
+                        <label class="gz-label"><?php echo $wo['lang']['username'] ?? 'Username'; ?></label>
+                        <input name="username" type="text" autocomplete="off" placeholder="<?php echo $wo['lang']['username'] ?? 'Your gamertag'; ?>" class="gz-input" autofocus>
+                    </div>
+                    <?php endif; ?>
+
+                    <div class="gz-field">
+                        <label class="gz-label"><?php echo $wo['lang']['email'] ?? 'Email'; ?></label>
+                        <input name="email" type="email" placeholder="<?php echo $wo['lang']['email_address'] ?? 'your@email.com'; ?>" class="gz-input">
+                    </div>
+
+                    <?php if($wo['config']['sms_or_email'] == 'sms'): ?>
+                    <div class="gz-field">
+                        <label class="gz-label"><?php echo $wo['lang']['phone_num_ex'] ?? 'Phone'; ?></label>
+                        <input name="phone_num" type="text" placeholder="<?php echo $wo['lang']['phone_num_ex'] ?? '+1 234 567 890'; ?>" class="gz-input">
+                    </div>
+                    <?php endif; ?>
+
+                    <div class="gz-row">
+                        <div class="gz-field">
+                            <label class="gz-label"><?php echo $wo['lang']['password'] ?? 'Password'; ?></label>
+                            <input id="gz-reg-password" name="password" type="password" placeholder="••••••••" class="gz-input">
+                            <?php if ($wo['config']['password_complexity_system'] == 1): ?>
+                            <ul class="helper-text">
+                                <li class="length"><?php echo $wo['lang']['least_characters']; ?></li>
+                                <li class="lowercase"><?php echo $wo['lang']['contain_lowercase']; ?></li>
+                                <li class="uppercase"><?php echo $wo['lang']['contain_uppercase']; ?></li>
+                                <li class="special"><?php echo $wo['lang']['number_special']; ?></li>
+                            </ul>
+                            <?php endif; ?>
+                        </div>
+                        <div class="gz-field">
+                            <label class="gz-label"><?php echo $wo['lang']['confirm_password'] ?? 'Confirm'; ?></label>
+                            <input name="confirm_password" type="password" placeholder="••••••••" class="gz-input">
+                        </div>
+                    </div>
+
+                    <div class="gz-field">
+                        <label class="gz-label"><?php echo $wo['lang']['gender'] ?? 'Gender'; ?></label>
+                        <select name="gender" class="gz-input">
+                            <option value="0"><?php echo $wo['lang']['gender'] ?? 'Select gender'; ?></option>
+                            <?php foreach ($wo['genders'] as $key => $gender): ?>
+                                <option value="<?php echo $key; ?>"><?php echo $gender; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <?php if (!empty($fields)): foreach ($fields as $key => $wo['field']): ?>
+                    <div class="gz-field">
+                        <label class="gz-label"><?php echo $wo['field']['name']; ?></label>
+                        <?php echo Wo_LoadPage('welcome/fields'); ?>
+                    </div>
+                    <?php endforeach; endif; ?>
+
+                    <?php if($wo['config']['reCaptcha'] == 1): ?>
+                    <div style="margin-bottom:20px;">
+                        <div class="g-recaptcha" data-sitekey="<?php echo $wo['config']['reCaptchaKey']; ?>"></div>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php if(!empty($_GET['last_url'])): ?>
+                        <input type="hidden" name="last_url" value="<?php echo urldecode(Wo_Secure($_GET['last_url'])); ?>">
+                    <?php endif; ?>
+
+                    <?php if(isset($_GET['invite']) && (Wo_IsAdminInvitationExists($_GET['invite']) || Wo_IsUserInvitationExists($_GET['invite']))): ?>
+                        <input type="hidden" name="invited" value="<?php echo $_GET['invite']; ?>">
+                    <?php endif; ?>
+
+                    <div class="gz-terms">
+                        <input type="checkbox" name="accept_terms" id="gz-terms" onchange="gzActivateBtn(this)">
+                        <label for="gz-terms">
+                            <?php echo $wo['lang']['terms_agreement'] ?? 'I agree to the'; ?>
+                            <a href="<?php echo Wo_SeoLink('index.php?link1=terms&type=terms'); ?>"><?php echo $wo['lang']['terms_of_use'] ?? 'Terms of Use'; ?></a>
+                            &amp;
+                            <a href="<?php echo Wo_SeoLink('index.php?link1=terms&type=privacy-policy'); ?>"><?php echo $wo['lang']['privacy_policy'] ?? 'Privacy Policy'; ?></a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="gz-submit-btn add_wow_loader" id="gz-sign-submit" disabled>
+                        <i data-lucide="rocket" style="width:18px;height:18px;"></i>
+                        <?php echo $wo['lang']['sign_up'] ?? 'Create Account'; ?>
+                    </button>
+
+                    <p class="gz-signin-link">
+                        <?php echo $wo['lang']['if_you_have_account'] ?? 'Already have an account?'; ?>
+                        <a href="<?php echo $wo['config']['site_url']; ?>">
+                            <?php echo $wo['lang']['login_here'] ?? 'Sign In'; ?>
+                        </a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+    lucide.createIcons();
+
+    // Stars
+    var sf = document.getElementById('gz-star-field');
+    for(var i=0;i<60;i++){var s=document.createElement('div');s.className='gz-star';var sz=Math.random()*2+.5;s.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;opacity:'+(Math.random()*.6+.1)+';';sf.appendChild(s);gsap.to(s,{opacity:Math.random()*.15+.05,duration:Math.random()*3+1.5,repeat:-1,yoyo:true,ease:'sine.inOut',delay:Math.random()*3});}
+
+    // Spaceship
+    gsap.to('#gz-spaceship', {y: window.innerHeight+600, ease:'none', scrollTrigger:{trigger:'body',start:'top top',end:'bottom bottom',scrub:1.5}});
+
+    function gzActivateBtn(el){ document.getElementById('gz-sign-submit').disabled = !el.checked; }
+
+    // Register form
+    var $reg = $('#gz-register-form');
+    var $regState = $reg.find('.errors');
+    $(function(){
+        $reg.ajaxForm({
+            url: Wo_Ajax_Requests_File() + '?f=register',
+            beforeSend: function(){
+                <?php if ($wo['config']['password_complexity_system'] == 1): ?>
+                if($('.helper-text .length').hasClass('valid')&&$('.helper-text .lowercase').hasClass('valid')&&$('.helper-text .uppercase').hasClass('valid')&&$('.helper-text .special').hasClass('valid')){
+                    $reg.find('button').attr('disabled',true);$reg.find('.add_wow_loader').addClass('btn-loading');
+                } else {
+                    $regState.show().html("<?php echo $wo['lang']['complexity_requirements']; ?>");return false;
+                }
+                <?php else: ?>
+                $reg.find('button').attr('disabled',true);$reg.find('.add_wow_loader').addClass('btn-loading');
+                <?php endif; ?>
+            },
+            success: function(data){
+                if(data.status==200){
+                    $regState.show().removeClass('gz-alert-danger').addClass('gz-alert-success').html('<?php echo $wo['lang']['welcome_']; ?>');
+                    $reg.find('.add_wow_loader').removeClass('btn-loading');
+                    setTimeout(function(){window.location.href=data.location;},1000);
+                } else if(data.status==300){
+                    window.location.href=data.location;
+                } else {
+                    $reg.find('button').attr('disabled',false);
+                    $reg.find('.add_wow_loader').removeClass('btn-loading');
+                    $regState.show().removeClass('gz-alert-success').addClass('gz-alert-danger').html(data.errors);
+                }
+            }
+        });
+    });
+
+    <?php if ($wo['config']['password_complexity_system'] == 1): ?>
+    (function(){
+        var ht={charLength:document.querySelector('.helper-text .length'),lowercase:document.querySelector('.helper-text .lowercase'),uppercase:document.querySelector('.helper-text .uppercase'),special:document.querySelector('.helper-text .special')};
+        var pw=document.querySelector('#gz-reg-password');
+        function check(){
+            $('.helper-text').slideDown('slow');
+            test(/^.{6,}$/.test(pw.value),ht.charLength);
+            test(/^(?=.*[a-z]).+$/.test(pw.value),ht.lowercase);
+            test(/^(?=.*[A-Z]).+$/.test(pw.value),ht.uppercase);
+            test(/^(?=.*[0-9_\W]).+$/.test(pw.value),ht.special);
+        }
+        function test(p,el){if(p){el.classList.add('valid');}else{el.classList.remove('valid');}}
+        pw.addEventListener('keyup',check);pw.addEventListener('input',check);
+    })();
+    <?php endif; ?>
+    </script>
+</body>
+</html>
