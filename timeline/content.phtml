@@ -10,24 +10,24 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 <style>.post-youtube iframe {overflow: hidden !important; height: 360px !important;}</style>
 <style>
 /* ===== Vikinger Profile Header ===== */
-.wo_user_profile.row { display: block; }
+.wo_user_profile.row { display:block !important; padding:0 !important; margin:0 !important; }
 /* Cover upload buttons */
-.profile-header .profile-cover-changer { position:absolute; top:12px; right:12px; display:flex; gap:6px; z-index:10; }
+.profile-header .profile-cover-changer { position:absolute !important; top:12px !important; right:12px !important; display:flex !important; gap:6px; z-index:10; }
 /* Cover reposition */
-.profile-header .user-cover-reposition-container,.profile-header .user-cover-reposition-w { width:100%; height:100%; }
-.profile-header .user-cover-reposition-w #cover-image { width:100%; height:100%; object-fit:cover; display:block; cursor:pointer; }
+.profile-header .user-cover-reposition-container,.profile-header .user-cover-reposition-w { width:100% !important; height:100% !important; }
+.profile-header .user-cover-reposition-w #cover-image { width:100% !important; height:100% !important; object-fit:cover !important; display:block !important; cursor:pointer; }
 /* Profile header card */
-.profile-header { border-radius:12px; background:#fff; box-shadow:0 0 40px 0 rgba(94,92,154,.06); margin-bottom:16px; width:100%; position:relative; }
+.profile-header { border-radius:12px !important; background:#fff !important; box-shadow:0 0 40px 0 rgba(94,92,154,.06) !important; margin-bottom:16px !important; width:100% !important; position:relative !important; overflow:visible !important; }
 /* Cover */
-.profile-header .profile-header-cover { border-top-left-radius:12px; border-top-right-radius:12px; height:300px; overflow:hidden; position:relative; margin:0; padding:0; }
-@media screen and (max-width:1365px){.profile-header .profile-header-cover{height:200px;}}
-@media screen and (max-width:480px){.profile-header .profile-header-cover{height:120px;}}
+.profile-header .profile-header-cover { border-top-left-radius:12px !important; border-top-right-radius:12px !important; height:300px !important; overflow:hidden !important; position:relative !important; margin:0 !important; padding:0 !important; display:block !important; }
+@media screen and (max-width:1365px){.profile-header .profile-header-cover{height:200px !important;}}
+@media screen and (max-width:480px){.profile-header .profile-header-cover{height:120px !important;}}
 /* Profile info area */
-.profile-header .profile-header-info { height:126px; position:relative; }
-@media screen and (max-width:1365px){.profile-header .profile-header-info{height:auto;padding-bottom:32px;}}
+.profile-header .profile-header-info { height:126px !important; position:relative !important; overflow:visible !important; }
+@media screen and (max-width:1365px){.profile-header .profile-header-info{height:auto !important;padding-bottom:32px !important;}}
 /* Short description (avatar+name centered) */
-.profile-header .user-short-description.big { padding-top:52px; text-align:center; position:absolute; left:50%; transform:translateX(-50%); width:240px; }
-.profile-header .user-short-description-avatar { position:absolute; top:-116px; left:50%; margin-left:-74px; display:block; text-decoration:none; cursor:pointer; }
+.profile-header .user-short-description.big { padding-top:52px !important; text-align:center !important; position:absolute !important; left:50% !important; transform:translateX(-50%) !important; width:240px !important; float:none !important; }
+.profile-header .user-short-description-avatar { position:absolute !important; top:-116px !important; left:50% !important; margin-left:-74px !important; display:block !important; text-decoration:none; cursor:pointer; }
 @media screen and (max-width:1365px){.profile-header .user-short-description.big{position:static;transform:none;width:100%;padding-top:80px;} .profile-header .user-short-description-avatar{position:absolute;top:-116px;left:50%;margin-left:-74px;}}
 /* CSS Hexagon avatar */
 .vk-hex-wrap { width:148px; height:148px; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#23d2e2,#6952fa); }
@@ -43,17 +43,16 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .profile-header .user-short-description-title a { color:#3e3f5e; font-weight:700; text-decoration:none; }
 .profile-header .user-short-description-text { margin-top:6px; color:#adafca; font-size:.75rem; font-weight:700; text-align:center; text-transform:uppercase; }
 /* User stats (left) */
-.profile-header .user-stats { display:flex; justify-content:center; position:absolute; top:38px; left:40px; }
-@media screen and (max-width:1365px){.profile-header .user-stats{position:static;margin-top:32px;}}
-.user-stat.big { padding:0 24px; position:relative; text-align:center; }
-.user-stat.big+.user-stat.big::before { content:''; width:1px; height:20px; background:#eaeaf5; position:absolute; top:8px; left:0; }
-.user-stat.big .user-stat-title { font-size:1.25rem; font-weight:700; text-align:center; margin:0; }
-.user-stat.big .user-stat-text { font-size:.65rem; font-weight:700; text-align:center; text-transform:uppercase; margin-top:6px; color:#adafca; letter-spacing:.05em; }
-.user-stat.big .user-stat-image { display:block; width:24px; height:16px; margin:0 auto; }
+.profile-header .user-stats { display:flex !important; justify-content:center; position:absolute !important; top:38px !important; left:40px !important; float:none !important; }
+@media screen and (max-width:1365px){.profile-header .user-stats{position:static !important;margin-top:32px !important;}}
+.profile-header .user-stat.big { padding:0 24px !important; position:relative !important; text-align:center !important; }
+.profile-header .user-stat.big+.user-stat.big::before { content:'' !important; width:1px; height:20px; background:#eaeaf5; position:absolute !important; top:8px; left:0; }
+.profile-header .user-stat.big .user-stat-title { font-size:1.25rem !important; font-weight:700 !important; text-align:center !important; margin:0 !important; }
+.profile-header .user-stat.big .user-stat-text { font-size:.65rem !important; font-weight:700 !important; text-align:center !important; text-transform:uppercase !important; margin-top:6px !important; color:#adafca !important; letter-spacing:.05em; }
 /* Social links (right) */
-.profile-header .profile-header-social-links-wrap { position:absolute; top:38px; right:32px; }
-@media screen and (max-width:1365px){.profile-header .profile-header-social-links-wrap{position:static;margin-top:24px;}}
-.profile-header-social-links { display:flex; gap:8px; flex-wrap:wrap; }
+.profile-header .profile-header-social-links-wrap { position:absolute !important; top:38px !important; right:32px !important; float:none !important; }
+@media screen and (max-width:1365px){.profile-header .profile-header-social-links-wrap{position:static !important;margin-top:24px !important;}}
+.profile-header-social-links { display:flex !important; gap:8px; flex-wrap:wrap; }
 .social-link { display:flex; justify-content:center; align-items:center; width:40px; height:40px; border-radius:10px; transition:transform .2s; text-decoration:none; }
 .social-link:hover { transform:translate(0,-4px); }
 .social-link.facebook { background:#3763d2; }
@@ -348,12 +347,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 						<?php } ?>
                     </div>
                     <?php } ?>
-			</div>
-		</div>
-		<?php if ($wo['user_profile']['banned'] != 1) { ?>
 
-      </div>
-      <?php } ?>
 
       <!-- AVATAR + NAME (center) -->
       <div class="user-short-description big">
@@ -418,7 +412,6 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 						</form>
                     <?php } ?>
                 </div>
-                <div class="info">
 
           <?php } ?>
         </div>
@@ -509,76 +502,69 @@ if ($wo['loggedin'] && $IsOwnerUser) {
   <?php if ($wo['user_profile']['banned'] != 1) { ?>
   <nav class="section-navigation">
     <div class="section-menu" id="section-navigation-slider">
-<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'];?>">
+<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'];?>">
 							<svg class="section-menu-item-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1.68687 7.06852C2.31315 4.39862 4.39783 2.31394 7.06773 1.68767C8.9959 1.23538 11.0026 1.23538 12.9307 1.68767C15.6006 2.31394 17.6853 4.39862 18.3116 7.06852C18.7639 8.99669 18.7639 11.0034 18.3116 12.9315C17.6853 15.6014 15.6006 17.6861 12.9307 18.3124C11.0026 18.7647 8.9959 18.7647 7.06773 18.3124C4.39783 17.6861 2.31315 15.6014 1.68687 12.9315C1.23458 11.0034 1.23458 8.99669 1.68687 7.06852Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M7 7H11M7 13H10M7 10H13" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
-</span>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['timeline'];?></p>
 						</a>
 					<?php if ($wo['config']['groups'] == 1) {?>
-<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=groups');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=groups">
+<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=groups');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=groups">
 							<svg class="section-menu-item-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10 1C8.97667 1 7.95334 1.11763 6.95043 1.35288C4.17301 2.00437 2.00437 4.17301 1.35288 6.95043C0.882374 8.95626 0.882374 11.0437 1.35288 13.0496C2.00437 15.827 4.17301 17.9956 6.95044 18.6471C8.95626 19.1176 11.0437 19.1176 13.0496 18.6471C15.827 17.9956 17.9956 15.827 18.6471 13.0496C18.8824 12.0466 19 11.0233 19 9.99997" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M1.35288 13.0496C0.882374 11.0437 0.882374 8.95626 1.35288 6.95043C2.00437 4.17301 4.17301 2.00437 6.95043 1.35288C7.95334 1.11763 8.97667 1 10 1M6.95044 18.6471C8.95626 19.1176 11.0437 19.1176 13.0496 18.6471C15.827 17.9956 17.9956 15.827 18.6471 13.0496C18.8824 12.0466 19 11.0233 19 9.99997" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M19 4.5C19 5.88071 17.8807 7 16.5 7C15.1193 7 14 5.88071 14 4.5C14 3.11929 15.1193 2 16.5 2C17.8807 2 19 3.11929 19 4.5Z" class="icon_main" stroke-width="1.5"/>
 </svg>
-</span>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['groups'];?></p>
 						</a>
 					<?php } ?>
 					<?php if ($wo['config']['pages'] == 1) {?>
-<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=likes');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=likes">
+<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=likes');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=likes">
 							<svg class="section-menu-item-icon" width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1.98389 8.61057L7.11798 15.5107C8.59549 17.4964 11.4045 17.4964 12.882 15.5107L18.0161 8.61058C19.328 6.84746 19.328 4.34218 18.0161 2.57906C16.0957 -0.00189845 11.6571 0.764647 10 3.54855C8.34289 0.764647 3.90428 -0.00189818 1.9839 2.57906C0.672036 4.34218 0.672033 6.84746 1.98389 8.61057Z" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M18.0161 8.61058L12.882 15.5107C11.4045 17.4964 8.59549 17.4964 7.11798 15.5107L1.98389 8.61057C0.672033 6.84746 0.672036 4.34218 1.9839 2.57906C3.90428 -0.00189829 8.34289 0.764647 10 3.54855" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
-</span>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['likes'];?></p>
 						</a>
 					<?php } ?>
 					<?php if ($wo['config']['connectivitySystem'] == 1) {?>
-<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=followers');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=followers">
+<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=followers');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=followers">
 								<svg class="section-menu-item-icon" width="20" height="17" viewBox="0 0 20 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1 14.531C1 12.6539 2.33361 11.055 4.14603 10.7592L4.30929 10.7326C5.76058 10.4957 7.23942 10.4957 8.69071 10.7326L8.85397 10.7592C10.6664 11.055 12 12.6539 12 14.531C12 15.3423 11.3569 16 10.5636 16H2.43639C1.64309 16 1 15.3423 1 14.531Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M9.70833 4.28125C9.70833 6.09343 8.27191 7.5625 6.5 7.5625C4.72809 7.5625 3.29167 6.09343 3.29167 4.28125C3.29167 2.46907 4.72809 1 6.5 1C8.27191 1 9.70833 2.46907 9.70833 4.28125Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M12 7.5625C14.2552 7.5625 16.0833 6.09343 16.0833 4.28125C16.0833 2.46907 14.2552 1 12 1M14.7882 16H17.1719C18.1815 16 19 15.3423 19 14.531C19 12.6539 17.3027 11.055 14.996 10.7592L14.7882 10.7326C14.2285 10.7326 14.195 10.7326 13.448 10.7326" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
-</span>
 								<p class="section-menu-item-text"><?php echo $wo['lang']['friends_btn'];?></p>
 							</a>
 					<?php } ?>
 					<?php if ($wo['config']['connectivitySystem'] == 0) {?>
-<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=following');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=following">
+<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=following');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=following">
 								<svg class="section-menu-item-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M19 10H15M17 12L17 8" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M1 17.1115C1 14.6984 2.69732 12.643 5.00404 12.2627L5.21182 12.2284C7.05892 11.9239 8.94108 11.9239 10.7882 12.2284L10.996 12.2627C13.3027 12.643 15 14.6984 15 17.1115C15 18.1545 14.1815 19 13.1719 19H2.82813C1.81848 19 1 18.1545 1 17.1115Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M12.0827 4.9375C12.0827 7.11212 10.2545 8.875 7.99935 8.875C5.74419 8.875 3.91602 7.11212 3.91602 4.9375C3.91602 2.76288 5.74419 1 7.99935 1C10.2545 1 12.0827 2.76288 12.0827 4.9375Z" class="icon_main" stroke-width="1.5"/>
 </svg>
-</span>
 								<p class="section-menu-item-text"><?php echo $wo['lang']['following'];?></p>
 							</a>
-<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=followers');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=followers">
+<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=followers');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=followers">
 								<svg class="section-menu-item-icon" width="20" height="17" viewBox="0 0 20 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1 14.531C1 12.6539 2.33361 11.055 4.14603 10.7592L4.30929 10.7326C5.76058 10.4957 7.23942 10.4957 8.69071 10.7326L8.85397 10.7592C10.6664 11.055 12 12.6539 12 14.531C12 15.3423 11.3569 16 10.5636 16H2.43639C1.64309 16 1 15.3423 1 14.531Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M9.70833 4.28125C9.70833 6.09343 8.27191 7.5625 6.5 7.5625C4.72809 7.5625 3.29167 6.09343 3.29167 4.28125C3.29167 2.46907 4.72809 1 6.5 1C8.27191 1 9.70833 2.46907 9.70833 4.28125Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M12 7.5625C14.2552 7.5625 16.0833 6.09343 16.0833 4.28125C16.0833 2.46907 14.2552 1 12 1M14.7882 16H17.1719C18.1815 16 19 15.3423 19 14.531C19 12.6539 17.3027 11.055 14.996 10.7592L14.7882 10.7326C14.2285 10.7326 14.195 10.7326 13.448 10.7326" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
-</span>
 								<p class="section-menu-item-text"><?php echo $wo['lang']['followers'];?></p>
 							</a>
 					<?php } ?>
-<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=photos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=photos">
+<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=photos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=photos">
                             <svg class="section-menu-item-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="11" y="5" width="4" height="4" rx="2" class="icon_main" stroke-width="1.5"/>
 <path d="M2.71809 15.2014L4.45698 13.4625C6.08199 11.8375 8.71665 11.8375 10.3417 13.4625L12.0805 15.2014M12.0805 15.2014L12.7849 14.497C14.0825 13.1994 16.2143 13.2961 17.3891 14.7059L17.802 15.2014M12.0805 15.2014L14.6812 17.802M1.35288 13.0496C0.882374 11.0437 0.882374 8.95626 1.35288 6.95043C2.00437 4.17301 4.17301 2.00437 6.95043 1.35288C8.95626 0.882375 11.0437 0.882374 13.0496 1.35288C15.827 2.00437 17.9956 4.17301 18.6471 6.95044C19.1176 8.95626 19.1176 11.0437 18.6471 13.0496C17.9956 15.827 15.827 17.9956 13.0496 18.6471C11.0437 19.1176 8.95626 19.1176 6.95044 18.6471C4.17301 17.9956 2.00437 15.827 1.35288 13.0496Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
-</span>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['photos'];?></p>
 						</a>
 					<?php if ($wo['config']['video_upload'] == 1) { ?>
-<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=videos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=videos">
+<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=videos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=videos">
                             <svg class="section-menu-item-icon" width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M7 4H3" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M7 12L4 12" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
@@ -586,12 +572,11 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 <path d="M18 8.75C18.4142 8.75 18.75 8.41421 18.75 8C18.75 7.58579 18.4142 7.25 18 7.25V8.75ZM13 8.75H18V7.25H13V8.75Z" class="icon_main_fill"/>
 <path d="M21.5392 5.64505L12.8369 1.288C10.7427 0.23952 8.41866 2.22704 9.13127 4.45698L10.1705 7.70896C10.2339 7.90733 10.2338 8.12053 10.1702 8.31882L9.13677 11.5403C8.42185 13.7689 10.7426 15.7589 12.8379 14.7138L21.5356 10.3756C23.4865 9.40256 23.4886 6.62109 21.5392 5.64505Z" stroke="currentColor" stroke-width="1.5"/>
 </svg>
-</span>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['videos'];?></p>
 						</a>
 					<?php } ?>
 					<?php if($wo['config']['reels_upload']) {?>
-<a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=reels');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=reels">
+<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=reels');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=reels">
                             <svg class="section-menu-item-icon" width="24" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 6.99988H21.5M16.3 2.49988L19 6.99988M10.5 1.99988L13.5 6.99988M5.5 2.49988L8 6.99988M7.5 16.9999C7.5 17.276 7.27614 17.4999 7 17.4999C6.72386 17.4999 6.5 17.276 6.5 16.9999M7.5 16.9999C7.5 16.7237 7.27614 16.4999 7 16.4999C6.72386 16.4999 6.5 16.7237 6.5 16.9999M7.5 16.9999H6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><rect x="2" y="2" width="20" height="20" rx="5" class="icon_main" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></rect></svg>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['reels'];?></p>
 						</a>
