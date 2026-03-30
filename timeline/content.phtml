@@ -18,7 +18,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .profile-header .profile-header-cover #cover-image{width:100%;height:100%;object-fit:cover;display:block;}
 .profile-cover-changer{position:absolute!important;top:12px;right:12px;display:flex;gap:6px;z-index:10;}
 .user-cover-reposition-container,.user-cover-reposition-w{width:100%;height:100%;}
-.profile-header .profile-header-info{height:126px;position:relative;}
+.profile-header .profile-header-info{height:126px!important;position:relative!important;}
 /* user-short-description: centered avatar overlapping cover */
 .user-short-description{padding-top:84px;position:relative;text-align:center;}
 .user-short-description.big{padding-top:52px;}
@@ -64,27 +64,31 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .user-stat.big .user-stat-title{font-size:1.375rem;}
 .user-stat .user-stat-text{font-size:.625rem;color:#adafca;margin:4px 0 0;}
 .user-stat.big .user-stat-text{font-size:.75rem;}
-.profile-header .profile-header-info .user-stats{position:absolute;top:54px;left:40px;}
+.profile-header .profile-header-info .user-stats{position:absolute!important;top:54px!important;left:40px!important;}
 /* Social links */
 .profile-header-social-links{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px;}
-.profile-header .profile-header-info .profile-header-social-links-wrap{width:352px;height:44px;margin:0 auto;position:absolute;top:54px;right:32px;}
-.social-link{display:flex;justify-content:center;align-items:center;width:40px;height:40px;border-radius:10px;transition:transform .2s ease-in-out;text-decoration:none;}
-.social-link:hover{transform:translate(0,-4px);}
-.social-link.facebook{background-color:#3763d2;}.social-link.twitter{background-color:#1abcff;}.social-link.youtube{background-color:#fd434f;}.social-link.instagram{background-color:#f8468d;}.social-link.linkedin{background-color:#0a66c2;}.social-link.vk-icon{background-color:#0077ff;}
-.social-link svg{fill:#fff;width:18px;height:18px;display:block;}
+.profile-header .profile-header-info .profile-header-social-links-wrap{width:352px;height:44px;margin:0!important;position:absolute!important;top:54px!important;right:32px!important;left:auto!important;}
+.profile-header .social-link{display:flex;justify-content:center;align-items:center;width:40px;height:40px;border-radius:10px;transition:transform .2s ease-in-out;text-decoration:none;}
+.profile-header .social-link:hover{transform:translate(0,-4px);}
+.profile-header .social-link.facebook{background-color:#3763d2;}.profile-header .social-link.twitter{background-color:#1abcff;}.profile-header .social-link.youtube{background-color:#fd434f;}.profile-header .social-link.instagram{background-color:#f8468d;}.profile-header .social-link.linkedin{background-color:#0a66c2;}.profile-header .social-link.vk-icon{background-color:#0077ff;}
+.profile-header .social-link svg{fill:#fff;width:18px;height:18px;display:block;}
 /* Action buttons */
-.profile-header .profile-header-info .profile-header-info-actions{display:flex;align-items:center;gap:8px;position:absolute;top:-40px;right:32px;flex-wrap:nowrap;}
+.profile-header .profile-header-info .profile-header-info-actions{display:flex!important;align-items:center!important;gap:8px!important;position:absolute!important;top:-40px!important;right:32px!important;flex-wrap:nowrap!important;}
 .profile-header-info-actions .btn{white-space:nowrap;}
-/* Responsive */
-@media(max-width:1365px){
-  .profile-header .profile-header-info{height:auto;overflow:visible;padding-bottom:24px;}
-  .profile-header .profile-header-info .user-stats{position:static;margin:60px auto 0;justify-content:center;}
-  .profile-header .profile-header-info .profile-header-social-links-wrap{position:static;width:auto;margin:10px auto 0;text-align:center;}
-  .profile-header .profile-header-info .profile-header-info-actions{position:absolute;top:-40px;right:12px;}
+/* Responsive — desktop: keep absolute layout, only shrink cover */
+@media(max-width:1200px){
+  .profile-header .profile-header-info .profile-header-info-actions{right:12px!important;}
+}
+/* Mobile: stack layout */
+@media(max-width:900px){
+  .profile-header .profile-header-info{height:auto!important;overflow:visible!important;padding-bottom:20px!important;}
+  .profile-header .profile-header-info .user-stats{position:static!important;margin:60px auto 0!important;justify-content:center!important;}
+  .profile-header .profile-header-info .profile-header-social-links-wrap{position:static!important;width:auto!important;margin:10px auto 0!important;text-align:center!important;right:auto!important;}
+  .profile-header-social-links{justify-content:center;}
+  .profile-header .profile-header-info .profile-header-info-actions{position:absolute!important;top:-40px!important;right:12px!important;}
 }
 @media(max-width:680px){
-  .profile-header .profile-header-info{padding-bottom:16px;}
-  .profile-header .profile-header-info .profile-header-info-actions{position:static;margin:12px auto 0;flex-wrap:wrap;justify-content:center;}
+  .profile-header .profile-header-info .profile-header-info-actions{position:static!important;margin:12px auto 0!important;flex-wrap:wrap!important;justify-content:center!important;}
 }
 /* Section navigation */
 .section-navigation{padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;width:100%!important;display:block!important;overflow:hidden!important;}
