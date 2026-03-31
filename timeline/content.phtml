@@ -10,7 +10,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 <style>.post-youtube iframe {overflow: hidden !important; height: 360px !important;}</style>
 <style>
 /* ==== Vikinger Profile Header CSS ==== */
-.wo_user_profile.row{display:block!important;padding:0!important;margin-left:0!important;margin-right:0!important;}
+.wo_user_profile.row{display:block!important;padding-left:0!important;padding-right:0!important;margin-left:0!important;margin-right:0!important;}
 .profile-header{border-radius:12px;background-color:#fff;box-shadow:0 0 40px 0 rgba(94,92,154,.06);margin-bottom:16px;overflow:visible;}
 .profile-header .profile-header-cover{border-top-left-radius:12px;border-top-right-radius:12px;height:300px;overflow:hidden;position:relative;display:block;margin:0;padding:0;}
 @media(max-width:1365px){.profile-header .profile-header-cover{height:200px;}}
@@ -18,7 +18,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .profile-header .profile-header-cover #cover-image{width:100%;height:100%;object-fit:cover;display:block;}
 .profile-cover-changer{position:absolute!important;top:12px;right:12px;display:flex;gap:6px;z-index:10;}
 .user-cover-reposition-container,.user-cover-reposition-w{width:100%;height:100%;}
-.profile-header .profile-header-info{height:126px!important;position:relative!important;}
+.profile-header .profile-header-info{height:126px!important;position:relative!important;border-bottom-left-radius:12px!important;border-bottom-right-radius:12px!important;}
 /* user-short-description: centered avatar overlapping cover */
 .user-short-description{padding-top:84px;position:relative;text-align:center;}
 .user-short-description.big{padding-top:52px;}
@@ -82,14 +82,16 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 }
 /* Mobile: stack layout */
 @media(max-width:900px){
-  .profile-header .profile-header-info{height:auto!important;overflow:visible!important;padding-bottom:20px!important;}
-  .profile-header .profile-header-info .user-stats{position:static!important;margin:60px auto 0!important;justify-content:center!important;}
-  .profile-header .profile-header-info .profile-header-social-links-wrap{position:static!important;width:auto!important;margin:10px auto 0!important;text-align:center!important;right:auto!important;}
-  .profile-header-social-links{justify-content:center;}
-  .profile-header .profile-header-info .profile-header-info-actions{position:absolute!important;top:-40px!important;right:12px!important;}
+  .profile-header .profile-header-info{height:auto!important;overflow:visible!important;padding-bottom:24px!important;padding-top:8px!important;}
+  .profile-header .profile-header-info .user-stats{margin:68px auto 0!important;justify-content:center!important;flex-wrap:wrap!important;gap:0;}
+  .profile-header .profile-header-info .profile-header-social-links-wrap{width:auto!important;margin:12px auto 0!important;text-align:center!important;}
+  .profile-header .profile-header-social-links{justify-content:center!important;flex-wrap:wrap!important;}
+  .profile-header .profile-header-info .profile-header-info-actions{top:-40px!important;right:8px!important;}
+  .profile-header .profile-header-info .user-short-description.big{text-align:center;}
 }
 @media(max-width:680px){
-  .profile-header .profile-header-info .profile-header-info-actions{position:static!important;margin:12px auto 0!important;flex-wrap:wrap!important;justify-content:center!important;}
+  .profile-header .profile-header-info .profile-header-info-actions{position:absolute!important;top:-36px!important;right:8px!important;gap:4px!important;}
+  .profile-header .profile-header-info .profile-header-info-actions .btn{padding:6px 10px!important;font-size:.75rem!important;}
 }
 /* Section navigation */
 .section-navigation{padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;width:100%!important;display:block!important;overflow:hidden!important;}
@@ -115,7 +117,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
   <div class="profile-header" style="border-radius:12px;background-color:#fff;box-shadow:0 0 40px 0 rgba(94,92,154,.12);margin-bottom:16px;overflow:visible;position:relative;">
 
     <!-- PROFILE HEADER COVER -->
-    <figure class="profile-header-cover">
+    <figure class="profile-header-cover" style="display:block;margin:0;padding:0;border:none;line-height:0;">
 				<?php if($IsOwner === true) { ?>
 					<form action="#" method="post" class="profile-cover-changer">
                         <div class="input-group when-notedit profile_cover">
@@ -319,7 +321,11 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather" ><path fill="red" d="M10 4A4 4 0 0 0 6 8A4 4 0 0 0 10 12A4 4 0 0 0 14 8A4 4 0 0 0 10 4M17.5 13C15 13 13 15 13 17.5C13 20 15 22 17.5 22C20 22 22 20 22 17.5C22 15 20 13 17.5 13M10 14C5.58 14 2 15.79 2 18V20H11.5A6.5 6.5 0 0 1 11 17.5A6.5 6.5 0 0 1 11.95 14.14C11.32 14.06 10.68 14 10 14M17.5 14.5C19.16 14.5 20.5 15.84 20.5 17.5C20.5 18.06 20.35 18.58 20.08 19L16 14.92C16.42 14.65 16.94 14.5 17.5 14.5M14.92 16L19 20.08C18.58 20.35 18.06 20.5 17.5 20.5C15.84 20.5 14.5 19.16 14.5 17.5C14.5 16.94 14.65 16.42 14.92 16Z"></path></svg>
 						<?php } ?>
         </p>
+        <?php if(!empty($wo['user_profile']['website'])): ?>
+        <p class="user-short-description-text"><a href="<?php echo htmlspecialchars($wo['user_profile']['website']); ?>" target="_blank" rel="noopener"><?php echo htmlspecialchars(preg_replace('#^https?://#', '', rtrim($wo['user_profile']['website'],'/'))); ?></a></p>
+        <?php else: ?>
         <p class="user-short-description-text"><a href="#">@<?php echo $wo['user_profile']['username']; ?></a></p>
+        <?php endif; ?>
       </div>
       <!-- /USER SHORT DESCRIPTION -->
 
@@ -344,12 +350,18 @@ if ($wo['loggedin'] && $IsOwnerUser) {
           <p class="user-stat-text"><?php echo $wo['lang']['friends_btn']; ?></p>
         </div>
         <?php } ?>
-        <?php $__country = $wo['user_profile']['country_id']; if (!empty($__country) && $__country > 0) { ?>
-        <div class="user-stat big">
-          <p class="user-stat-title"><?php echo $wo['countries_name'][$__country]; ?></p>
-          <p class="user-stat-text"><?php echo $wo['lang']['living_in'] ?? 'From'; ?></p>
+        <?php $__country = $wo['user_profile']['country_id']; if (!empty($__country) && $__country > 0):
+          $__cname = $wo['countries_name'][$__country] ?? '';
+          $__iso_map = ['Afghanistan'=>'AF','Albania'=>'AL','Algeria'=>'DZ','Argentina'=>'AR','Armenia'=>'AM','Australia'=>'AU','Austria'=>'AT','Azerbaijan'=>'AZ','Bahrain'=>'BH','Bangladesh'=>'BD','Belarus'=>'BY','Belgium'=>'BE','Bolivia'=>'BO','Bosnia and Herzegovina'=>'BA','Brazil'=>'BR','Bulgaria'=>'BG','Cambodia'=>'KH','Canada'=>'CA','Chile'=>'CL','China'=>'CN','Colombia'=>'CO','Croatia'=>'HR','Czech Republic'=>'CZ','Denmark'=>'DK','Ecuador'=>'EC','Egypt'=>'EG','Estonia'=>'EE','Ethiopia'=>'ET','Finland'=>'FI','France'=>'FR','Georgia'=>'GE','Germany'=>'DE','Ghana'=>'GH','Greece'=>'GR','Guatemala'=>'GT','Hong Kong'=>'HK','Hungary'=>'HU','India'=>'IN','Indonesia'=>'ID','Iran'=>'IR','Iraq'=>'IQ','Ireland'=>'IE','Israel'=>'IL','Italy'=>'IT','Japan'=>'JP','Jordan'=>'JO','Kazakhstan'=>'KZ','Kenya'=>'KE','Kuwait'=>'KW','Latvia'=>'LV','Lebanon'=>'LB','Libya'=>'LY','Lithuania'=>'LT','Luxembourg'=>'LU','Malaysia'=>'MY','Mexico'=>'MX','Morocco'=>'MA','Netherlands'=>'NL','New Zealand'=>'NZ','Nigeria'=>'NG','North Korea'=>'KP','Norway'=>'NO','Oman'=>'OM','Pakistan'=>'PK','Palestine'=>'PS','Peru'=>'PE','Philippines'=>'PH','Poland'=>'PL','Portugal'=>'PT','Qatar'=>'QA','Romania'=>'RO','Russia'=>'RU','Saudi Arabia'=>'SA','Serbia'=>'RS','Singapore'=>'SG','Slovakia'=>'SK','Slovenia'=>'SI','South Africa'=>'ZA','South Korea'=>'KR','Spain'=>'ES','Sri Lanka'=>'LK','Sweden'=>'SE','Switzerland'=>'CH','Syria'=>'SY','Taiwan'=>'TW','Thailand'=>'TH','Tunisia'=>'TN','Turkey'=>'TR','UAE'=>'AE','Uganda'=>'UG','Ukraine'=>'UA','United Arab Emirates'=>'AE','United Kingdom'=>'GB','United States'=>'US','Uruguay'=>'UY','Uzbekistan'=>'UZ','Venezuela'=>'VE','Vietnam'=>'VN','Yemen'=>'YE','Zimbabwe'=>'ZW'];
+          $__iso = $__iso_map[$__cname] ?? '';
+          $__flag = '';
+          if ($__iso) { foreach(str_split($__iso) as $c) $__flag .= mb_chr(ord($c)-65+0x1F1E6); }
+        ?>
+        <div class="user-stat big" style="text-align:center;">
+          <?php if($__flag): ?><p class="user-stat-title" style="font-size:1.5rem;line-height:1;"><?php echo $__flag; ?></p><?php else: ?><p class="user-stat-title" style="font-size:.85rem;"><?php echo htmlspecialchars($__cname); ?></p><?php endif; ?>
+          <p class="user-stat-text"><?php echo htmlspecialchars($__cname); ?></p>
         </div>
-        <?php } ?>
+        <?php endif; ?>
       </div>
       <!-- /USER STATS -->
 
@@ -544,58 +556,101 @@ if ($wo['loggedin'] && $IsOwnerUser) {
   })();
   </script>
 
-  <!-- Profile Layout Enforcer: override any stylesheet !important rules via JS setProperty -->
+  <!-- Profile Layout Enforcer: viewport-aware, overrides stylesheet !important via JS setProperty -->
   <script>
   (function fixProfileLayout() {
     function apply() {
+      var vw = window.innerWidth || document.documentElement.clientWidth;
+      var isDesktop = vw >= 900;
       var header = document.querySelector('.wo_user_profile .profile-header');
       if (!header) return;
       header.style.setProperty('overflow', 'visible', 'important');
+      header.style.setProperty('border-radius', '12px', 'important');
       var info = header.querySelector('.profile-header-info');
       if (!info) return;
-      info.style.setProperty('height', '126px', 'important');
       info.style.setProperty('position', 'relative', 'important');
       info.style.setProperty('overflow', 'visible', 'important');
       info.style.setProperty('background-color', '#fff', 'important');
-      info.style.setProperty('padding-bottom', '0', 'important');
+      info.style.setProperty('border-bottom-left-radius', '12px', 'important');
+      info.style.setProperty('border-bottom-right-radius', '12px', 'important');
       var stats = info.querySelector('.user-stats');
-      if (stats) {
-        stats.style.setProperty('position', 'absolute', 'important');
-        stats.style.setProperty('top', '54px', 'important');
-        stats.style.setProperty('left', '40px', 'important');
-        stats.style.setProperty('display', 'flex', 'important');
-        stats.style.setProperty('margin', '0', 'important');
-        stats.style.setProperty('justify-content', 'flex-start', 'important');
-      }
       var social = info.querySelector('.profile-header-social-links-wrap');
-      if (social) {
-        social.style.setProperty('position', 'absolute', 'important');
-        social.style.setProperty('top', '54px', 'important');
-        social.style.setProperty('right', '32px', 'important');
-        social.style.setProperty('left', 'auto', 'important');
-        social.style.setProperty('display', 'block', 'important');
-        social.style.setProperty('margin', '0', 'important');
-        var links = social.querySelector('.profile-header-social-links');
-        if (links) {
-          links.style.setProperty('display', 'flex', 'important');
-          links.style.setProperty('gap', '8px', 'important');
-          links.style.setProperty('flex-wrap', 'nowrap', 'important');
-          links.style.setProperty('align-items', 'center', 'important');
-          links.style.setProperty('padding', '0', 'important');
-          links.style.setProperty('justify-content', 'flex-end', 'important');
-        }
-      }
       var actions = info.querySelector('.profile-header-info-actions');
-      if (actions) {
-        actions.style.setProperty('position', 'absolute', 'important');
-        actions.style.setProperty('top', '-40px', 'important');
-        actions.style.setProperty('right', '32px', 'important');
-        actions.style.setProperty('display', 'flex', 'important');
-        actions.style.setProperty('align-items', 'center', 'important');
-        actions.style.setProperty('gap', '8px', 'important');
-        actions.style.setProperty('flex-wrap', 'nowrap', 'important');
-        actions.style.setProperty('margin', '0', 'important');
-        actions.style.setProperty('justify-content', 'flex-end', 'important');
+      if (isDesktop) {
+        // Desktop: absolute layout — stats LEFT, social RIGHT, actions overlap cover
+        info.style.setProperty('height', '126px', 'important');
+        info.style.setProperty('padding-bottom', '0', 'important');
+        if (stats) {
+          stats.style.setProperty('position', 'absolute', 'important');
+          stats.style.setProperty('top', '54px', 'important');
+          stats.style.setProperty('left', '40px', 'important');
+          stats.style.setProperty('display', 'flex', 'important');
+          stats.style.setProperty('margin', '0', 'important');
+          stats.style.setProperty('justify-content', 'flex-start', 'important');
+          stats.style.setProperty('flex-wrap', 'nowrap', 'important');
+          stats.style.setProperty('max-width', 'calc(50% - 80px)', 'important');
+        }
+        if (social) {
+          social.style.setProperty('position', 'absolute', 'important');
+          social.style.setProperty('top', '54px', 'important');
+          social.style.setProperty('right', '32px', 'important');
+          social.style.setProperty('left', 'auto', 'important');
+          social.style.setProperty('display', 'block', 'important');
+          social.style.setProperty('margin', '0', 'important');
+          var links = social.querySelector('.profile-header-social-links');
+          if (links) {
+            links.style.setProperty('display', 'flex', 'important');
+            links.style.setProperty('gap', '8px', 'important');
+            links.style.setProperty('flex-wrap', 'nowrap', 'important');
+            links.style.setProperty('align-items', 'center', 'important');
+            links.style.setProperty('padding', '0', 'important');
+          }
+        }
+        if (actions) {
+          actions.style.setProperty('position', 'absolute', 'important');
+          actions.style.setProperty('top', '-40px', 'important');
+          actions.style.setProperty('right', '32px', 'important');
+          actions.style.setProperty('display', 'flex', 'important');
+          actions.style.setProperty('align-items', 'center', 'important');
+          actions.style.setProperty('gap', '8px', 'important');
+          actions.style.setProperty('flex-wrap', 'nowrap', 'important');
+          actions.style.setProperty('margin', '0', 'important');
+        }
+      } else {
+        // Mobile: stacked layout — everything centered, static flow
+        info.style.setProperty('height', 'auto', 'important');
+        info.style.setProperty('padding-bottom', '24px', 'important');
+        if (stats) {
+          stats.style.setProperty('position', 'static', 'important');
+          stats.style.setProperty('display', 'flex', 'important');
+          stats.style.setProperty('justify-content', 'center', 'important');
+          stats.style.setProperty('flex-wrap', 'wrap', 'important');
+          stats.style.setProperty('margin', '68px auto 0', 'important');
+          stats.style.setProperty('max-width', '100%', 'important');
+        }
+        if (social) {
+          social.style.setProperty('position', 'static', 'important');
+          social.style.setProperty('display', 'block', 'important');
+          social.style.setProperty('margin', '12px auto 0', 'important');
+          social.style.setProperty('text-align', 'center', 'important');
+          social.style.setProperty('right', 'auto', 'important');
+          var links = social.querySelector('.profile-header-social-links');
+          if (links) {
+            links.style.setProperty('display', 'flex', 'important');
+            links.style.setProperty('justify-content', 'center', 'important');
+            links.style.setProperty('flex-wrap', 'wrap', 'important');
+            links.style.setProperty('gap', '8px', 'important');
+          }
+        }
+        if (actions) {
+          actions.style.setProperty('position', 'absolute', 'important');
+          actions.style.setProperty('top', '-40px', 'important');
+          actions.style.setProperty('right', '8px', 'important');
+          actions.style.setProperty('display', 'flex', 'important');
+          actions.style.setProperty('gap', '4px', 'important');
+          actions.style.setProperty('flex-wrap', 'nowrap', 'important');
+          actions.style.setProperty('margin', '0', 'important');
+        }
       }
     }
     apply();
@@ -605,26 +660,32 @@ if ($wo['loggedin'] && $IsOwnerUser) {
     }
     setTimeout(apply, 100);
     setTimeout(apply, 500);
-    setTimeout(apply, 1500);
+    var resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(apply, 50);
+    });
   })();
   </script>
 
   <!-- SECTION NAVIGATION -->
-  <?php if ($wo['user_profile']['banned'] != 1) { ?>
+  <?php if ($wo['user_profile']['banned'] != 1) {
+    $__tab = isset($_GET['type']) ? $_GET['type'] : 'timeline';
+  ?>
   <nav class="section-navigation">
     <div class="section-menu" id="section-navigation-slider">
-<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'];?>">
+<a class="section-menu-item <?php echo ($__tab==='timeline')?'active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'];?>">
 							<svg class="section-menu-item-icon" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M16,0H4C1.791,0,0,1.791,0,4v12c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4V4C20,1.791,18.209,0,16,0zM18,16c0,1.103-0.897,2-2,2H4c-1.103,0-2-0.897-2-2V4c0-1.103,0.897-2,2-2h12c1.103,0,2,0.897,2,2V16z"/><polygon points="18,5 2,5 2,7 5,7 5,18 7,18 7,7 13,7 13,18 15,18 15,7 18,7"/></svg>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['timeline'];?></p>
 						</a>
 					<?php if ($wo['config']['groups'] == 1) {?>
-<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=groups');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=groups">
+<a class="section-menu-item <?php echo ($__tab==='groups')?'active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=groups');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=groups">
 							<svg class="section-menu-item-icon" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10,2c1.654,0,3,1.346,3,3s-1.346,3-3,3S7,6.654,7,5S8.346,2,10,2 M10,0C7.238,0,5,2.238,5,5s2.238,5,5,5s5-2.238,5-5S12.762,0,10,0L10,0z"/><path d="M3,20v-2c0-2.205,1.794-4,4-4h6c2.206,0,4,1.795,4,4v2h2v-2c0-3.313-2.687-6-6-6H7c-3.313,0-6,2.687-6,6v2H3z"/><path d="M20,8.05c-1.13,0-2.05-0.919-2.05-2.05S18.87,3.95,20,3.95v-2c-2.236,0-4.05,1.813-4.05,4.05s1.813,4.05,4.05,4.05V8.05z"/><path d="M0,8.05C1,8.05,2.05,7.13,2.05,6S1,3.95,0,3.95v-2c2,0,4.05,1.813,4.05,4.05S2,10.05,0,10.05V8.05z"/></svg>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['groups'];?></p>
 						</a>
 					<?php } ?>
 					<?php if ($wo['config']['pages'] == 1) {?>
-<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=likes');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=likes">
+<a class="section-menu-item <?php echo ($__tab==='likes')?'active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=likes');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=likes">
 							<svg class="section-menu-item-icon" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10,3.656C8.5,1.313,5.5,0.5,3.5,2.5s-2,5.5,0,7.5L10,17l6.5-7c2-2,2-5.5,0-7.5S11.5,1.313,10,3.656z"/></svg>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['likes'];?></p>
 						</a>
@@ -636,7 +697,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 						</a>
 					<?php } ?>
 					<?php if ($wo['config']['connectivitySystem'] == 0) {?>
-<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=following');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=following">
+<a class="section-menu-item <?php echo ($__tab==='following')?'active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=following');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=following">
 							<svg class="section-menu-item-icon" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12,0C8.686,0,6,2.686,6,6s2.686,6,6,6s6-2.686,6-6S15.314,0,12,0z M12,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S14.206,10,12,10z"/><path d="M2,21v-1c0-3.309,2.691-6,6-6h8c3.309,0,6,2.691,6,6v1h-2v-1c0-2.206-1.794-4-4-4H8c-2.206,0-4,1.794-4,4v1H2z"/><path d="M3,9H1V7H3V5h2v2h2v2H5v2H3V9z"/></svg>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['following'];?></p>
 						</a>
@@ -645,18 +706,18 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 							<p class="section-menu-item-text"><?php echo $wo['lang']['followers'];?></p>
 						</a>
 					<?php } ?>
-<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=photos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=photos">
+<a class="section-menu-item <?php echo ($__tab==='photos')?'active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=photos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=photos">
 							<svg class="section-menu-item-icon" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M16,0H4C1.791,0,0,1.791,0,4v12c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4V4C20,1.791,18.209,0,16,0zM4,2h12c1.103,0,2,0.897,2,2v6.407L16.703,9.11c-0.75-0.751-1.734-1.126-2.718-1.126c-0.984,0-1.968,0.375-2.719,1.126l-2.98,2.98l-0.259-0.259c-0.563-0.563-1.301-0.844-2.039-0.844s-1.476,0.282-2.04,0.844L2,13.782V4C2,2.897,2.897,2,4,2z M16,18H4c-0.918,0-1.686-0.625-1.919-1.47l3.282-3.283c0.226-0.226,0.489-0.259,0.626-0.259c0.137,0,0.399,0.033,0.625,0.258l0.259,0.259l1.414,1.414L9.7,13.505l2.981-2.981c0.348-0.348,0.811-0.54,1.304-0.54c0.492,0,0.955,0.192,1.304,0.541L18,13.234V16C18,17.103,17.103,18,16,18z"/><path d="M6,9c1.657,0,3-1.344,3-3c0-1.657-1.343-3-3-3S3,4.343,3,6C3,7.656,4.343,9,6,9z M6,5c0.551,0,1,0.449,1,1c0,0.552-0.449,1-1,1S5,6.552,5,6C5,5.449,5.449,5,6,5z"/></svg>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['photos'];?></p>
 						</a>
 					<?php if ($wo['config']['video_upload'] == 1) { ?>
-<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=videos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=videos">
+<a class="section-menu-item <?php echo ($__tab==='videos')?'active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=videos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=videos">
 							<svg class="section-menu-item-icon" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M16,3c1.103,0,2,0.897,2,2v10c0,1.103-0.897,2-2,2H4c-1.103,0-2-0.897-2-2V5c0-1.103,0.897-2,2-2H16 M16,1H4C1.791,1,0,2.791,0,5v10c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4V5C20,2.791,18.209,1,16,1L16,1z"/><path d="M8.405,7c0.102,0,0.219,0.037,0.347,0.115l3.908,2.4c0.439,0.267,0.462,0.704,0.021,0.971l-3.928,2.4C8.624,12.964,8.507,13,8.405,13C8.157,13,8,12.782,8,12.408V7.593C8,7.217,8.157,7,8.405,7 M8.405,5C7.034,5,6,6.115,6,7.593v4.815C6,13.886,7.034,15,8.405,15c0.477,0,0.943-0.137,1.386-0.405l3.932-2.402c0.796-0.481,1.276-1.297,1.277-2.177c0.001-0.888-0.486-1.715-1.304-2.21L9.798,5.411C9.348,5.137,8.881,5,8.405,5L8.405,5z"/></svg>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['videos'];?></p>
 						</a>
 					<?php } ?>
 					<?php if($wo['config']['reels_upload']) {?>
-<a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=reels');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=reels">
+<a class="section-menu-item <?php echo ($__tab==='reels')?'active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=reels');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=reels">
 							<svg class="section-menu-item-icon" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M16,0H4C1.791,0,0,1.791,0,4v12c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4V4C20,1.791,18.209,0,16,0zM4,2h12c1.103,0,2,0.897,2,2v1h-2V4c0-0.552-0.448-1-1-1H5C4.448,3,4,3.448,4,4v1H2V4C2,2.897,2.897,2,4,2z M18,6v2H2V6H18z M4,18c-1.103,0-2-0.897-2-2v-8h16v8c0,1.103-0.897,2-2,2H4z"/><polygon points="8,10 8,16 14,13"/></svg>
 							<p class="section-menu-item-text"><?php echo $wo['lang']['reels'];?></p>
 						</a>
