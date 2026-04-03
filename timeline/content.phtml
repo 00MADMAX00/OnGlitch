@@ -83,8 +83,8 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 /* Mobile: stack layout */
 @media(max-width:900px){
   .profile-header .profile-header-info{height:auto!important;overflow:visible!important;padding-bottom:24px!important;padding-top:8px!important;}
-  .profile-header .profile-header-info .user-stats{margin:68px auto 0!important;justify-content:center!important;flex-wrap:wrap!important;gap:0;}
-  .profile-header .profile-header-info .profile-header-social-links-wrap{width:auto!important;margin:12px auto 0!important;text-align:center!important;}
+  .profile-header .profile-header-info .user-stats{position:static!important;top:auto!important;left:auto!important;margin:68px auto 0!important;justify-content:center!important;flex-wrap:wrap!important;gap:0;}
+  .profile-header .profile-header-info .profile-header-social-links-wrap{position:static!important;top:auto!important;right:auto!important;width:auto!important;height:auto!important;max-width:none!important;margin:12px auto 0!important;text-align:center!important;}
   .profile-header .profile-header-social-links{justify-content:center!important;flex-wrap:wrap!important;}
   .profile-header .profile-header-info .profile-header-info-actions{top:-40px!important;right:8px!important;}
   .profile-header .profile-header-info .user-short-description.big{text-align:center;}
@@ -96,33 +96,20 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 /* Section navigation */
 .section-navigation{padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;width:100%!important;display:block!important;overflow:hidden!important;}
 .section-menu{height:80px!important;display:flex!important;align-items:stretch!important;}
-.section-menu-item{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;flex:1!important;height:80px!important;position:relative!important;text-decoration:none!important;color:inherit!important;border-bottom:4px solid transparent;transition:border-color .2s;overflow:hidden!important;padding:0 8px!important;}
+/* Tab item: icon pinned to top-center, text pinned to bottom-center — no overlap */
+.section-menu-item{display:flex!important;flex:1!important;height:80px!important;position:relative!important;text-decoration:none!important;color:inherit!important;border-bottom:4px solid transparent!important;transition:border-color .2s!important;padding:0!important;overflow:visible!important;}
 .section-menu-item+.section-menu-item::before{content:'';position:absolute;left:0;top:28px;width:1px;height:24px;background:#eaeaf5;}
 .section-menu-item.active,.section-menu-item:hover{border-bottom-color:#23d2e2!important;}
-.section-menu-item-icon{fill:#adafca;opacity:.6;transition:opacity .2s,transform .2s;width:20px!important;height:20px!important;flex-shrink:0;stroke:none!important;}
-.section-menu-item.active .section-menu-item-icon{fill:#3e3f5e;opacity:1;}
-.section-menu-item:hover .section-menu-item-icon{transform:translate(0,-26px);opacity:0;}
-.section-menu-item-text{color:#3e3f5e;font-size:.75rem;font-weight:700;text-align:center;position:absolute;bottom:18px;width:100%;transform:translate(0,26px);opacity:0;transition:opacity .2s,transform .2s;}
-.section-menu-item.active .section-menu-item-text{transform:translate(0,0);opacity:1;}
-.section-menu-item:hover .section-menu-item-text{transform:translate(0,0);opacity:1;}
-@media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:60px;height:54px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
-
-/* RED: pull profile name/info higher in the header card */
-.profile-header .profile-header-info .user-short-description.big{padding-top:32px!important;}
-
-/* GREEN: bigger profile name font */
-.user-short-description .user-short-description-title{font-size:1.85rem!important;}
-/* GREEN: mobile — social links centered under stats, no overlap */
-@media(max-width:680px){
-  .profile-header .profile-header-info .profile-header-social-links-wrap{position:static!important;width:auto!important;height:auto!important;margin:10px auto 0!important;text-align:center!important;}
-  .profile-header .profile-header-social-links{justify-content:center!important;flex-wrap:wrap!important;}
-}
-
-/* ORANGE: tab text hidden on hover, only visible on active tab */
-.section-menu-item:hover .section-menu-item-text{transform:translate(0,26px)!important;opacity:0!important;}
-.section-menu-item:hover .section-menu-item-icon{transform:none!important;opacity:.6!important;}
-/* ORANGE: active tab glossy 3D box highlight */
+/* Icon: absolute, top-center, always visible */
+.section-menu-item-icon{fill:#adafca;opacity:.6;width:20px!important;height:20px!important;stroke:none!important;position:absolute!important;top:18px!important;left:50%!important;transform:translateX(-50%)!important;transition:opacity .2s!important;}
+.section-menu-item.active .section-menu-item-icon,.section-menu-item:hover .section-menu-item-icon{fill:#3e3f5e!important;opacity:1!important;}
+/* Text: absolute, bottom-center, hidden by default — ONLY shown on active tab */
+.section-menu-item-text{color:#3e3f5e;font-size:.875rem;font-weight:700;text-align:center;position:absolute!important;bottom:8px!important;left:0!important;width:100%!important;opacity:0!important;visibility:hidden!important;transform:none!important;transition:opacity .2s,visibility .2s!important;}
+.section-menu-item.active .section-menu-item-text{opacity:1!important;visibility:visible!important;}
+/* Active tab: glossy 3D box */
 .section-menu-item.active{background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(215,215,225,.80) 100%)!important;box-shadow:0 2px 8px rgba(0,0,0,.10),inset 0 1px 3px rgba(255,255,255,.98),inset 0 -1px 2px rgba(0,0,0,.07)!important;border:1px solid rgba(195,195,208,.65)!important;border-radius:8px!important;border-bottom-color:#23d2e2!important;}
+@media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:60px;height:54px!important;border-bottom:none!important;border-bottom-color:transparent!important;}.section-menu-item.active{background:rgba(35,210,226,.1)!important;border-radius:8px!important;box-shadow:none!important;border:none!important;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{top:17px!important;}.section-menu-item-text{display:none!important;}}
+
 </style>
 
 <!-- Vikinger Hexagon JS -->
