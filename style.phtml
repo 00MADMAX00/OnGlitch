@@ -139,45 +139,11 @@ input.cusrange[type=range]::-webkit-slider-thumb {
     height: 70px;box-shadow: 0 1px 6px rgb(0 0 0 / 5%);
 }
 
-/* === RED FIX: Header nav items vertically centered === */
-.navbar-default nav.header-fixed1000,
-.navbar-default .container-fluid {
-    height: 70px;
-    display: flex;
-    align-items: center;
-}
-.wow_hdr_innr_left {
-    display: flex;
-    align-items: center;
-    height: 70px;
-    flex-shrink: 0;
-}
-#head_menu_rght.nav.navbar-nav {
-    display: flex !important;
-    align-items: center !important;
-    height: 70px;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    float: right;
-}
-#head_menu_rght > li {
-    display: flex !important;
-    align-items: center !important;
-    height: 70px;
-}
-#head_menu_rght > li > a {
-    display: flex !important;
-    align-items: center !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    height: 70px;
-}
-.navbar-default .navbar-nav > li > a {
-    display: flex !important;
-    align-items: center !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    height: 70px;
+/* === RED FIX: Profile pic-info-cont pulled up into header card === */
+.wo_user_profile .card.hovercard .pic-info-cont {
+    margin-top: -30px !important;
+    position: relative;
+    z-index: 2;
 }
 
 /* === GREEN FIX: Profile name font bigger & mobile overlap === */
