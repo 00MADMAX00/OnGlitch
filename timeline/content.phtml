@@ -8,103 +8,28 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 ?>
 <style>.post-youtube iframe {overflow: hidden !important; height: 360px !important;}</style>
 <style>
-/* RED: Pull profile info up into the cover card */
+/* RED: pic-info-cont sits higher inside the header card */
 .wo_user_profile .card.hovercard .pic-info-cont {
     margin-top: -30px !important;
     position: relative;
     z-index: 2;
 }
-
-/* GREEN: Bigger profile name font */
-.wo_user_profile .pic-info-cont .info .title {
-    font-size: 22px !important;
-    font-weight: 700 !important;
-    line-height: 1.3;
-}
-.wo_user_profile .pic-info-cont .info .title a {
-    font-size: 22px !important;
-    font-weight: 700 !important;
-}
-.wo_user_profile .pic-info-cont .info p {
-    font-size: 14px !important;
-    font-weight: 500 !important;
-}
-/* GREEN mobile: stack items, center social links under username */
+/* GREEN: bigger profile name */
+.wo_user_profile .pic-info-cont .info .title,
+.wo_user_profile .pic-info-cont .info .title a { font-size: 22px !important; font-weight: 700 !important; }
+.wo_user_profile .pic-info-cont .info p { font-size: 14px !important; }
+/* GREEN mobile: social links centred under username */
 @media (max-width: 767px) {
-    .wo_user_profile .pic-info-cont {
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        text-align: center;
-        padding: 10px !important;
-    }
-    .wo_user_profile .pic-info-cont .info {
-        flex: 0 0 100% !important;
-        text-align: center !important;
-        margin-top: 6px;
-    }
-    .wo_user_profile .pic-info-cont .options-buttons {
-        flex: 0 0 100% !important;
-        display: flex !important;
-        justify-content: center !important;
-        flex-wrap: wrap !important;
-        gap: 6px;
-        margin-top: 8px;
-    }
-    .wo_user_profile .list-group-item.user-social-links {
-        display: flex !important;
-        justify-content: center !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-        text-align: center !important;
-    }
+    .wo_user_profile .list-group-item.user-social-links { text-align: center !important; }
 }
-
-/* ORANGE: Tab icons above text, text hidden unless active, glossy box on active */
-.wo_user_profile .user-bottom-nav ul {
-    display: flex !important;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    overflow-x: auto;
-}
-.wo_user_profile .user-bottom-nav ul li {
-    flex: 1;
-    min-width: 0;
-}
-.wo_user_profile .user-bottom-nav ul li a {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 10px 4px !important;
-    text-decoration: none !important;
-    border-radius: 8px;
-    margin: 4px 2px;
-    transition: background 0.2s, box-shadow 0.2s;
-    min-height: 48px;
-}
-.wo_user_profile .user-bottom-nav ul li a .split-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-.wo_user_profile .user-bottom-nav ul li a > span:not(.split-link) {
-    display: none !important;
-    font-size: 11px;
-    font-weight: 600;
-    margin-top: 4px;
-    text-align: center;
-    line-height: 1.2;
-    white-space: nowrap;
-}
-.wo_user_profile .user-bottom-nav ul li a.menuactive > span:not(.split-link) {
-    display: block !important;
-}
+/* ORANGE: hide tab text by default, show only on active, glossy box on active */
+.wo_user_profile .user-bottom-nav ul li a > span:not(.split-link) { display: none !important; }
+.wo_user_profile .user-bottom-nav ul li a.menuactive > span:not(.split-link) { display: inline-block !important; font-size: 11px; font-weight: 600; }
 .wo_user_profile .user-bottom-nav ul li a.menuactive {
     background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(220,220,228,0.75) 100%) !important;
     box-shadow: 0 2px 8px rgba(0,0,0,0.10), inset 0 1px 2px rgba(255,255,255,0.95), inset 0 -1px 2px rgba(0,0,0,0.07) !important;
     border: 1px solid rgba(200,200,210,0.6) !important;
+    border-radius: 8px;
 }
 </style>
 <div class="row page-margin profile wo_user_profile" data-page="timeline" data-id="<?php echo $wo['user_profile']['user_id'];?>">
