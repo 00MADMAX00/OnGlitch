@@ -10,6 +10,10 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 <style>.post-youtube iframe {overflow: hidden !important; height: 360px !important;}</style>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+/* ===== Global navbar: keep fixed, never flow into content ===== */
+.navbar.navbar-default,.navbar-fixed-top,.header-container .navbar{position:fixed!important;top:0!important;z-index:9999!important;width:100%!important;}
+/* ===== Prevent content from sliding behind fixed navbar ===== */
+.content-container{padding-top:0;}
 /* ==== Vikinger Profile Header — Rajdhani font throughout ==== */
 .profile-header,.profile-header *,.section-navigation,.section-navigation *,
 .user-stat,.user-stat *,.user-short-description,.user-short-description *{font-family:'Rajdhani',sans-serif!important;}
@@ -65,10 +69,10 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .user-stats .user-stat:last-child::after{display:none;}
 .user-stat{padding:0 24px;}.user-stat.big{padding:0 30px;}
 .user-stat .user-stat-title,.user-stat .user-stat-text{font-family:'Rajdhani',sans-serif!important;font-weight:700!important;text-transform:uppercase;text-align:center;}
-.user-stat .user-stat-title{font-size:.875rem;color:#3e3f5e;margin:0;}
-.user-stat.big .user-stat-title{font-size:1.375rem!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;}
-.user-stat .user-stat-text{font-size:.625rem;color:#adafca;margin:4px 0 0;}
-.user-stat.big .user-stat-text{font-size:.75rem!important;color:#adafca!important;margin:4px 0 0!important;}
+.user-stat .user-stat-title{font-size:14px;color:#3e3f5e;margin:0;}
+.user-stat.big .user-stat-title{font-size:22px!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;}
+.user-stat .user-stat-text{font-size:10px;color:#adafca;margin:4px 0 0;}
+.user-stat.big .user-stat-text{font-size:12px!important;color:#adafca!important;margin:4px 0 0!important;}
 /* Desktop: stats absolute LEFT */
 .profile-header .profile-header-info .user-stats{position:absolute!important;top:54px!important;left:40px!important;overflow:visible;flex-wrap:nowrap;}
 /* Social links */
@@ -102,10 +106,11 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .section-menu-item+.section-menu-item::before{content:'';position:absolute;left:0;top:28px;width:1px;height:24px;background:#eaeaf5;}
 .section-menu-item.active,.section-menu-item:hover{border-bottom-color:#23d2e2!important;}
 .section-menu-item-icon{fill:#adafca;opacity:.6;transition:opacity .2s,transform .2s;width:20px!important;height:20px!important;flex-shrink:0;stroke:none!important;}
-.section-menu-item.active .section-menu-item-icon{fill:#3e3f5e!important;transform:translate(0,-26px)!important;opacity:0!important;}
+.section-menu-item.active .section-menu-item-icon{fill:#3e3f5e!important;opacity:1!important;transform:translate(0,-14px)!important;}
 .section-menu-item:hover .section-menu-item-icon{transform:translate(0,-26px);opacity:0;}
-.section-menu-item-text{color:#3e3f5e;font-size:.75rem;font-weight:700;font-family:'Rajdhani',sans-serif;text-align:center;position:absolute;bottom:18px;width:100%;transform:translate(0,26px);opacity:0;transition:opacity .2s,transform .2s;text-transform:uppercase;letter-spacing:.05em;}
-.section-menu-item.active .section-menu-item-text{transform:translate(0,0);opacity:1;}
+.section-menu-item.active:hover .section-menu-item-icon{transform:translate(0,-26px)!important;opacity:0!important;}
+.section-menu-item-text{color:#3e3f5e;font-size:.75rem;font-weight:700;font-family:'Rajdhani',sans-serif;text-align:center;position:absolute;bottom:8px;width:100%;transform:translate(0,26px);opacity:0;transition:opacity .2s,transform .2s;text-transform:uppercase;letter-spacing:.05em;}
+.section-menu-item.active .section-menu-item-text{transform:translate(0,0)!important;opacity:1!important;}
 .section-menu-item:hover .section-menu-item-text{transform:translate(0,0);opacity:1;}
 @media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:60px;height:54px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
 </style>
@@ -334,22 +339,22 @@ if ($wo['loggedin'] && $IsOwnerUser) {
       <!-- USER STATS -->
       <div class="user-stats" style="position:absolute;top:54px;left:40px;display:flex;align-items:center;">
         <div class="user-stat big">
-          <p class="user-stat-title" style="font-family:'Rajdhani',sans-serif;font-size:1.375rem;font-weight:700;color:#3e3f5e;"><?php echo number_format($wo['user_profile']['details']['post_count']); ?></p>
-          <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif;font-size:.75rem;font-weight:700;color:#adafca;text-transform:uppercase;margin:4px 0 0;"><?php echo TextForMode('posts'); ?></p>
+          <p class="user-stat-title" style="font-family:'Rajdhani',sans-serif!important;font-size:22px!important;font-weight:700!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;"><?php echo number_format($wo['user_profile']['details']['post_count']); ?></p>
+          <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif!important;font-size:12px!important;font-weight:700!important;color:#adafca!important;text-transform:uppercase!important;margin:4px 0 0!important;letter-spacing:.04em!important;"><?php echo TextForMode('posts'); ?></p>
         </div>
         <?php if ($wo['config']['connectivitySystem'] == 0) { ?>
         <div class="user-stat big">
-          <p class="user-stat-title" style="font-family:'Rajdhani',sans-serif;font-size:1.375rem;font-weight:700;color:#3e3f5e;margin:0;"><?php echo number_format(Wo_CountFollowing($wo['user_profile']['user_id'])); ?></p>
-          <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif;font-size:.75rem;font-weight:700;color:#adafca;text-transform:uppercase;margin:4px 0 0;"><?php echo $wo['lang']['following']; ?></p>
+          <p class="user-stat-title" style="font-family:'Rajdhani',sans-serif!important;font-size:22px!important;font-weight:700!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;"><?php echo number_format(Wo_CountFollowing($wo['user_profile']['user_id'])); ?></p>
+          <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif!important;font-size:12px!important;font-weight:700!important;color:#adafca!important;text-transform:uppercase!important;margin:4px 0 0!important;letter-spacing:.04em!important;"><?php echo $wo['lang']['following']; ?></p>
         </div>
         <div class="user-stat big">
-          <p class="user-stat-title" style="font-family:'Rajdhani',sans-serif;font-size:1.375rem;font-weight:700;color:#3e3f5e;margin:0;"><?php echo number_format(Wo_CountFollowers($wo['user_profile']['user_id'])); ?></p>
-          <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif;font-size:.75rem;font-weight:700;color:#adafca;text-transform:uppercase;margin:4px 0 0;"><?php echo $wo['lang']['followers']; ?></p>
+          <p class="user-stat-title" style="font-family:'Rajdhani',sans-serif!important;font-size:22px!important;font-weight:700!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;"><?php echo number_format(Wo_CountFollowers($wo['user_profile']['user_id'])); ?></p>
+          <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif!important;font-size:12px!important;font-weight:700!important;color:#adafca!important;text-transform:uppercase!important;margin:4px 0 0!important;letter-spacing:.04em!important;"><?php echo $wo['lang']['followers']; ?></p>
         </div>
         <?php } else { ?>
         <div class="user-stat big">
-          <p class="user-stat-title" style="font-family:'Rajdhani',sans-serif;font-size:1.375rem;font-weight:700;color:#3e3f5e;margin:0;"><?php echo number_format(Wo_CountFollowers($wo['user_profile']['user_id'])); ?></p>
-          <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif;font-size:.75rem;font-weight:700;color:#adafca;text-transform:uppercase;margin:4px 0 0;"><?php echo $wo['lang']['friends_btn']; ?></p>
+          <p class="user-stat-title" style="font-family:'Rajdhani',sans-serif!important;font-size:22px!important;font-weight:700!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;"><?php echo number_format(Wo_CountFollowers($wo['user_profile']['user_id'])); ?></p>
+          <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif!important;font-size:12px!important;font-weight:700!important;color:#adafca!important;text-transform:uppercase!important;margin:4px 0 0!important;letter-spacing:.04em!important;"><?php echo $wo['lang']['friends_btn']; ?></p>
         </div>
         <?php } ?>
         <?php $__country = $wo['user_profile']['country_id']; if (!empty($__country) && $__country > 0):
@@ -360,8 +365,8 @@ if ($wo['loggedin'] && $IsOwnerUser) {
           if ($__iso) { foreach(str_split($__iso) as $c) $__flag .= mb_chr(ord($c)-65+0x1F1E6); }
         ?>
         <div class="user-stat big" style="text-align:center;">
-          <p class="user-stat-title" style="font-size:1.375rem;line-height:1.1;"><?php echo $__flag ?: htmlspecialchars(substr($__cname,0,3)); ?></p>
-          <p class="user-stat-text"><?php echo $__iso ?: htmlspecialchars(substr($__cname,0,6)); ?></p>
+          <p class="user-stat-title" style="font-size:22px!important;line-height:1.1!important;"><?php echo $__flag ?: htmlspecialchars(substr($__cname,0,3)); ?></p>
+          <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif!important;font-size:12px!important;font-weight:700!important;color:#adafca!important;text-transform:uppercase!important;margin:4px 0 0!important;"><?php echo $__iso ?: htmlspecialchars(substr($__cname,0,6)); ?></p>
         </div>
         <?php endif; ?>
       </div>
