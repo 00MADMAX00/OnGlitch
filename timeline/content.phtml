@@ -21,15 +21,15 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile.row{padding-left:0!important;padding-right:0!important;margin-left:0!important;margin-right:0!important;flex-wrap:wrap!important;}
 /* Profile header card */
 .profile-header{border-radius:12px!important;background-color:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;overflow:visible!important;width:100%!important;flex:0 0 100%!important;}
-/* Cover */
-.profile-header .profile-header-cover{border-top-left-radius:12px!important;border-top-right-radius:12px!important;height:300px;overflow:hidden!important;position:relative!important;display:block!important;margin:0!important;padding:0!important;line-height:0!important;}
-@media(max-width:1365px){.profile-header .profile-header-cover{height:200px;}}
-@media(max-width:480px){.profile-header .profile-header-cover{height:120px;}}
+/* Cover — taller banner to fill gap */
+.profile-header .profile-header-cover{border-top-left-radius:12px!important;border-top-right-radius:12px!important;height:340px;overflow:hidden!important;position:relative!important;display:block!important;margin:0!important;padding:0!important;line-height:0!important;}
+@media(max-width:1365px){.profile-header .profile-header-cover{height:250px;}}
+@media(max-width:480px){.profile-header .profile-header-cover{height:150px;}}
 .profile-header .profile-header-cover #cover-image{width:100%;height:100%;object-fit:cover;display:block;}
 .profile-cover-changer{position:absolute!important;top:12px;right:12px;display:flex;gap:6px;z-index:10;}
 .user-cover-reposition-container,.user-cover-reposition-w{width:100%;height:100%;}
-/* Info bar */
-.profile-header .profile-header-info{height:126px!important;position:relative!important;overflow:visible!important;background-color:#fff!important;border-bottom-left-radius:12px!important;border-bottom-right-radius:12px!important;}
+/* Info bar — no gap after cover, rounded bottom corners */
+.profile-header .profile-header-info{height:126px!important;position:relative!important;overflow:visible!important;background-color:#fff!important;border-bottom-left-radius:12px!important;border-bottom-right-radius:12px!important;margin-top:-1px!important;}
 /* User short description — centered, avatar overlaps cover */
 .user-short-description{padding-top:84px;position:relative;text-align:center;}
 .user-short-description.big{padding-top:52px;}
@@ -101,18 +101,42 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 }
 /* Section navigation */
 .section-navigation{padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;width:100%!important;flex:0 0 100%!important;overflow:hidden!important;}
-.section-menu{height:80px!important;display:flex!important;align-items:stretch!important;}
-.section-menu-item{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;flex:1!important;height:80px!important;position:relative!important;text-decoration:none!important;color:inherit!important;border-bottom:4px solid transparent;transition:border-color .2s;overflow:hidden!important;padding:0 8px!important;}
-.section-menu-item+.section-menu-item::before{content:'';position:absolute;left:0;top:28px;width:1px;height:24px;background:#eaeaf5;}
+.section-menu{height:90px!important;display:flex!important;align-items:stretch!important;}
+.section-menu-item{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;flex:1!important;height:90px!important;position:relative!important;text-decoration:none!important;color:inherit!important;border-bottom:4px solid transparent;transition:border-color .2s;overflow:hidden!important;padding:0 8px!important;}
+.section-menu-item+.section-menu-item::before{content:'';position:absolute;left:0;top:30px;width:1px;height:30px;background:#eaeaf5;}
 .section-menu-item.active,.section-menu-item:hover{border-bottom-color:#23d2e2!important;}
-.section-menu-item-icon{fill:#adafca;opacity:.6;transition:opacity .2s,transform .2s;width:20px!important;height:20px!important;flex-shrink:0;stroke:none!important;}
-.section-menu-item.active .section-menu-item-icon{fill:#3e3f5e!important;opacity:1!important;transform:translate(0,-14px)!important;}
-.section-menu-item:hover .section-menu-item-icon{transform:translate(0,-26px);opacity:0;}
-.section-menu-item.active:hover .section-menu-item-icon{transform:translate(0,-26px)!important;opacity:0!important;}
-.section-menu-item-text{color:#3e3f5e;font-size:.75rem;font-weight:700;font-family:'Rajdhani',sans-serif;text-align:center;position:absolute;bottom:8px;width:100%;transform:translate(0,26px);opacity:0;transition:opacity .2s,transform .2s;text-transform:uppercase;letter-spacing:.05em;}
+.section-menu-item-icon{fill:#adafca;opacity:.6;transition:opacity .2s,transform .2s;width:28px!important;height:28px!important;flex-shrink:0;stroke:none!important;}
+.section-menu-item.active .section-menu-item-icon{fill:#3e3f5e!important;opacity:1!important;transform:translate(0,-16px)!important;}
+.section-menu-item:hover .section-menu-item-icon{transform:translate(0,-30px);opacity:0;}
+.section-menu-item.active:hover .section-menu-item-icon{transform:translate(0,-30px)!important;opacity:0!important;}
+.section-menu-item-text{color:#3e3f5e;font-size:14px;font-weight:700;font-family:'Rajdhani',sans-serif;text-align:center;position:absolute;bottom:10px;width:100%;transform:translate(0,30px);opacity:0;transition:opacity .2s,transform .2s;text-transform:uppercase;letter-spacing:.05em;}
 .section-menu-item.active .section-menu-item-text{transform:translate(0,0)!important;opacity:1!important;}
 .section-menu-item:hover .section-menu-item-text{transform:translate(0,0);opacity:1;}
-@media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:60px;height:54px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
+@media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:70px;height:60px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
+/* ===== BROWN fix: ensure proper rounded corners on the card ===== */
+.profile-header{border-radius:12px!important;overflow:hidden!important;}
+/* ===== PURPLE fix: hexagon-shaped avatars in the post feed ===== */
+.post-heading .image a.avatar,
+.post-heading .image a.wow_post_usr_ava{
+  display:block!important;
+  width:48px!important;
+  height:48px!important;
+  overflow:hidden!important;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)!important;
+  -webkit-clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)!important;
+  border-radius:0!important;
+  flex-shrink:0;
+}
+.post-heading .image a.avatar img,
+.post-heading .image a.wow_post_usr_ava img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  display:block!important;
+  border-radius:0!important;
+}
+.post-heading .image a.avatar .verified-color,
+.post-heading .image a.wow_post_usr_ava .verified-color{display:none!important;}
 </style>
 
 <!-- Vikinger Hexagon JS -->
@@ -121,7 +145,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 <div class="row page-margin profile wo_user_profile" data-page="timeline" data-id="<?php echo $wo['user_profile']['user_id'];?>">
 
   <!-- PROFILE HEADER -->
-  <div class="profile-header" style="border-radius:12px;background-color:#fff;box-shadow:0 0 40px 0 rgba(94,92,154,.12);margin-bottom:16px;overflow:visible;position:relative;">
+  <div class="profile-header" style="border-radius:12px;background-color:#fff;box-shadow:0 0 40px 0 rgba(94,92,154,.12);margin-bottom:16px;overflow:hidden;position:relative;">
 
     <!-- PROFILE HEADER COVER -->
     <figure class="profile-header-cover" style="display:block;margin:0;padding:0;border:none;line-height:0;">
@@ -573,7 +597,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
       var cardW = header.offsetWidth || 0;
       var isDesktop = cardW >= 680;
 
-      header.style.setProperty('overflow', 'visible', 'important');
+      header.style.setProperty('overflow', 'hidden', 'important');
       header.style.setProperty('border-radius', '12px', 'important');
 
       var info = header.querySelector('.profile-header-info');
