@@ -10,24 +10,23 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 <style>.post-youtube iframe {overflow: hidden !important; height: 360px !important;}</style>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
-/* ===== Global navbar: keep fixed, never flow into content ===== */
-.navbar.navbar-default,.navbar-fixed-top,.header-container .navbar{position:fixed!important;top:0!important;z-index:9999!important;width:100%!important;}
 /* ==== Vikinger Profile Header — Rajdhani font throughout ==== */
 .profile-header,.profile-header *,.section-navigation,.section-navigation *,
 .user-stat,.user-stat *,.user-short-description,.user-short-description *{font-family:'Rajdhani',sans-serif!important;}
 /* Row wrapper */
 .wo_user_profile.row{padding-left:0!important;padding-right:0!important;margin-left:0!important;margin-right:0!important;flex-wrap:wrap!important;}
-/* Profile header card — overflow:hidden clips children to border-radius */
-.profile-header{border-radius:12px!important;background-color:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;overflow:hidden!important;width:100%!important;flex:0 0 100%!important;display:flex!important;flex-direction:column!important;}
+/* Profile header card */
+.profile-header{border-radius:12px!important;background-color:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;overflow:hidden!important;clip-path:inset(0 round 12px)!important;width:100%!important;flex:0 0 100%!important;display:flex!important;flex-direction:column!important;gap:0!important;}
 /* Cover — flex child, fills card top */
-.profile-header .profile-header-cover{border-top-left-radius:12px!important;border-top-right-radius:12px!important;height:340px;overflow:hidden!important;position:relative!important;display:block!important;margin:0!important;padding:0!important;line-height:0!important;flex:0 0 auto!important;}
+.profile-header .profile-header-cover{border-top-left-radius:0!important;border-top-right-radius:0!important;height:340px;overflow:hidden!important;position:relative!important;display:block!important;margin:0!important;padding:0!important;line-height:0!important;flex:0 0 auto!important;font-size:0!important;}
+figure.profile-header-cover{margin-block-start:0!important;margin-block-end:0!important;margin-inline-start:0!important;margin-inline-end:0!important;}
 @media(max-width:1365px){.profile-header .profile-header-cover{height:250px;}}
 @media(max-width:480px){.profile-header .profile-header-cover{height:150px;}}
 .profile-header .profile-header-cover #cover-image{width:100%;height:100%;object-fit:cover;display:block;}
 .profile-cover-changer{position:absolute!important;top:12px;right:12px;display:flex;gap:6px;z-index:10;}
 .user-cover-reposition-container,.user-cover-reposition-w{width:100%;height:100%;}
 /* Info bar — sits flush below cover, no gap */
-.profile-header .profile-header-info{height:126px!important;position:relative!important;overflow:visible!important;background-color:#fff!important;flex:0 0 auto!important;margin:0!important;}
+.profile-header .profile-header-info{height:126px!important;position:relative!important;overflow:visible!important;background-color:#fff!important;flex:0 0 auto!important;margin:0!important;padding:0!important;border-top:none!important;}
 /* User short description — centered, avatar overlaps cover */
 .user-short-description{padding-top:84px;position:relative;text-align:center;}
 .user-short-description.big{padding-top:52px;}
@@ -99,18 +98,18 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 }
 /* Section navigation */
 .section-navigation{padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;width:100%!important;flex:0 0 100%!important;overflow:hidden!important;}
-.section-menu{height:84px!important;display:flex!important;align-items:stretch!important;}
-.section-menu-item{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;flex:1!important;height:84px!important;position:relative!important;text-decoration:none!important;color:inherit!important;border-bottom:4px solid transparent;transition:border-color .2s;overflow:hidden!important;padding:0 8px!important;}
+.section-menu{height:72px!important;display:flex!important;align-items:stretch!important;}
+.section-menu-item{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;flex:1!important;height:72px!important;position:relative!important;text-decoration:none!important;color:inherit!important;border-bottom:4px solid transparent;transition:border-color .2s;overflow:hidden!important;padding:0 8px!important;}
 .section-menu-item+.section-menu-item::before{content:'';position:absolute;left:0;top:28px;width:1px;height:28px;background:#eaeaf5;}
 .section-menu-item.active,.section-menu-item:hover{border-bottom-color:#23d2e2!important;}
-.section-menu-item-icon{fill:#adafca;opacity:.6;transition:opacity .2s,transform .2s;width:24px!important;height:24px!important;flex-shrink:0;stroke:none!important;}
-.section-menu-item.active .section-menu-item-icon{fill:#3e3f5e!important;opacity:1!important;transform:translate(0,-14px)!important;}
-.section-menu-item:hover .section-menu-item-icon{transform:translate(0,-28px);opacity:0;}
-.section-menu-item.active:hover .section-menu-item-icon{transform:translate(0,-28px)!important;opacity:0!important;}
-.section-menu-item-text{color:#3e3f5e;font-size:13px;font-weight:700;font-family:'Rajdhani',sans-serif;text-align:center;position:absolute;bottom:10px;width:100%;transform:translate(0,28px);opacity:0;transition:opacity .2s,transform .2s;text-transform:uppercase;letter-spacing:.05em;}
+.section-menu-item-icon{fill:#adafca;opacity:.6;transition:opacity .2s,transform .2s;width:20px!important;height:20px!important;flex-shrink:0;stroke:none!important;}
+.section-menu-item.active .section-menu-item-icon{fill:#3e3f5e!important;opacity:1!important;transform:translate(0,-11px)!important;}
+.section-menu-item:hover .section-menu-item-icon{transform:translate(0,-24px);opacity:0;}
+.section-menu-item.active:hover .section-menu-item-icon{transform:translate(0,-24px)!important;opacity:0!important;}
+.section-menu-item-text{color:#3e3f5e;font-size:11px;font-weight:700;font-family:'Rajdhani',sans-serif;text-align:center;position:absolute;bottom:8px;width:100%;transform:translate(0,24px);opacity:0;transition:opacity .2s,transform .2s;text-transform:uppercase;letter-spacing:.05em;}
 .section-menu-item.active .section-menu-item-text{transform:translate(0,0)!important;opacity:1!important;}
 .section-menu-item:hover .section-menu-item-text{transform:translate(0,0);opacity:1;}
-@media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:64px;height:56px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
+@media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:56px;height:48px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
 /* ===== PURPLE/HEXAGON: reset all WoWonder avatar img-circle rounding so JS can hexagonify ===== */
 .post-heading .image a.avatar,.post-heading .image a.wow_post_usr_ava{display:block!important;overflow:hidden!important;border-radius:0!important;background:none!important;}
 .post-heading .image a.avatar img,.post-heading .image a.wow_post_usr_ava img,.post-heading .image a.avatar .blur_img{border-radius:0!important;}
@@ -123,7 +122,7 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
 <div class="row page-margin profile wo_user_profile" data-page="timeline" data-id="<?php echo $wo['user_profile']['user_id'];?>">
 
   <!-- PROFILE HEADER -->
-  <div class="profile-header" style="border-radius:12px;background-color:#fff;box-shadow:0 0 40px 0 rgba(94,92,154,.12);margin-bottom:16px;overflow:hidden;position:relative;">
+  <div class="profile-header" style="border-radius:12px;background-color:#fff;box-shadow:0 0 40px 0 rgba(94,92,154,.12);margin-bottom:16px;overflow:hidden;clip-path:inset(0 round 12px);position:relative;display:flex;flex-direction:column;gap:0;">
 
     <!-- PROFILE HEADER COVER -->
     <figure class="profile-header-cover" style="display:block;margin:0;padding:0;border:none;line-height:0;">
@@ -722,46 +721,71 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
   (function hexifyPostAvatars() {
     function makeHex(aEl, w, h) {
       if (!aEl || aEl.dataset.hexDone) return;
+      // If XM_Hexagon not ready yet, skip — MutationObserver retries will catch it
+      if (typeof XM_Hexagon === 'undefined') return;
       aEl.dataset.hexDone = '1';
-      // Get the user image src (skip blur_img placeholder)
+      // Get the user image src — prefer non-blur img
       var img = aEl.querySelector('img:not(.blur_img)') || aEl.querySelector('img');
       if (!img) return;
       var src = img.getAttribute('src') || '';
-      if (!src || src === '#') return;
-      // Generate unique class
+      if (!src || src === '#' || src.indexOf('data:') === 0) return;
+      // Hide existing images in the anchor so WoWonder JS still finds them
+      Array.prototype.forEach.call(aEl.querySelectorAll('img'), function(im) {
+        im.style.cssText = 'display:none!important;position:absolute;opacity:0;pointer-events:none;';
+      });
+      // Style anchor as inline flex container
+      aEl.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;line-height:0;background:none;border:none;padding:0;overflow:visible;border-radius:0;';
+      // Generate unique class and append hex div
       var uid = 'hxav' + Math.random().toString(36).substr(2, 9);
-      // Replace anchor content with hexagon div
-      while (aEl.firstChild) aEl.removeChild(aEl.firstChild);
-      aEl.style.cssText = 'display:inline-block;line-height:0;background:none;border:none;padding:0;overflow:visible;';
       var div = document.createElement('div');
       div.className = uid;
       div.setAttribute('data-src', src);
-      div.style.cssText = 'display:inline-block;';
+      div.style.cssText = 'display:inline-block;flex-shrink:0;';
       aEl.appendChild(div);
-      if (typeof XM_Hexagon !== 'undefined') {
-        new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, clip: true});
-      }
+      new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, clip: true});
     }
 
     function run() {
-      // Post heading avatars (a.avatar inside .image div)
+      // Post heading avatars
       document.querySelectorAll('.post-heading .image a.avatar:not([data-hex-done]), .post-heading .image a.wow_post_usr_ava:not([data-hex-done])').forEach(function(a) {
         makeHex(a, 36, 40);
       });
-      // Create-post box avatar links
+      // Comment avatars — img.avatar.pull-left (standalone img, not in anchor)
+      document.querySelectorAll('img.avatar.pull-left:not([data-hex-done])').forEach(function(im) {
+        if (im.closest('.user-short-description') || im.closest('.profile-header')) return;
+        var src = im.getAttribute('src') || '';
+        if (!src || src === '#' || typeof XM_Hexagon === 'undefined') return;
+        im.dataset.hexDone = '1';
+        var uid = 'hxcm' + Math.random().toString(36).substr(2, 9);
+        var div = document.createElement('div');
+        div.className = uid;
+        div.setAttribute('data-src', src);
+        div.style.cssText = 'display:inline-block;';
+        im.style.cssText = 'display:none!important;';
+        im.parentNode.insertBefore(div, im);
+        new XM_Hexagon({container: '.' + uid, width: 36, height: 40, roundedCorners: true, clip: true});
+      });
+      // Create-post / other small avatar anchor links
       document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(function(a) {
-        // Only target small contextual avatars (not the profile page's own avatar link)
-        if (a.closest('.user-short-description') || a.closest('.profile-header')) return;
+        if (a.closest('.user-short-description') || a.closest('.profile-header') || a.closest('.post-heading')) return;
         makeHex(a, 36, 40);
       });
     }
 
-    run();
-    setTimeout(run, 300);
-    setTimeout(run, 1200);
+    // Delay initial run until XM_Hexagon is loaded
+    function tryRun(attempt) {
+      if (typeof XM_Hexagon !== 'undefined') {
+        run();
+      } else if (attempt < 10) {
+        setTimeout(function() { tryRun(attempt + 1); }, 200);
+      }
+    }
+    tryRun(0);
+    setTimeout(run, 800);
+    setTimeout(run, 2000);
     // Watch for dynamically loaded posts
     if (window.MutationObserver) {
-      var obs = new MutationObserver(function() { setTimeout(run, 150); });
+      var obs = new MutationObserver(function() { setTimeout(run, 200); });
       obs.observe(document.body, {childList: true, subtree: true});
     }
   })();
