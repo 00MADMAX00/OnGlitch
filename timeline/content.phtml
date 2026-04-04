@@ -12,24 +12,22 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
 /* ===== Global navbar: keep fixed, never flow into content ===== */
 .navbar.navbar-default,.navbar-fixed-top,.header-container .navbar{position:fixed!important;top:0!important;z-index:9999!important;width:100%!important;}
-/* ===== Prevent content from sliding behind fixed navbar ===== */
-.content-container{padding-top:0;}
 /* ==== Vikinger Profile Header — Rajdhani font throughout ==== */
 .profile-header,.profile-header *,.section-navigation,.section-navigation *,
 .user-stat,.user-stat *,.user-short-description,.user-short-description *{font-family:'Rajdhani',sans-serif!important;}
 /* Row wrapper */
 .wo_user_profile.row{padding-left:0!important;padding-right:0!important;margin-left:0!important;margin-right:0!important;flex-wrap:wrap!important;}
-/* Profile header card */
-.profile-header{border-radius:12px!important;background-color:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;overflow:visible!important;width:100%!important;flex:0 0 100%!important;}
-/* Cover — taller banner to fill gap */
-.profile-header .profile-header-cover{border-top-left-radius:12px!important;border-top-right-radius:12px!important;height:340px;overflow:hidden!important;position:relative!important;display:block!important;margin:0!important;padding:0!important;line-height:0!important;}
+/* Profile header card — overflow:hidden clips children to border-radius */
+.profile-header{border-radius:12px!important;background-color:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;overflow:hidden!important;width:100%!important;flex:0 0 100%!important;display:flex!important;flex-direction:column!important;}
+/* Cover — flex child, fills card top */
+.profile-header .profile-header-cover{border-top-left-radius:12px!important;border-top-right-radius:12px!important;height:340px;overflow:hidden!important;position:relative!important;display:block!important;margin:0!important;padding:0!important;line-height:0!important;flex:0 0 auto!important;}
 @media(max-width:1365px){.profile-header .profile-header-cover{height:250px;}}
 @media(max-width:480px){.profile-header .profile-header-cover{height:150px;}}
 .profile-header .profile-header-cover #cover-image{width:100%;height:100%;object-fit:cover;display:block;}
 .profile-cover-changer{position:absolute!important;top:12px;right:12px;display:flex;gap:6px;z-index:10;}
 .user-cover-reposition-container,.user-cover-reposition-w{width:100%;height:100%;}
-/* Info bar — no gap after cover, rounded bottom corners */
-.profile-header .profile-header-info{height:126px!important;position:relative!important;overflow:visible!important;background-color:#fff!important;border-bottom-left-radius:12px!important;border-bottom-right-radius:12px!important;margin-top:-1px!important;}
+/* Info bar — sits flush below cover, no gap */
+.profile-header .profile-header-info{height:126px!important;position:relative!important;overflow:visible!important;background-color:#fff!important;flex:0 0 auto!important;margin:0!important;}
 /* User short description — centered, avatar overlaps cover */
 .user-short-description{padding-top:84px;position:relative;text-align:center;}
 .user-short-description.big{padding-top:52px;}
@@ -101,42 +99,22 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 }
 /* Section navigation */
 .section-navigation{padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;width:100%!important;flex:0 0 100%!important;overflow:hidden!important;}
-.section-menu{height:90px!important;display:flex!important;align-items:stretch!important;}
-.section-menu-item{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;flex:1!important;height:90px!important;position:relative!important;text-decoration:none!important;color:inherit!important;border-bottom:4px solid transparent;transition:border-color .2s;overflow:hidden!important;padding:0 8px!important;}
-.section-menu-item+.section-menu-item::before{content:'';position:absolute;left:0;top:30px;width:1px;height:30px;background:#eaeaf5;}
+.section-menu{height:84px!important;display:flex!important;align-items:stretch!important;}
+.section-menu-item{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;flex:1!important;height:84px!important;position:relative!important;text-decoration:none!important;color:inherit!important;border-bottom:4px solid transparent;transition:border-color .2s;overflow:hidden!important;padding:0 8px!important;}
+.section-menu-item+.section-menu-item::before{content:'';position:absolute;left:0;top:28px;width:1px;height:28px;background:#eaeaf5;}
 .section-menu-item.active,.section-menu-item:hover{border-bottom-color:#23d2e2!important;}
-.section-menu-item-icon{fill:#adafca;opacity:.6;transition:opacity .2s,transform .2s;width:28px!important;height:28px!important;flex-shrink:0;stroke:none!important;}
-.section-menu-item.active .section-menu-item-icon{fill:#3e3f5e!important;opacity:1!important;transform:translate(0,-16px)!important;}
-.section-menu-item:hover .section-menu-item-icon{transform:translate(0,-30px);opacity:0;}
-.section-menu-item.active:hover .section-menu-item-icon{transform:translate(0,-30px)!important;opacity:0!important;}
-.section-menu-item-text{color:#3e3f5e;font-size:14px;font-weight:700;font-family:'Rajdhani',sans-serif;text-align:center;position:absolute;bottom:10px;width:100%;transform:translate(0,30px);opacity:0;transition:opacity .2s,transform .2s;text-transform:uppercase;letter-spacing:.05em;}
+.section-menu-item-icon{fill:#adafca;opacity:.6;transition:opacity .2s,transform .2s;width:24px!important;height:24px!important;flex-shrink:0;stroke:none!important;}
+.section-menu-item.active .section-menu-item-icon{fill:#3e3f5e!important;opacity:1!important;transform:translate(0,-14px)!important;}
+.section-menu-item:hover .section-menu-item-icon{transform:translate(0,-28px);opacity:0;}
+.section-menu-item.active:hover .section-menu-item-icon{transform:translate(0,-28px)!important;opacity:0!important;}
+.section-menu-item-text{color:#3e3f5e;font-size:13px;font-weight:700;font-family:'Rajdhani',sans-serif;text-align:center;position:absolute;bottom:10px;width:100%;transform:translate(0,28px);opacity:0;transition:opacity .2s,transform .2s;text-transform:uppercase;letter-spacing:.05em;}
 .section-menu-item.active .section-menu-item-text{transform:translate(0,0)!important;opacity:1!important;}
 .section-menu-item:hover .section-menu-item-text{transform:translate(0,0);opacity:1;}
-@media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:70px;height:60px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
-/* ===== BROWN fix: ensure proper rounded corners on the card ===== */
-.profile-header{border-radius:12px!important;overflow:hidden!important;}
-/* ===== PURPLE fix: hexagon-shaped avatars in the post feed ===== */
-.post-heading .image a.avatar,
-.post-heading .image a.wow_post_usr_ava{
-  display:block!important;
-  width:48px!important;
-  height:48px!important;
-  overflow:hidden!important;
-  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)!important;
-  -webkit-clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)!important;
-  border-radius:0!important;
-  flex-shrink:0;
-}
-.post-heading .image a.avatar img,
-.post-heading .image a.wow_post_usr_ava img{
-  width:100%!important;
-  height:100%!important;
-  object-fit:cover!important;
-  display:block!important;
-  border-radius:0!important;
-}
-.post-heading .image a.avatar .verified-color,
-.post-heading .image a.wow_post_usr_ava .verified-color{display:none!important;}
+@media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:64px;height:56px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
+/* ===== PURPLE/HEXAGON: reset all WoWonder avatar img-circle rounding so JS can hexagonify ===== */
+.post-heading .image a.avatar,.post-heading .image a.wow_post_usr_ava{display:block!important;overflow:hidden!important;border-radius:0!important;background:none!important;}
+.post-heading .image a.avatar img,.post-heading .image a.wow_post_usr_ava img,.post-heading .image a.avatar .blur_img{border-radius:0!important;}
+img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)!important;-webkit-clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)!important;border-radius:0!important;}
 </style>
 
 <!-- Vikinger Hexagon JS -->
@@ -710,6 +688,82 @@ if ($wo['loggedin'] && $IsOwnerUser) {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(apply, 50);
     });
+  })();
+  </script>
+
+  <!-- Navbar offset fix: push profile below fixed navbar -->
+  <script>
+  (function fixNavbarOffset() {
+    function doFix() {
+      var nav = document.querySelector('.navbar-fixed-top');
+      var cover = document.querySelector('.wo_user_profile .profile-header-cover');
+      var wrapper = document.querySelector('.wo_user_profile');
+      if (!nav || !cover || !wrapper) return;
+      var navBottom = nav.getBoundingClientRect().bottom;
+      var coverTop = cover.getBoundingClientRect().top;
+      if (coverTop < navBottom + 2) {
+        var currentMT = parseFloat(window.getComputedStyle(wrapper).marginTop) || 0;
+        var needed = navBottom - coverTop;
+        if (needed > 0) {
+          wrapper.style.setProperty('margin-top', Math.ceil(currentMT + needed) + 'px', 'important');
+        }
+      }
+    }
+    // Run at multiple points to catch both immediate and delayed render
+    doFix();
+    if (window.requestAnimationFrame) requestAnimationFrame(doFix);
+    setTimeout(doFix, 100);
+    setTimeout(doFix, 600);
+  })();
+  </script>
+
+  <!-- Hexagon avatars for all post/comment avatars (Vikinger style via XM_Hexagon) -->
+  <script>
+  (function hexifyPostAvatars() {
+    function makeHex(aEl, w, h) {
+      if (!aEl || aEl.dataset.hexDone) return;
+      aEl.dataset.hexDone = '1';
+      // Get the user image src (skip blur_img placeholder)
+      var img = aEl.querySelector('img:not(.blur_img)') || aEl.querySelector('img');
+      if (!img) return;
+      var src = img.getAttribute('src') || '';
+      if (!src || src === '#') return;
+      // Generate unique class
+      var uid = 'hxav' + Math.random().toString(36).substr(2, 9);
+      // Replace anchor content with hexagon div
+      while (aEl.firstChild) aEl.removeChild(aEl.firstChild);
+      aEl.style.cssText = 'display:inline-block;line-height:0;background:none;border:none;padding:0;overflow:visible;';
+      var div = document.createElement('div');
+      div.className = uid;
+      div.setAttribute('data-src', src);
+      div.style.cssText = 'display:inline-block;';
+      aEl.appendChild(div);
+      if (typeof XM_Hexagon !== 'undefined') {
+        new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, clip: true});
+      }
+    }
+
+    function run() {
+      // Post heading avatars (a.avatar inside .image div)
+      document.querySelectorAll('.post-heading .image a.avatar:not([data-hex-done]), .post-heading .image a.wow_post_usr_ava:not([data-hex-done])').forEach(function(a) {
+        makeHex(a, 36, 40);
+      });
+      // Create-post box avatar links
+      document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(function(a) {
+        // Only target small contextual avatars (not the profile page's own avatar link)
+        if (a.closest('.user-short-description') || a.closest('.profile-header')) return;
+        makeHex(a, 36, 40);
+      });
+    }
+
+    run();
+    setTimeout(run, 300);
+    setTimeout(run, 1200);
+    // Watch for dynamically loaded posts
+    if (window.MutationObserver) {
+      var obs = new MutationObserver(function() { setTimeout(run, 150); });
+      obs.observe(document.body, {childList: true, subtree: true});
+    }
   })();
   </script>
 
