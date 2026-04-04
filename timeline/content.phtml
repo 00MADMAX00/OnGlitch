@@ -396,7 +396,7 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
   (function fixNavbarOffset() {
     function doFix() {
       var nav = document.querySelector('.navbar-fixed-top');
-      var cover = document.querySelector('.wo_user_profile .profile-header-cover');
+      var cover = document.querySelector('.wo_user_profile .cardheader.user-cover');
       var wrapper = document.querySelector('.wo_user_profile');
       if (!nav || !cover || !wrapper) return;
       var navBottom = nav.getBoundingClientRect().bottom;
@@ -453,7 +453,7 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
       });
       // Comment avatars — img.avatar.pull-left (standalone img, not in anchor)
       document.querySelectorAll('img.avatar.pull-left:not([data-hex-done])').forEach(function(im) {
-        if (im.closest('.user-short-description') || im.closest('.profile-header')) return;
+        if (im.closest('.user-short-description') || im.closest('.card.hovercard')) return;
         var src = im.getAttribute('src') || '';
         if (!src || src === '#' || typeof XM_Hexagon === 'undefined') return;
         im.dataset.hexDone = '1';
@@ -468,7 +468,7 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
       });
       // Create-post / other small avatar anchor links
       document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(function(a) {
-        if (a.closest('.user-short-description') || a.closest('.profile-header') || a.closest('.post-heading')) return;
+        if (a.closest('.user-short-description') || a.closest('.card.hovercard') || a.closest('.post-heading')) return;
         makeHex(a, 36, 40);
       });
     }
