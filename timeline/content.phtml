@@ -30,7 +30,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 /* Hide gradient overlay */
 .wo_user_profile .problackback{display:none!important;height:0!important;margin:0!important;padding:0!important;}
 /* Info bar — pic-info-cont */
-.wo_user_profile .pic-info-cont{height:150px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;}
+.wo_user_profile .pic-info-cont{height:125px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;}
 /* Profile avatar — Vikinger hexagon, centered, overlapping cover (82px = 164/2 so avatar straddles boundary) */
 .wo_user_profile .pic-info-cont .user-avatar.flip.big{position:absolute!important;top:-82px!important;left:50%!important;margin-left:-74px!important;transform:none!important;width:148px!important;height:164px!important;z-index:10!important;}
 /* Hexagon sub-elements (same as Vikinger original) */
@@ -56,8 +56,8 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar{display:flex!important;align-items:center!important;justify-content:center!important;width:148px!important;height:164px!important;background:rgba(0,0,0,.4)!important;gap:4px;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);}
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar .btn{background:none!important;border:none!important;color:#fff!important;padding:4px!important;min-height:0!important;box-shadow:none!important;}
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar svg{width:20px;height:20px;}
-/* Info (name + username) — below the avatar (avatar top:-82px, height:164px → bottom at 82px from bar top) */
-.wo_user_profile .pic-info-cont .info{position:absolute!important;top:95px!important;left:50%!important;transform:translateX(-50%)!important;text-align:center!important;white-space:normal!important;width:280px!important;z-index:5;pointer-events:auto;}
+/* Info (name + username) — below the avatar (avatar image bottom at y=55, ring tip covered at 56-76, name below) */
+.wo_user_profile .pic-info-cont .info{position:absolute!important;top:80px!important;left:50%!important;transform:translateX(-50%)!important;text-align:center!important;white-space:normal!important;width:300px!important;z-index:5;pointer-events:auto;}
 .wo_user_profile .pic-info-cont .info .title{display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;font-family:'Rajdhani',sans-serif!important;flex-wrap:wrap!important;}
 .wo_user_profile .pic-info-cont .info .title a{font-size:1.5rem!important;font-weight:700!important;color:#3e3f5e!important;text-decoration:none!important;font-family:'Rajdhani',sans-serif!important;text-shadow:none!important;}
 .wo_user_profile .pic-info-cont .info .title .verified-color{fill:#23d2e2;width:18px;height:18px;vertical-align:middle;}
@@ -118,10 +118,12 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .section-menu-item.active .section-menu-item-text{transform:translate(0,0)!important;opacity:1!important;}
 .section-menu-item:hover .section-menu-item-text{transform:translate(0,0);opacity:1;}
 @media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:56px;height:48px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
-/* ===== Vikinger user-avatar.small — post/comment hex avatars ===== */
+/* ===== Vikinger user-avatar.small — mini version of main profile avatar, with colored ring ===== */
 .user-avatar.small{display:inline-block!important;width:50px!important;height:56px!important;position:relative!important;overflow:visible!important;border-radius:0!important;background:none!important;box-shadow:none!important;vertical-align:middle!important;flex-shrink:0!important;}
-.user-avatar.small .user-avatar-content{position:absolute!important;top:12px!important;left:10px!important;}
+.user-avatar.small .user-avatar-content{position:absolute!important;top:12px!important;left:10px!important;z-index:3!important;}
 .user-avatar.small.no-stats .user-avatar-content{top:6px!important;left:5px!important;}
+/* Progress ring for small avatars — same colored ring as main profile avatar */
+.user-avatar.small .user-avatar-progress,.user-avatar.small .user-avatar-progress-border{position:absolute!important;top:6px!important;left:5px!important;z-index:2!important;}
 /* Override WoWonder 60×60 on anchor — JS will set user-avatar.small classes */
 .post-heading .image a.avatar,.post-heading .image a.wow_post_usr_ava{display:inline-block!important;width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;overflow:visible!important;border-radius:0!important;background:none!important;box-shadow:none!important;margin-right:6px!important;vertical-align:middle!important;}
 .post-heading .image a.avatar img,.post-heading .image a.wow_post_usr_ava img{border-radius:0!important;}
@@ -367,8 +369,14 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
           <?php } ?>
         </div>
         <p><a href="#">@<?php echo $wo['user_profile']['username']; ?></a></p>
-        <?php if(!empty($wo['user_profile']['website'])): ?>
-        <p><a href="<?php echo htmlspecialchars($wo['user_profile']['website']); ?>" target="_blank" rel="noopener"><?php echo htmlspecialchars(preg_replace('#^https?://#', '', rtrim($wo['user_profile']['website'],'/'))); ?></a></p>
+        <?php
+          /* Website: try multiple field paths WoWonder may use */
+          $__ws = $wo['user_profile']['website'] ?? '';
+          if (empty($__ws)) $__ws = $wo['user_profile']['details']['website'] ?? '';
+          if (empty($__ws)) $__ws = $wo['setting']['website'] ?? '';
+          if (!empty($__ws)):
+        ?>
+        <p><a href="<?php echo htmlspecialchars($__ws); ?>" target="_blank" rel="noopener"><?php echo htmlspecialchars(preg_replace('#^https?://#', '', rtrim($__ws,'/'))); ?></a></p>
         <?php endif; ?>
       </div>
       <!-- /INFO -->
@@ -604,84 +612,87 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
   <script>
   (function hexifyPostAvatars() {
     // Vikinger post/comment avatar image size (inside 50×56 container, no-stats: top:6 left:5)
-    var HEX_W = 40, HEX_H = 44;
+    // Small avatar dimensions — mini version of main profile avatar (148×164 big, 50×56 small)
+    var IMG_W = 30, IMG_H = 32;   // clipped image hexagon (inside content div at top:12,left:10)
+    var RNG_W = 40, RNG_H = 44;   // colored progress ring (at top:6,left:5 — same gradient as main avatar)
 
-    // Insert a pure Vikinger user-avatar.small BEFORE the WoWonder anchor.
-    // The WoWonder anchor is hidden but NOT removed — WoWonder JS can still find it.
-    // This avoids CSS fights: WoWonder CSS targets .avatar/.wow_post_usr_ava (hidden),
-    // Vikinger CSS targets .user-avatar.small (our new element). Zero overlap.
-    function makeHex(aEl, w, h) {
+    // Build small Vikinger avatar with colored ring. Inserts BEFORE WoWonder element, hides it.
+    // WoWonder CSS targets .avatar/.wow_post_usr_ava on the HIDDEN element — zero CSS conflict.
+    function buildVikingerAvatar(src, href) {
+      var imgUid = 'hxi' + Math.random().toString(36).substr(2, 8);
+      var rngUid = 'hxr' + Math.random().toString(36).substr(2, 8);
+      var el = document.createElement('a');
+      el.className = 'user-avatar small no-outline';
+      if (href) el.href = href;
+      // Content: clipped image (top:12px, left:10px per Vikinger CSS for .user-avatar.small .user-avatar-content)
+      var content = document.createElement('div');
+      content.className = 'user-avatar-content';
+      var imgDiv = document.createElement('div');
+      imgDiv.className = imgUid;
+      imgDiv.setAttribute('data-src', src);
+      content.appendChild(imgDiv);
+      // Progress ring: colored gradient (top:6px, left:5px per Vikinger CSS for .user-avatar.small .user-avatar-progress)
+      var progress = document.createElement('div');
+      progress.className = 'user-avatar-progress';
+      var rngDiv = document.createElement('div');
+      rngDiv.className = rngUid;
+      progress.appendChild(rngDiv);
+      el.appendChild(content);
+      el.appendChild(progress);
+      // Initialise hexagons after appending
+      setTimeout(function() {
+        new XM_Hexagon({container:'.' + imgUid, width:IMG_W, height:IMG_H, roundedCorners:true, roundedCornerRadius:1, clip:true});
+        new XM_Hexagon({container:'.' + rngUid, width:RNG_W, height:RNG_H, lineWidth:4, roundedCorners:true, gradient:{colors:['#41efff','#615dfa']}});
+      }, 0);
+      return el;
+    }
+
+    // Transform an anchor element (a.avatar, a.wow_post_usr_ava, etc.)
+    function makeHex(aEl) {
       if (!aEl || aEl.dataset.hexDone) return;
       if (typeof XM_Hexagon === 'undefined') return;
       aEl.dataset.hexDone = '1';
-      // Find image src from WoWonder's img
       var img = aEl.querySelector('img:not(.blur_img)') || aEl.querySelector('img');
       if (!img) return;
       var src = img.getAttribute('src') || '';
       if (!src || src === '#' || src.indexOf('data:') === 0) return;
-      // Build pure Vikinger structure: <a class="user-avatar small no-stats no-outline"> > .user-avatar-content > hexDiv
-      var uid = 'hxav' + Math.random().toString(36).substr(2, 9);
-      var vikingerEl = document.createElement('a');
-      vikingerEl.className = 'user-avatar small no-stats no-outline';
-      var href = aEl.getAttribute('href');
-      if (href) vikingerEl.href = href;
-      var content = document.createElement('div');
-      content.className = 'user-avatar-content';
-      var hexDiv = document.createElement('div');
-      hexDiv.className = uid;
-      hexDiv.setAttribute('data-src', src);
-      content.appendChild(hexDiv);
-      vikingerEl.appendChild(content);
-      // Insert Vikinger element before WoWonder element, then hide WoWonder element
+      var vikingerEl = buildVikingerAvatar(src, aEl.getAttribute('href'));
       aEl.parentNode.insertBefore(vikingerEl, aEl);
       aEl.style.setProperty('display', 'none', 'important');
-      new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, roundedCornerRadius: 1, clip: true});
     }
 
-    // Wrap standalone img.avatar.pull-left in a Vikinger user-avatar.small div
-    function makeHexImg(im, w, h) {
+    // Transform a standalone img element (img.avatar not inside an anchor)
+    function makeHexImg(im) {
       if (!im || im.dataset.hexDone) return;
       if (typeof XM_Hexagon === 'undefined') return;
       var src = im.getAttribute('src') || '';
       if (!src || src === '#' || src.indexOf('data:') === 0) return;
       im.dataset.hexDone = '1';
-      var wrapper = document.createElement('div');
-      wrapper.className = 'user-avatar small no-stats';
-      wrapper.style.cssText = 'display:inline-block;vertical-align:middle;margin-right:8px;flex-shrink:0;';
-      var uid = 'hxcm' + Math.random().toString(36).substr(2, 9);
-      var content = document.createElement('div');
-      content.className = 'user-avatar-content';
-      var hexDiv = document.createElement('div');
-      hexDiv.className = uid;
-      hexDiv.setAttribute('data-src', src);
-      content.appendChild(hexDiv);
-      wrapper.appendChild(content);
+      var vikingerEl = buildVikingerAvatar(src, null);
+      im.parentNode.insertBefore(vikingerEl, im);
       im.style.setProperty('display', 'none', 'important');
-      im.parentNode.insertBefore(wrapper, im);
-      new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, roundedCornerRadius: 1, clip: true});
     }
 
     function run() {
-      // Post heading avatars (anchor)
       // All anchor avatars in post headings (covers .avatar, .wow_post_usr_ava, bare links)
       document.querySelectorAll('.post-heading .image a:not([data-hex-done])').forEach(function(a) {
         if (a.closest('.pic-info-cont') || a.closest('.card.hovercard')) return;
-        makeHex(a, HEX_W, HEX_H);
+        makeHex(a);
       });
       // Any wow_post_usr_ava anywhere on page
       document.querySelectorAll('a.wow_post_usr_ava:not([data-hex-done])').forEach(function(a) {
         if (a.closest('.pic-info-cont') || a.closest('.card.hovercard')) return;
-        makeHex(a, HEX_W, HEX_H);
+        makeHex(a);
       });
-      // Standalone img.avatar (comment / activity feed)
+      // Standalone img.avatar (comment / activity feed — not inside an anchor)
       document.querySelectorAll('img.avatar:not([data-hex-done])').forEach(function(im) {
         if (im.closest('.pic-info-cont') || im.closest('.card.hovercard') || im.closest('a')) return;
-        makeHexImg(im, HEX_W, HEX_H);
+        makeHexImg(im);
       });
       // Create-post box and other small avatar anchors (not in post-heading / header)
       document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(function(a) {
         if (a.closest('.pic-info-cont') || a.closest('.card.hovercard') || a.closest('.post-heading')) return;
-        makeHex(a, HEX_W, HEX_H);
+        makeHex(a);
       });
     }
 
