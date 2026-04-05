@@ -19,7 +19,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 /* Profile container */
 .wo_user_profile .profile-container{width:100%;flex:0 0 100%;margin-bottom:16px;}
 /* WoWonder card.hovercard — profile header card */
-.wo_user_profile .card.hovercard{border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:0!important;overflow:hidden!important;border:none!important;width:100%!important;}
+.wo_user_profile .card.hovercard{border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:0!important;overflow:visible!important;border:none!important;width:100%!important;}
 /* Cover — cardheader.user-cover */
 .wo_user_profile .cardheader.user-cover{height:340px!important;position:relative!important;overflow:hidden!important;margin:0!important;padding:0!important;line-height:0!important;border:none!important;display:block!important;}
 @media(max-width:1365px){.wo_user_profile .cardheader.user-cover{height:250px!important;}}
@@ -30,7 +30,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 /* Hide gradient overlay */
 .wo_user_profile .problackback{display:none!important;height:0!important;margin:0!important;padding:0!important;}
 /* Info bar — pic-info-cont */
-.wo_user_profile .pic-info-cont{height:125px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;}
+.wo_user_profile .pic-info-cont{height:148px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;}
 /* Profile avatar — Vikinger hexagon, centered, overlapping cover (82px = 164/2 so avatar straddles boundary) */
 .wo_user_profile .pic-info-cont .user-avatar.flip.big{position:absolute!important;top:-82px!important;left:50%!important;margin-left:-74px!important;transform:none!important;width:148px!important;height:164px!important;z-index:10!important;}
 /* Hexagon sub-elements (same as Vikinger original) */
@@ -56,8 +56,8 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar{display:flex!important;align-items:center!important;justify-content:center!important;width:148px!important;height:164px!important;background:rgba(0,0,0,.4)!important;gap:4px;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);}
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar .btn{background:none!important;border:none!important;color:#fff!important;padding:4px!important;min-height:0!important;box-shadow:none!important;}
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar svg{width:20px;height:20px;}
-/* Info (name + username) — below the avatar (avatar image bottom at y=55, ring tip covered at 56-76, name below) */
-.wo_user_profile .pic-info-cont .info{position:absolute!important;top:80px!important;left:50%!important;transform:translateX(-50%)!important;text-align:center!important;white-space:normal!important;width:300px!important;z-index:5;pointer-events:auto;}
+/* Info (name + username) — below the avatar (avatar image bottom at y=55, ring tip covered, name just below) */
+.wo_user_profile .pic-info-cont .info{position:absolute!important;top:78px!important;left:50%!important;transform:translateX(-50%)!important;text-align:center!important;white-space:normal!important;width:300px!important;z-index:5;pointer-events:auto;}
 .wo_user_profile .pic-info-cont .info .title{display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;font-family:'Rajdhani',sans-serif!important;flex-wrap:wrap!important;}
 .wo_user_profile .pic-info-cont .info .title a{font-size:1.5rem!important;font-weight:700!important;color:#3e3f5e!important;text-decoration:none!important;font-family:'Rajdhani',sans-serif!important;text-shadow:none!important;}
 .wo_user_profile .pic-info-cont .info .title .verified-color{fill:#23d2e2;width:18px;height:18px;vertical-align:middle;}
@@ -353,7 +353,7 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
           </a>
           <?php if ($wo['user_profile']['banned'] != 1) { ?>
             <?php if($wo['user_profile']['verified'] == 1) { ?>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="verified-color feather feather-check-circle" title="<?php echo $wo['lang']['verified_user'];?>" data-toggle="tooltip"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="verified-color feather feather-check-circle"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>
             <?php } ?>
             <?php if (!empty($wo['user_profile']['is_open_to_work']) && $wo['config']['website_mode'] == 'linkedin') { ?>
               <span class="wo_open_job_badge" title="<?php echo $wo['lang']['open_to_work'];?>" data-toggle="tooltip"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24"><path fill="currentColor" d="M10,2H14A2,2 0 0,1 16,4V6H20A2,2 0 0,1 22,8V19A2,2 0 0,1 20,21H4C2.89,21 2,20.1 2,19V8C2,6.89 2.89,6 4,6H8V4C8,2.89 8.89,2 10,2M14,6V4H10V6H14Z"></path></svg></span>
@@ -361,7 +361,7 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
             <?php if (Wo_IsUserPro($wo['user_profile']['is_pro']) === true) {
               $user_pro_type = Wo_GetUserProType($wo['user_profile']['pro_type']); ?>
               <span class="badge-pro" style="background-color:<?php echo $user_pro_type['color_name'];?>">
-                <a class="badge-link" href="<?php echo Wo_SeoLink('index.php?link1=go-pro');?>" title="<?php echo $user_pro_type['type_name'];?>" data-toggle="tooltip">PRO</a>
+                <a class="badge-link" href="<?php echo Wo_SeoLink('index.php?link1=go-pro');?>">PRO</a>
               </span>
             <?php } ?>
           <?php } else { ?>
@@ -641,8 +641,9 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
       el.appendChild(progress);
       // Initialise hexagons after appending
       setTimeout(function() {
+        // Vikinger exact params from global.hexagons.js: lineWidth:3, roundedCornerRadius:1, scale stop:.8
         new XM_Hexagon({container:'.' + imgUid, width:IMG_W, height:IMG_H, roundedCorners:true, roundedCornerRadius:1, clip:true});
-        new XM_Hexagon({container:'.' + rngUid, width:RNG_W, height:RNG_H, lineWidth:4, roundedCorners:true, gradient:{colors:['#41efff','#615dfa']}});
+        new XM_Hexagon({container:'.' + rngUid, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, gradient:{colors:['#41efff','#615dfa']}, scale:{start:0,end:1,stop:.8}});
       }, 0);
       return el;
     }
@@ -674,25 +675,34 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
     }
 
     function run() {
-      // All anchor avatars in post headings (covers .avatar, .wow_post_usr_ava, bare links)
+      // Only exclusion: the profile header info bar (.pic-info-cont) — that has its own big avatar.
+      // Everything else (posts, comments, create-post box, sidebar following/followers) gets hexified.
+      function skip(el) { return !!(el.closest('.pic-info-cont')); }
+
+      // Post heading avatar anchors
       document.querySelectorAll('.post-heading .image a:not([data-hex-done])').forEach(function(a) {
-        if (a.closest('.pic-info-cont') || a.closest('.card.hovercard')) return;
+        if (skip(a)) return;
         makeHex(a);
       });
-      // Any wow_post_usr_ava anywhere on page
+      // WoWonder post user avatar anchor (used in activity feed, posts)
       document.querySelectorAll('a.wow_post_usr_ava:not([data-hex-done])').forEach(function(a) {
-        if (a.closest('.pic-info-cont') || a.closest('.card.hovercard')) return;
+        if (skip(a)) return;
         makeHex(a);
       });
-      // Standalone img.avatar (comment / activity feed — not inside an anchor)
-      document.querySelectorAll('img.avatar:not([data-hex-done])').forEach(function(im) {
-        if (im.closest('.pic-info-cont') || im.closest('.card.hovercard') || im.closest('a')) return;
-        makeHexImg(im);
-      });
-      // Create-post box and other small avatar anchors (not in post-heading / header)
+      // Any a.avatar (create-post box, sidebar following/followers, etc.)
       document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(function(a) {
-        if (a.closest('.pic-info-cont') || a.closest('.card.hovercard') || a.closest('.post-heading')) return;
+        if (skip(a)) return;
         makeHex(a);
+      });
+      // img.avatar — standalone or inside an anchor (sidebar following widget, comments)
+      document.querySelectorAll('img.avatar:not([data-hex-done])').forEach(function(im) {
+        if (skip(im)) return;
+        var aEl = im.closest('a');
+        if (aEl && !aEl.dataset.hexDone) {
+          makeHex(aEl);  // process the wrapping anchor so hexagon is clickable
+        } else if (!aEl) {
+          makeHexImg(im);  // standalone img — wrap in Vikinger div
+        }
       });
     }
 
