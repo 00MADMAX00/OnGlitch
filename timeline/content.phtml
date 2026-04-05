@@ -43,7 +43,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .user-avatar .user-avatar-badge{display:flex;justify-content:center;align-items:center;width:40px;height:44px;position:absolute;top:102px;right:8px;z-index:4;}
 .wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-border{position:absolute;top:0;left:0;z-index:4;}
 .wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-content{position:absolute;top:5px;left:4px;z-index:5;}
-.wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-text{color:#fff;font-size:1rem;font-weight:700;pointer-events:none;position:relative;z-index:6;}
+.wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-text{color:#fff;font-size:1.1rem;font-weight:700;pointer-events:none;position:relative;z-index:6;line-height:1;margin:0;}
 /* Hidden WoWonder img (kept for WoWonder JS avatar-update hooks) */
 .wo_user_profile .pic-info-cont .user-avatar.flip.big > img{display:none!important;position:absolute;opacity:0;pointer-events:none;}
 /* Uploading spinner inside hexagon content */
@@ -98,8 +98,8 @@ if ($wo['loggedin'] && $IsOwnerUser) {
   .wo_user_profile .pic-info-cont .options-buttons{top:-36px!important;right:6px!important;gap:4px!important;}
   .wo_user_profile .pic-info-cont .options-buttons .btn{height:34px!important;padding:0 12px!important;font-size:.8rem!important;}
 }
-/* Section navigation — same visual width as profile-container */
-.section-navigation{padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;width:100%!important;flex:0 0 100%!important;overflow:hidden!important;box-sizing:border-box!important;max-width:100%!important;}
+/* Section navigation — inside profile-container so it inherits exact same width as the card */
+.wo_user_profile .section-navigation{display:block!important;padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin:16px 0 0 0!important;width:100%!important;box-sizing:border-box!important;}
 /* Hide redundant right sidebar info widget (gender/posts/location already in header) */
 .wo_user_profile .right_user_info{display:none!important;}
 .section-menu{height:72px!important;display:flex!important;align-items:stretch!important;}
@@ -114,10 +114,11 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .section-menu-item.active .section-menu-item-text{transform:translate(0,0)!important;opacity:1!important;}
 .section-menu-item:hover .section-menu-item-text{transform:translate(0,0);opacity:1;}
 @media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:56px;height:48px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
-/* ===== HEXAGON: reset WoWonder avatar img-circle rounding for post/comment avatars ===== */
-.post-heading .image a.avatar,.post-heading .image a.wow_post_usr_ava{display:block!important;overflow:hidden!important;border-radius:0!important;background:none!important;}
-.post-heading .image a.avatar img,.post-heading .image a.wow_post_usr_ava img,.post-heading .image a.avatar .blur_img{border-radius:0!important;}
-img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)!important;-webkit-clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)!important;border-radius:0!important;}
+/* ===== HEXAGON: override WoWonder 60x60 fixed avatar size so hex canvas shows correctly ===== */
+.post-heading .image a.avatar,.post-heading .image a.wow_post_usr_ava{display:inline-block!important;width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;overflow:visible!important;border-radius:0!important;background:none!important;box-shadow:none!important;margin-right:10px!important;vertical-align:middle!important;}
+.post-heading .image a.avatar img,.post-heading .image a.wow_post_usr_ava img{border-radius:0!important;}
+/* img.avatar.pull-left: standalone comment avatar — will be replaced by JS hex canvas */
+img.avatar.pull-left{clip-path:none!important;border-radius:0!important;width:30px!important;height:30px!important;}
 </style>
 
 <!-- Vikinger Hexagon JS -->
@@ -575,8 +576,7 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
     <!-- /PIC INFO CONT -->
 
   </div><!-- /.card.hovercard -->
-  </div><!-- /.profile-container -->
-  <!-- /PROFILE HEADER -->
+  <!-- /PROFILE HEADER CARD -->
 
   <!-- Vikinger Profile Avatar Hexagon Init -->
   <script>
@@ -612,10 +612,21 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
       if (!src || src === '#' || src.indexOf('data:') === 0) return;
       // Hide existing images in the anchor so WoWonder JS still finds them
       Array.prototype.forEach.call(aEl.querySelectorAll('img'), function(im) {
-        im.style.cssText = 'display:none!important;position:absolute;opacity:0;pointer-events:none;';
+        im.style.setProperty('display', 'none', 'important');
+        im.style.position = 'absolute';
+        im.style.opacity = '0';
+        im.style.pointerEvents = 'none';
       });
-      // Style anchor as inline flex container
-      aEl.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;line-height:0;background:none;border:none;padding:0;overflow:visible;border-radius:0;';
+      // Size anchor to exactly fit the hexagon canvas (override WoWonder's 60x60)
+      aEl.style.setProperty('display', 'inline-block', 'important');
+      aEl.style.setProperty('width', w + 'px', 'important');
+      aEl.style.setProperty('height', h + 'px', 'important');
+      aEl.style.setProperty('overflow', 'visible', 'important');
+      aEl.style.setProperty('border-radius', '0', 'important');
+      aEl.style.setProperty('background', 'none', 'important');
+      aEl.style.setProperty('box-shadow', 'none', 'important');
+      aEl.style.setProperty('padding', '0', 'important');
+      aEl.style.setProperty('position', 'relative', 'important');
       // Generate unique class and append hex div
       var uid = 'hxav' + Math.random().toString(36).substr(2, 9);
       var div = document.createElement('div');
@@ -737,6 +748,7 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
   </nav>
   <?php } ?>
   <!-- /SECTION NAVIGATION -->
+  </div><!-- /.profile-container -->
 
     <?php if ($wo['user_profile']['banned'] != 1) { ?>
 		
@@ -1506,7 +1518,7 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
             <?php } ?>
         <?php } ?>
 
-        <ul class="page-margin wow_content negg_padd list-unstyled event-options-list right_user_info wo_prof_side_info_padd mt-0">
+        <ul class="page-margin wow_content negg_padd list-unstyled event-options-list right_user_info wo_prof_side_info_padd mt-0" style="display:none!important">
             <div class="wo_page_hdng hidden">
 				<div class="wo_page_hdng_innr"><?php echo $wo['lang']['info']; ?></div>
 			</div>
