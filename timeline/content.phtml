@@ -10,23 +10,26 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 <style>.post-youtube iframe {overflow: hidden !important; height: 360px !important;}</style>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
-/* ==== Vikinger Profile Header — Rajdhani font throughout ==== */
-.profile-header,.profile-header *,.section-navigation,.section-navigation *,
+/* ==== Vikinger Profile — Rajdhani font ==== */
+.wo_user_profile .card.hovercard,.wo_user_profile .card.hovercard *,
+.section-navigation,.section-navigation *,
 .user-stat,.user-stat *,.user-short-description,.user-short-description *{font-family:'Rajdhani',sans-serif!important;}
 /* Row wrapper */
 .wo_user_profile.row{padding-left:0!important;padding-right:0!important;margin-left:0!important;margin-right:0!important;flex-wrap:wrap!important;}
-/* Profile header card */
-.profile-header{border-radius:12px!important;background-color:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;overflow:hidden!important;clip-path:inset(0 round 12px)!important;width:100%!important;flex:0 0 100%!important;display:flex!important;flex-direction:column!important;gap:0!important;}
-/* Cover — flex child, fills card top */
-.profile-header .profile-header-cover{border-top-left-radius:0!important;border-top-right-radius:0!important;height:340px;overflow:hidden!important;position:relative!important;display:block!important;margin:0!important;padding:0!important;line-height:0!important;flex:0 0 auto!important;font-size:0!important;}
-figure.profile-header-cover{margin-block-start:0!important;margin-block-end:0!important;margin-inline-start:0!important;margin-inline-end:0!important;}
-@media(max-width:1365px){.profile-header .profile-header-cover{height:250px;}}
-@media(max-width:480px){.profile-header .profile-header-cover{height:150px;}}
-.profile-header .profile-header-cover #cover-image{width:100%;height:100%;object-fit:cover;display:block;}
-.profile-cover-changer{position:absolute!important;top:12px;right:12px;display:flex;gap:6px;z-index:10;}
+/* ===== PROFILE CARD: use WoWonder .card.hovercard ===== */
+.wo_user_profile .card.hovercard{border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;overflow:hidden!important;border:none!important;width:100%!important;flex:0 0 100%!important;}
+/* Cover */
+.wo_user_profile .cardheader.user-cover{height:340px!important;position:relative!important;overflow:hidden!important;margin:0!important;padding:0!important;line-height:0!important;border:none!important;}
+@media(max-width:1365px){.wo_user_profile .cardheader.user-cover{height:250px!important;}}
+@media(max-width:480px){.wo_user_profile .cardheader.user-cover{height:150px!important;}}
+.wo_user_profile .cardheader.user-cover .user-cover-reposition-w{width:100%;height:100%;}
+.wo_user_profile .cardheader.user-cover #cover-image{width:100%;height:100%;object-fit:cover;display:block;}
+.profile-cover-changer{position:absolute!important;top:12px!important;right:12px!important;display:flex!important;gap:6px!important;z-index:10!important;}
 .user-cover-reposition-container,.user-cover-reposition-w{width:100%;height:100%;}
-/* Info bar — sits flush below cover, no gap */
-.profile-header .profile-header-info{height:126px!important;position:relative!important;overflow:visible!important;background-color:#fff!important;flex:0 0 auto!important;margin:0!important;padding:0!important;border-top:none!important;}
+/* Kill the gap-causing overlay between cover and info bar */
+.wo_user_profile .problackback{display:none!important;height:0!important;margin:0!important;padding:0!important;}
+/* Info bar */
+.wo_user_profile .pic-info-cont{height:126px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;}
 /* User short description — centered, avatar overlaps cover */
 .user-short-description{padding-top:84px;position:relative;text-align:center;}
 .user-short-description.big{padding-top:52px;}
@@ -59,7 +62,7 @@ figure.profile-header-cover{margin-block-start:0!important;margin-block-end:0!im
 .user-short-description .wo_profile_pic_hover{position:absolute;top:-116px;left:50%;margin-left:-74px;width:148px;height:164px;z-index:20;cursor:pointer;opacity:0;background:transparent;}
 .user-short-description .wo_profile_pic_hover .profile_avatar{opacity:0;}
 .user-short-description .wo_profile_pic_hover:hover .profile_avatar{opacity:1;}
-/* Stats — Vikinger sizes */
+/* Stats */
 .user-stats{display:flex;justify-content:center;}
 .user-stats .user-stat{position:relative;}
 .user-stats .user-stat::after{content:'';width:1px;height:20px;background-color:#eaeaf5;position:absolute;top:8px;right:0;}
@@ -70,30 +73,26 @@ figure.profile-header-cover{margin-block-start:0!important;margin-block-end:0!im
 .user-stat.big .user-stat-title{font-size:22px!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;}
 .user-stat .user-stat-text{font-size:10px;color:#adafca;margin:4px 0 0;}
 .user-stat.big .user-stat-text{font-size:12px!important;color:#adafca!important;margin:4px 0 0!important;}
-/* Desktop: stats absolute LEFT */
-.profile-header .profile-header-info .user-stats{position:absolute!important;top:54px!important;left:40px!important;overflow:visible;flex-wrap:nowrap;}
+/* Stats — absolute left of info bar */
+.wo_user_profile .pic-info-cont .user-stats{position:absolute!important;top:54px!important;left:40px!important;overflow:visible!important;flex-wrap:nowrap!important;}
 /* Social links */
 .profile-header-social-links{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px;}
-.profile-header .profile-header-info .profile-header-social-links-wrap{width:auto;max-width:352px;height:44px;margin:0!important;position:absolute!important;top:54px!important;right:32px!important;left:auto!important;overflow:visible!important;display:block!important;}
-.profile-header .profile-header-social-links{display:flex!important;gap:8px;flex-wrap:nowrap;padding-top:0;align-items:center;}
-.profile-header .social-link{display:flex!important;justify-content:center;align-items:center;width:40px;height:40px;border-radius:10px;transition:transform .2s ease-in-out;text-decoration:none;flex-shrink:0;}
-.profile-header .social-link:hover{transform:translate(0,-4px);}
-.profile-header .social-link.facebook{background-color:#3763d2!important;}.profile-header .social-link.twitter{background-color:#1abcff!important;}.profile-header .social-link.youtube{background-color:#fd434f!important;}.profile-header .social-link.instagram{background-color:#f8468d!important;}.profile-header .social-link.linkedin{background-color:#0a66c2!important;}.profile-header .social-link.vk-icon{background-color:#0077ff!important;}
-.profile-header .social-link svg{fill:#fff!important;width:18px;height:18px;display:block;}
-/* Action buttons — Vikinger style */
-.profile-header .profile-header-info .profile-header-info-actions{display:flex!important;align-items:center!important;gap:8px!important;position:absolute!important;top:-40px!important;right:32px!important;flex-wrap:nowrap!important;}
+.wo_user_profile .pic-info-cont .profile-header-social-links-wrap{width:auto;max-width:352px;height:44px;margin:0!important;position:absolute!important;top:54px!important;right:32px!important;left:auto!important;overflow:visible!important;display:block!important;}
+.wo_user_profile .profile-header-social-links{display:flex!important;gap:8px!important;flex-wrap:nowrap!important;padding-top:0!important;align-items:center!important;}
+.wo_user_profile .social-link{display:flex!important;justify-content:center!important;align-items:center!important;width:40px!important;height:40px!important;border-radius:10px!important;transition:transform .2s ease-in-out!important;text-decoration:none!important;flex-shrink:0!important;}
+.wo_user_profile .social-link:hover{transform:translate(0,-4px)!important;}
+.wo_user_profile .social-link svg{fill:#fff!important;width:18px!important;height:18px!important;display:block!important;}
+/* Action buttons */
+.wo_user_profile .pic-info-cont .profile-header-info-actions{display:flex!important;align-items:center!important;gap:8px!important;position:absolute!important;top:-40px!important;right:32px!important;flex-wrap:nowrap!important;}
 .profile-header-info-actions .btn,.profile-header-info-actions a.btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;height:40px!important;padding:0 18px!important;border-radius:10px!important;font-family:'Rajdhani',sans-serif!important;font-size:.9rem!important;font-weight:700!important;letter-spacing:.04em!important;text-decoration:none!important;white-space:nowrap!important;cursor:pointer!important;border:none!important;transition:background-color .2s,box-shadow .2s!important;box-shadow:3px 5px 10px 0 rgba(62,63,94,.2)!important;}
 .profile-header-info-actions .btn-primary,.profile-header-info-actions .wo_follow_btn,.profile-header-info-actions .user-follow-button .btn{background-color:#615dfa!important;color:#fff!important;box-shadow:4px 7px 12px 0 rgba(97,93,250,.2)!important;}
 .profile-header-info-actions .btn-default,.profile-header-info-actions .profile-message-btn .btn,.profile-header-info-actions .btn:not(.btn-primary){background-color:#23d2e2!important;color:#fff!important;box-shadow:4px 7px 12px 0 rgba(35,210,226,.2)!important;}
 .profile-header-info-actions .btn-glossy,.profile-header-info-actions span.btn-glossy{background:none!important;padding:0!important;box-shadow:none!important;border:none!important;display:inline-flex!important;}
-/* Edit/Activities buttons (owner view) */
 .profile-header-info-actions .btn.btn-default{background-color:#fff!important;color:#3e3f5e!important;box-shadow:0 0 0 2px #dedeea inset!important;}
-/* Override for message specifically */
 .profile-header-info-actions .profile-message-btn .btn{background-color:#23d2e2!important;color:#fff!important;box-shadow:4px 7px 12px 0 rgba(35,210,226,.2)!important;}
-@media(max-width:1200px){.profile-header .profile-header-info .profile-header-info-actions{right:12px!important;}}
-/* Mobile: full stack layout */
+@media(max-width:1200px){.wo_user_profile .pic-info-cont .profile-header-info-actions{right:12px!important;}}
 @media(max-width:680px){
-  .profile-header .profile-header-info .profile-header-info-actions{top:-36px!important;right:6px!important;gap:4px!important;}
+  .wo_user_profile .pic-info-cont .profile-header-info-actions{top:-36px!important;right:6px!important;gap:4px!important;}
   .profile-header-info-actions .btn,.profile-header-info-actions a.btn{height:34px!important;padding:0 12px!important;font-size:.8rem!important;}
 }
 /* Section navigation */
@@ -110,10 +109,9 @@ figure.profile-header-cover{margin-block-start:0!important;margin-block-end:0!im
 .section-menu-item.active .section-menu-item-text{transform:translate(0,0)!important;opacity:1!important;}
 .section-menu-item:hover .section-menu-item-text{transform:translate(0,0);opacity:1;}
 @media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:56px;height:48px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
-/* ===== PURPLE/HEXAGON: reset all WoWonder avatar img-circle rounding so JS can hexagonify ===== */
-.post-heading .image a.avatar,.post-heading .image a.wow_post_usr_ava{display:block!important;overflow:hidden!important;border-radius:0!important;background:none!important;}
-.post-heading .image a.avatar img,.post-heading .image a.wow_post_usr_ava img,.post-heading .image a.avatar .blur_img{border-radius:0!important;}
-img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)!important;-webkit-clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)!important;border-radius:0!important;}
+/* Hide original post/comment avatar imgs — hexagon canvas replaces them */
+.post-heading .image a.avatar,.post-heading .image a.wow_post_usr_ava{display:inline-flex!important;overflow:visible!important;border-radius:0!important;background:none!important;border:none!important;padding:0!important;}
+.post-heading .image a.avatar img,.post-heading .image a.wow_post_usr_ava img{border-radius:0!important;}
 </style>
 
 <!-- Vikinger Hexagon JS -->
@@ -122,10 +120,11 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
 <div class="row page-margin profile wo_user_profile" data-page="timeline" data-id="<?php echo $wo['user_profile']['user_id'];?>">
 
   <!-- PROFILE HEADER -->
-  <div class="profile-header" style="border-radius:12px;background-color:#fff;box-shadow:0 0 40px 0 rgba(94,92,154,.12);margin-bottom:16px;overflow:hidden;clip-path:inset(0 round 12px);position:relative;display:flex;flex-direction:column;gap:0;">
+  <div class="profile-container" style="width:100%;flex:0 0 100%;">
+  <div class="card hovercard">
 
     <!-- PROFILE HEADER COVER -->
-    <figure class="profile-header-cover" style="display:block;margin:0;padding:0;border:none;line-height:0;">
+    <div class="cardheader user-cover">
 				<?php if($IsOwner === true) { ?>
 					<form action="#" method="post" class="profile-cover-changer">
                         <div class="input-group when-notedit profile_cover">
@@ -227,11 +226,11 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
 			</div>
 
 
-    </figure>
+    </div>
     <!-- /PROFILE HEADER COVER -->
 
     <!-- PROFILE HEADER INFO -->
-    <div class="profile-header-info" style="height:126px;position:relative;overflow:visible;background-color:#fff;">
+    <div class="pic-info-cont">
 
       <!-- USER SHORT DESCRIPTION (avatar + name centered, overlapping cover) -->
       <div class="user-short-description big">
@@ -548,7 +547,8 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
     </div>
     <!-- /PROFILE HEADER INFO -->
 
-  </div>
+  </div><!-- /card hovercard -->
+  </div><!-- /profile-container -->
   <!-- /PROFILE HEADER -->
 
   <!-- Vikinger Hexagon Init -->
@@ -564,157 +564,6 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
   })();
   </script>
 
-  <!-- Profile Layout Enforcer: element-width-aware, overrides stylesheet !important via JS setProperty -->
-  <script>
-  (function fixProfileLayout() {
-    function apply() {
-      var header = document.querySelector('.wo_user_profile .profile-header');
-      if (!header) return;
-      // Use element width (not viewport) — accurate even inside WoWonder's sidebar layout
-      var cardW = header.offsetWidth || 0;
-      var isDesktop = cardW >= 680;
-
-      header.style.setProperty('overflow', 'hidden', 'important');
-      header.style.setProperty('border-radius', '12px', 'important');
-
-      var info = header.querySelector('.profile-header-info');
-      if (!info) return;
-      info.style.setProperty('position', 'relative', 'important');
-      info.style.setProperty('overflow', 'visible', 'important');
-      info.style.setProperty('background-color', '#fff', 'important');
-      info.style.setProperty('border-bottom-left-radius', '12px', 'important');
-      info.style.setProperty('border-bottom-right-radius', '12px', 'important');
-
-      var stats  = info.querySelector('.user-stats');
-      var social = info.querySelector('.profile-header-social-links-wrap');
-      var actions = info.querySelector('.profile-header-info-actions');
-
-      if (isDesktop) {
-        /* ── DESKTOP: absolute layout ── */
-        info.style.setProperty('height', '126px', 'important');
-        info.style.setProperty('padding-bottom', '0', 'important');
-
-        if (stats) {
-          stats.style.setProperty('position', 'absolute', 'important');
-          stats.style.setProperty('top', '54px', 'important');
-          stats.style.setProperty('left', '40px', 'important');
-          stats.style.setProperty('display', 'flex', 'important');
-          stats.style.setProperty('margin', '0', 'important');
-          stats.style.setProperty('justify-content', 'flex-start', 'important');
-          stats.style.setProperty('flex-wrap', 'nowrap', 'important');
-          stats.style.setProperty('max-width', 'calc(50% - 60px)', 'important');
-          stats.style.setProperty('overflow', 'hidden', 'important');
-        }
-        if (social) {
-          social.style.setProperty('position', 'absolute', 'important');
-          social.style.setProperty('top', '54px', 'important');
-          social.style.setProperty('right', '32px', 'important');
-          social.style.setProperty('left', 'auto', 'important');
-          social.style.setProperty('display', 'block', 'important');
-          social.style.setProperty('margin', '0', 'important');
-          var links = social.querySelector('.profile-header-social-links');
-          if (links) {
-            links.style.setProperty('display', 'flex', 'important');
-            links.style.setProperty('gap', '8px', 'important');
-            links.style.setProperty('flex-wrap', 'nowrap', 'important');
-            links.style.setProperty('align-items', 'center', 'important');
-            links.style.setProperty('padding', '0', 'important');
-          }
-        }
-        if (actions) {
-          actions.style.setProperty('position', 'absolute', 'important');
-          actions.style.setProperty('top', '-40px', 'important');
-          actions.style.setProperty('right', '32px', 'important');
-          actions.style.setProperty('display', 'flex', 'important');
-          actions.style.setProperty('align-items', 'center', 'important');
-          actions.style.setProperty('gap', '8px', 'important');
-          actions.style.setProperty('flex-wrap', 'nowrap', 'important');
-          actions.style.setProperty('margin', '0', 'important');
-        }
-      } else {
-        /* ── MOBILE: stacked, everything centered ── */
-        info.style.setProperty('height', 'auto', 'important');
-        info.style.setProperty('padding-bottom', '28px', 'important');
-
-        if (stats) {
-          stats.style.setProperty('position', 'static', 'important');
-          stats.style.setProperty('display', 'flex', 'important');
-          stats.style.setProperty('justify-content', 'center', 'important');
-          stats.style.setProperty('flex-wrap', 'wrap', 'important');
-          stats.style.setProperty('margin', '72px auto 0', 'important');
-          stats.style.setProperty('max-width', '100%', 'important');
-          stats.style.setProperty('overflow', 'visible', 'important');
-        }
-        if (social) {
-          social.style.setProperty('position', 'static', 'important');
-          social.style.setProperty('display', 'block', 'important');
-          social.style.setProperty('margin', '16px auto 0', 'important');
-          social.style.setProperty('text-align', 'center', 'important');
-          social.style.setProperty('right', 'auto', 'important');
-          social.style.setProperty('max-width', '100%', 'important');
-          social.style.setProperty('height', 'auto', 'important');
-          var links = social.querySelector('.profile-header-social-links');
-          if (links) {
-            links.style.setProperty('display', 'flex', 'important');
-            links.style.setProperty('justify-content', 'center', 'important');
-            links.style.setProperty('flex-wrap', 'wrap', 'important');
-            links.style.setProperty('gap', '8px', 'important');
-            links.style.setProperty('align-items', 'center', 'important');
-            links.style.setProperty('padding', '0', 'important');
-          }
-        }
-        if (actions) {
-          actions.style.setProperty('position', 'absolute', 'important');
-          actions.style.setProperty('top', '-38px', 'important');
-          actions.style.setProperty('right', '8px', 'important');
-          actions.style.setProperty('display', 'flex', 'important');
-          actions.style.setProperty('gap', '4px', 'important');
-          actions.style.setProperty('flex-wrap', 'nowrap', 'important');
-          actions.style.setProperty('margin', '0', 'important');
-        }
-      }
-    }
-
-    apply();
-    if (window.requestAnimationFrame) {
-      requestAnimationFrame(apply);
-      requestAnimationFrame(function(){ requestAnimationFrame(apply); });
-    }
-    setTimeout(apply, 100);
-    setTimeout(apply, 500);
-    var resizeTimer;
-    window.addEventListener('resize', function() {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(apply, 50);
-    });
-  })();
-  </script>
-
-  <!-- Navbar offset fix: push profile below fixed navbar -->
-  <script>
-  (function fixNavbarOffset() {
-    function doFix() {
-      var nav = document.querySelector('.navbar-fixed-top');
-      var cover = document.querySelector('.wo_user_profile .profile-header-cover');
-      var wrapper = document.querySelector('.wo_user_profile');
-      if (!nav || !cover || !wrapper) return;
-      var navBottom = nav.getBoundingClientRect().bottom;
-      var coverTop = cover.getBoundingClientRect().top;
-      if (coverTop < navBottom + 2) {
-        var currentMT = parseFloat(window.getComputedStyle(wrapper).marginTop) || 0;
-        var needed = navBottom - coverTop;
-        if (needed > 0) {
-          wrapper.style.setProperty('margin-top', Math.ceil(currentMT + needed) + 'px', 'important');
-        }
-      }
-    }
-    // Run at multiple points to catch both immediate and delayed render
-    doFix();
-    if (window.requestAnimationFrame) requestAnimationFrame(doFix);
-    setTimeout(doFix, 100);
-    setTimeout(doFix, 600);
-  })();
-  </script>
 
   <!-- Hexagon avatars for all post/comment avatars (Vikinger style via XM_Hexagon) -->
   <script>
@@ -742,17 +591,17 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
       div.setAttribute('data-src', src);
       div.style.cssText = 'display:inline-block;flex-shrink:0;';
       aEl.appendChild(div);
-      new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, clip: true});
+      new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, roundedCornerRadius: 1, clip: true});
     }
 
     function run() {
       // Post heading avatars
       document.querySelectorAll('.post-heading .image a.avatar:not([data-hex-done]), .post-heading .image a.wow_post_usr_ava:not([data-hex-done])').forEach(function(a) {
-        makeHex(a, 36, 40);
+        makeHex(a, 30, 32);
       });
       // Comment avatars — img.avatar.pull-left (standalone img, not in anchor)
       document.querySelectorAll('img.avatar.pull-left:not([data-hex-done])').forEach(function(im) {
-        if (im.closest('.user-short-description') || im.closest('.profile-header')) return;
+        if (im.closest('.user-short-description') || im.closest('.card.hovercard')) return;
         var src = im.getAttribute('src') || '';
         if (!src || src === '#' || typeof XM_Hexagon === 'undefined') return;
         im.dataset.hexDone = '1';
@@ -763,12 +612,12 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
         div.style.cssText = 'display:inline-block;';
         im.style.cssText = 'display:none!important;';
         im.parentNode.insertBefore(div, im);
-        new XM_Hexagon({container: '.' + uid, width: 36, height: 40, roundedCorners: true, clip: true});
+        new XM_Hexagon({container: '.' + uid, width: 30, height: 32, roundedCorners: true, roundedCornerRadius: 1, clip: true});
       });
       // Create-post / other small avatar anchor links
       document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(function(a) {
-        if (a.closest('.user-short-description') || a.closest('.profile-header') || a.closest('.post-heading')) return;
-        makeHex(a, 36, 40);
+        if (a.closest('.user-short-description') || a.closest('.card.hovercard') || a.closest('.post-heading')) return;
+        makeHex(a, 30, 32);
       });
     }
 
