@@ -77,11 +77,11 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .user-stat.big .user-stat-title{font-size:22px!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;}
 .user-stat .user-stat-text{font-size:10px;color:#adafca;margin:4px 0 0;}
 .user-stat.big .user-stat-text{font-size:12px!important;color:#adafca!important;margin:4px 0 0!important;}
-/* Desktop: stats absolute LEFT inside pic-info-cont */
-.wo_user_profile .pic-info-cont .user-stats{position:absolute!important;top:16px!important;left:40px!important;overflow:visible;flex-wrap:nowrap;}
+/* Desktop: stats absolute LEFT inside pic-info-cont — Vikinger exact position */
+.wo_user_profile .pic-info-cont .user-stats{position:absolute!important;top:54px!important;left:40px!important;overflow:visible;flex-wrap:nowrap;}
 /* Social links */
 .profile-header-social-links{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px;}
-.wo_user_profile .pic-info-cont .profile-header-social-links-wrap{width:auto;max-width:352px;height:44px;margin:0!important;position:absolute!important;top:16px!important;right:32px!important;left:auto!important;overflow:visible!important;display:block!important;}
+.wo_user_profile .pic-info-cont .profile-header-social-links-wrap{width:auto;max-width:352px;height:44px;margin:0!important;position:absolute!important;top:54px!important;right:32px!important;left:auto!important;overflow:visible!important;display:block!important;}
 .wo_user_profile .pic-info-cont .profile-header-social-links{display:flex!important;gap:8px;flex-wrap:nowrap;padding-top:0;align-items:center;}
 .wo_user_profile .pic-info-cont .social-link{display:flex!important;justify-content:center;align-items:center;width:40px;height:40px;border-radius:10px;transition:transform .2s ease-in-out;text-decoration:none;flex-shrink:0;}
 .wo_user_profile .pic-info-cont .social-link:hover{transform:translate(0,-4px);}
@@ -374,7 +374,7 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
       <!-- /INFO -->
 
       <!-- USER STATS -->
-      <div class="user-stats" style="position:absolute;top:16px;left:40px;display:flex;align-items:center;">
+      <div class="user-stats" style="position:absolute;top:54px;left:40px;display:flex;align-items:center;">
         <div class="user-stat big">
           <p class="user-stat-title" style="font-family:'Rajdhani',sans-serif!important;font-size:22px!important;font-weight:700!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;"><?php echo number_format($wo['user_profile']['details']['post_count']); ?></p>
           <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif!important;font-size:12px!important;font-weight:700!important;color:#adafca!important;text-transform:uppercase!important;margin:4px 0 0!important;letter-spacing:.04em!important;"><?php echo TextForMode('posts'); ?></p>
@@ -411,7 +411,7 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
 
       <!-- SOCIAL LINKS -->
       <?php if(!empty($wo['user_profile']['facebook']) || !empty($wo['user_profile']['twitter']) || !empty($wo['user_profile']['instagram']) || !empty($wo['user_profile']['linkedin']) || !empty($wo['user_profile']['youtube']) || !empty($wo['user_profile']['vk'])) { ?>
-      <div class="profile-header-social-links-wrap" style="position:absolute;top:16px;right:32px;width:auto;max-width:352px;height:44px;overflow:visible;">
+      <div class="profile-header-social-links-wrap" style="position:absolute;top:54px;right:32px;width:auto;max-width:352px;height:44px;overflow:visible;">
         <div id="profile-header-social-links-slider" class="profile-header-social-links" style="display:flex;gap:8px;flex-wrap:nowrap;align-items:center;padding:0;">
 <?php $sl='display:flex;justify-content:center;align-items:center;width:40px;height:40px;border-radius:10px;text-decoration:none;flex-shrink:0;'; ?>
               <?php if(!empty($wo['user_profile']['youtube'])) { ?><a class="social-link youtube" href="https://www.youtube.com/<?php echo htmlspecialchars($wo['user_profile']['youtube']); ?>" target="_blank" style="<?php echo $sl; ?>background-color:#fd434f;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;display:block;"><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z"/></svg></a><?php } ?>
@@ -606,34 +606,35 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
     // Vikinger post/comment avatar image size (inside 50×56 container, no-stats: top:6 left:5)
     var HEX_W = 40, HEX_H = 44;
 
-    // Build full Vikinger user-avatar.small structure on an <a> anchor
+    // Insert a pure Vikinger user-avatar.small BEFORE the WoWonder anchor.
+    // The WoWonder anchor is hidden but NOT removed — WoWonder JS can still find it.
+    // This avoids CSS fights: WoWonder CSS targets .avatar/.wow_post_usr_ava (hidden),
+    // Vikinger CSS targets .user-avatar.small (our new element). Zero overlap.
     function makeHex(aEl, w, h) {
       if (!aEl || aEl.dataset.hexDone) return;
       if (typeof XM_Hexagon === 'undefined') return;
       aEl.dataset.hexDone = '1';
-      // Find image src
+      // Find image src from WoWonder's img
       var img = aEl.querySelector('img:not(.blur_img)') || aEl.querySelector('img');
       if (!img) return;
       var src = img.getAttribute('src') || '';
       if (!src || src === '#' || src.indexOf('data:') === 0) return;
-      // Hide all existing children (keep for WoWonder JS hooks)
-      Array.prototype.forEach.call(aEl.children, function(child) {
-        child.style.setProperty('display', 'none', 'important');
-        child.style.position = 'absolute';
-        child.style.opacity = '0';
-        child.style.pointerEvents = 'none';
-      });
-      // Apply Vikinger user-avatar.small classes
-      aEl.classList.add('user-avatar', 'small', 'no-outline', 'no-stats');
-      // Build: .user-avatar-content > unique-hex-div[data-src]
+      // Build pure Vikinger structure: <a class="user-avatar small no-stats no-outline"> > .user-avatar-content > hexDiv
       var uid = 'hxav' + Math.random().toString(36).substr(2, 9);
+      var vikingerEl = document.createElement('a');
+      vikingerEl.className = 'user-avatar small no-stats no-outline';
+      var href = aEl.getAttribute('href');
+      if (href) vikingerEl.href = href;
       var content = document.createElement('div');
       content.className = 'user-avatar-content';
       var hexDiv = document.createElement('div');
       hexDiv.className = uid;
       hexDiv.setAttribute('data-src', src);
       content.appendChild(hexDiv);
-      aEl.appendChild(content);
+      vikingerEl.appendChild(content);
+      // Insert Vikinger element before WoWonder element, then hide WoWonder element
+      aEl.parentNode.insertBefore(vikingerEl, aEl);
+      aEl.style.setProperty('display', 'none', 'important');
       new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, roundedCornerRadius: 1, clip: true});
     }
 
