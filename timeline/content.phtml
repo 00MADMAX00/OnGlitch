@@ -30,7 +30,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 /* Hide gradient overlay */
 .wo_user_profile .problackback{display:none!important;height:0!important;margin:0!important;padding:0!important;}
 /* Info bar — pic-info-cont */
-.wo_user_profile .pic-info-cont{height:126px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;}
+.wo_user_profile .pic-info-cont{height:200px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;}
 /* Profile avatar — Vikinger hexagon, centered, overlapping cover (82px = 164/2 so avatar straddles boundary) */
 .wo_user_profile .pic-info-cont .user-avatar.flip.big{position:absolute!important;top:-82px!important;left:50%!important;margin-left:-74px!important;transform:none!important;width:148px!important;height:164px!important;z-index:10!important;}
 /* Hexagon sub-elements (same as Vikinger original) */
@@ -40,6 +40,8 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .user-avatar .user-avatar-progress,.wo_user_profile .user-avatar .user-avatar-progress-border{position:absolute;top:14px;left:12px;}
 .wo_user_profile .user-avatar .user-avatar-progress{z-index:3;}
 .wo_user_profile .user-avatar .user-avatar-progress-border{z-index:2;}
+/* Hide progress ring on main profile avatar — prevents blue line bleeding into info bar */
+.wo_user_profile .pic-info-cont .user-avatar .user-avatar-progress,.wo_user_profile .pic-info-cont .user-avatar .user-avatar-progress-border{display:none!important;}
 .wo_user_profile .user-avatar .user-avatar-badge{display:flex;justify-content:center;align-items:center;width:40px;height:44px;position:absolute;top:102px;right:8px;z-index:4;}
 .wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-border{position:absolute;top:0;left:0;z-index:4;}
 .wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-content{position:absolute;top:5px;left:4px;z-index:5;}
@@ -54,14 +56,16 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar{display:flex!important;align-items:center!important;justify-content:center!important;width:148px!important;height:164px!important;background:rgba(0,0,0,.4)!important;gap:4px;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);}
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar .btn{background:none!important;border:none!important;color:#fff!important;padding:4px!important;min-height:0!important;box-shadow:none!important;}
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar svg{width:20px;height:20px;}
-/* Info (name + username) — centered in info bar */
-.wo_user_profile .pic-info-cont .info{position:absolute!important;top:8px!important;left:50%!important;transform:translateX(-50%)!important;text-align:center!important;white-space:nowrap!important;z-index:5;pointer-events:auto;}
+/* Info (name + username) — below the avatar (avatar top:-82px, height:164px → bottom at 82px from bar top) */
+.wo_user_profile .pic-info-cont .info{position:absolute!important;top:95px!important;left:50%!important;transform:translateX(-50%)!important;text-align:center!important;white-space:normal!important;width:280px!important;z-index:5;pointer-events:auto;}
 .wo_user_profile .pic-info-cont .info .title{display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;font-family:'Rajdhani',sans-serif!important;flex-wrap:wrap!important;}
 .wo_user_profile .pic-info-cont .info .title a{font-size:1.5rem!important;font-weight:700!important;color:#3e3f5e!important;text-decoration:none!important;font-family:'Rajdhani',sans-serif!important;text-shadow:none!important;}
 .wo_user_profile .pic-info-cont .info .title .verified-color{fill:#23d2e2;width:18px;height:18px;vertical-align:middle;}
 .wo_user_profile .pic-info-cont .info .title .badge-pro{border-radius:4px;padding:2px 5px;font-size:.6rem;line-height:1.2;vertical-align:middle;}
 .wo_user_profile .pic-info-cont .info > p{margin-top:2px!important;margin-bottom:0!important;color:#adafca!important;font-size:1rem!important;font-weight:600!important;text-transform:none!important;letter-spacing:0!important;font-family:'Rajdhani',sans-serif!important;line-height:1.3!important;}
 .wo_user_profile .pic-info-cont .info > p a{color:#adafca;text-decoration:none;}
+/* Website link — slightly brighter so it stands out */
+.wo_user_profile .pic-info-cont .info > p:last-child a{color:#615dfa!important;font-size:1rem!important;font-weight:700!important;}
 /* Stats — Vikinger sizes */
 .user-stats{display:flex;justify-content:center;}
 .user-stats .user-stat{position:relative;}
@@ -74,10 +78,10 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .user-stat .user-stat-text{font-size:10px;color:#adafca;margin:4px 0 0;}
 .user-stat.big .user-stat-text{font-size:12px!important;color:#adafca!important;margin:4px 0 0!important;}
 /* Desktop: stats absolute LEFT inside pic-info-cont */
-.wo_user_profile .pic-info-cont .user-stats{position:absolute!important;top:54px!important;left:40px!important;overflow:visible;flex-wrap:nowrap;}
+.wo_user_profile .pic-info-cont .user-stats{position:absolute!important;top:16px!important;left:40px!important;overflow:visible;flex-wrap:nowrap;}
 /* Social links */
 .profile-header-social-links{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px;}
-.wo_user_profile .pic-info-cont .profile-header-social-links-wrap{width:auto;max-width:352px;height:44px;margin:0!important;position:absolute!important;top:54px!important;right:32px!important;left:auto!important;overflow:visible!important;display:block!important;}
+.wo_user_profile .pic-info-cont .profile-header-social-links-wrap{width:auto;max-width:352px;height:44px;margin:0!important;position:absolute!important;top:16px!important;right:32px!important;left:auto!important;overflow:visible!important;display:block!important;}
 .wo_user_profile .pic-info-cont .profile-header-social-links{display:flex!important;gap:8px;flex-wrap:nowrap;padding-top:0;align-items:center;}
 .wo_user_profile .pic-info-cont .social-link{display:flex!important;justify-content:center;align-items:center;width:40px;height:40px;border-radius:10px;transition:transform .2s ease-in-out;text-decoration:none;flex-shrink:0;}
 .wo_user_profile .pic-info-cont .social-link:hover{transform:translate(0,-4px);}
@@ -114,11 +118,15 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .section-menu-item.active .section-menu-item-text{transform:translate(0,0)!important;opacity:1!important;}
 .section-menu-item:hover .section-menu-item-text{transform:translate(0,0);opacity:1;}
 @media(max-width:760px){.section-navigation{padding:6px!important;}.section-menu{height:auto!important;flex-wrap:wrap;}.section-menu-item{flex:0 0 auto!important;min-width:56px;height:48px!important;border-bottom:none;}.section-menu-item.active{background:rgba(35,210,226,.1);border-radius:8px;}.section-menu-item+.section-menu-item::before{display:none;}.section-menu-item-icon{transform:none!important;opacity:.8!important;}.section-menu-item.active .section-menu-item-icon{opacity:1!important;}.section-menu-item-text{display:none!important;}}
-/* ===== HEXAGON: override WoWonder 60x60 fixed avatar size so hex canvas shows correctly ===== */
-.post-heading .image a.avatar,.post-heading .image a.wow_post_usr_ava{display:inline-block!important;width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;overflow:visible!important;border-radius:0!important;background:none!important;box-shadow:none!important;margin-right:10px!important;vertical-align:middle!important;}
+/* ===== Vikinger user-avatar.small — post/comment hex avatars ===== */
+.user-avatar.small{display:inline-block!important;width:50px!important;height:56px!important;position:relative!important;overflow:visible!important;border-radius:0!important;background:none!important;box-shadow:none!important;vertical-align:middle!important;flex-shrink:0!important;}
+.user-avatar.small .user-avatar-content{position:absolute!important;top:12px!important;left:10px!important;}
+.user-avatar.small.no-stats .user-avatar-content{top:6px!important;left:5px!important;}
+/* Override WoWonder 60×60 on anchor — JS will set user-avatar.small classes */
+.post-heading .image a.avatar,.post-heading .image a.wow_post_usr_ava{display:inline-block!important;width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;overflow:visible!important;border-radius:0!important;background:none!important;box-shadow:none!important;margin-right:6px!important;vertical-align:middle!important;}
 .post-heading .image a.avatar img,.post-heading .image a.wow_post_usr_ava img{border-radius:0!important;}
-/* img.avatar.pull-left: standalone comment avatar — will be replaced by JS hex canvas */
-img.avatar.pull-left{clip-path:none!important;border-radius:0!important;width:30px!important;height:30px!important;}
+/* img.avatar.pull-left: standalone comment avatar — wrapped by JS in user-avatar.small div */
+img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
 </style>
 
 <!-- Vikinger Hexagon JS -->
@@ -280,17 +288,18 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;width:30
         <?php
           $__gender_raw = strtolower(trim($wo['user_profile']['gender'] ?? ''));
           if ($__gender_raw === 'male') {
-            $__badge_symbol = '♂'; $__badge_colors = "['#41efff','#615dfa']"; $__badge_inner = '#3a3786';
+            $__badge_colors = "['#41efff','#615dfa']"; $__badge_img = 'https://onglitch.com/male.png';
           } elseif ($__gender_raw === 'female') {
-            $__badge_symbol = '♀'; $__badge_colors = "['#ff6ec7','#f8468d']"; $__badge_inner = '#c0156b';
+            $__badge_colors = "['#ff6ec7','#f8468d']"; $__badge_img = 'https://onglitch.com/female.png';
           } else {
-            $__badge_symbol = '⚥'; $__badge_colors = "['#c084fc','#7c3aed']"; $__badge_inner = '#5b21b6';
+            $__badge_colors = "['#c084fc','#7c3aed']"; $__badge_img = 'https://onglitch.com/none.png';
           }
         ?>
         <div class="user-avatar-badge">
           <div class="user-avatar-badge-border"><div class="hexagon-40-44"></div></div>
-          <div class="user-avatar-badge-content"><div class="hexagon-dark-32-34"></div></div>
-          <p class="user-avatar-badge-text"><?php echo $__badge_symbol; ?></p>
+          <div class="user-avatar-badge-content" style="position:absolute;top:5px;left:4px;z-index:5;display:flex;align-items:center;justify-content:center;width:32px;height:34px;">
+            <img src="<?php echo $__badge_img; ?>" width="20" height="20" style="object-fit:contain;display:block;" alt="gender">
+          </div>
         </div>
         <?php if($IsOwner === true) { ?>
 						<form action="#" method="post" class="profile-avatar-changer wo_profile_pic_hover">
@@ -365,7 +374,7 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;width:30
       <!-- /INFO -->
 
       <!-- USER STATS -->
-      <div class="user-stats" style="position:absolute;top:54px;left:40px;display:flex;align-items:center;">
+      <div class="user-stats" style="position:absolute;top:16px;left:40px;display:flex;align-items:center;">
         <div class="user-stat big">
           <p class="user-stat-title" style="font-family:'Rajdhani',sans-serif!important;font-size:22px!important;font-weight:700!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;"><?php echo number_format($wo['user_profile']['details']['post_count']); ?></p>
           <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif!important;font-size:12px!important;font-weight:700!important;color:#adafca!important;text-transform:uppercase!important;margin:4px 0 0!important;letter-spacing:.04em!important;"><?php echo TextForMode('posts'); ?></p>
@@ -402,7 +411,7 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;width:30
 
       <!-- SOCIAL LINKS -->
       <?php if(!empty($wo['user_profile']['facebook']) || !empty($wo['user_profile']['twitter']) || !empty($wo['user_profile']['instagram']) || !empty($wo['user_profile']['linkedin']) || !empty($wo['user_profile']['youtube']) || !empty($wo['user_profile']['vk'])) { ?>
-      <div class="profile-header-social-links-wrap" style="position:absolute;top:54px;right:32px;width:auto;max-width:352px;height:44px;overflow:visible;">
+      <div class="profile-header-social-links-wrap" style="position:absolute;top:16px;right:32px;width:auto;max-width:352px;height:44px;overflow:visible;">
         <div id="profile-header-social-links-slider" class="profile-header-social-links" style="display:flex;gap:8px;flex-wrap:nowrap;align-items:center;padding:0;">
 <?php $sl='display:flex;justify-content:center;align-items:center;width:40px;height:40px;border-radius:10px;text-decoration:none;flex-shrink:0;'; ?>
               <?php if(!empty($wo['user_profile']['youtube'])) { ?><a class="social-link youtube" href="https://www.youtube.com/<?php echo htmlspecialchars($wo['user_profile']['youtube']); ?>" target="_blank" style="<?php echo $sl; ?>background-color:#fd434f;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;display:block;"><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z"/></svg></a><?php } ?>
@@ -586,78 +595,82 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;width:30
     new XM_Hexagon({container:'.hexagon-progress-124-136',width:124,height:136,lineWidth:8,roundedCorners:true,gradient:{colors:['#41efff','#615dfa']},scale:{start:0,end:1,stop:.74}});
     new XM_Hexagon({container:'.hexagon-border-124-136',width:124,height:136,lineWidth:8,roundedCorners:true,lineColor:'#e7e8ee'});
     new XM_Hexagon({container:'.hexagon-image-100-110',width:100,height:110,roundedCorners:true,clip:true});
-    // Badge hexagons — color-coded by gender (PHP-injected)
+    // Badge hexagon border — color-coded by gender
     new XM_Hexagon({container:'.hexagon-40-44',width:40,height:44,roundedCorners:true,roundedCornerRadius:1,fill:true,gradient:{colors:<?php echo $__badge_colors; ?>}});
-    new XM_Hexagon({container:'.hexagon-dark-32-34',width:32,height:34,roundedCorners:true,roundedCornerRadius:1,lineColor:'<?php echo $__badge_inner; ?>',fill:true,fillColor:'<?php echo $__badge_inner; ?>'});
   })();
   </script>
 
   <!-- Hexagon avatars for all post/comment avatars (Vikinger style via XM_Hexagon) -->
   <script>
   (function hexifyPostAvatars() {
-    // Vikinger post/comment avatar size
-    var HEX_W = 30, HEX_H = 32;
+    // Vikinger post/comment avatar image size (inside 50×56 container, no-stats: top:6 left:5)
+    var HEX_W = 40, HEX_H = 44;
 
+    // Build full Vikinger user-avatar.small structure on an <a> anchor
     function makeHex(aEl, w, h) {
       if (!aEl || aEl.dataset.hexDone) return;
       if (typeof XM_Hexagon === 'undefined') return;
       aEl.dataset.hexDone = '1';
-      // Hide verified badge span so it doesn't show outside hexagon
-      var badge = aEl.querySelector('.verified-color');
-      if (badge) badge.style.cssText = 'display:none!important;';
-      // Get the user image src — prefer non-blur img
+      // Find image src
       var img = aEl.querySelector('img:not(.blur_img)') || aEl.querySelector('img');
       if (!img) return;
       var src = img.getAttribute('src') || '';
       if (!src || src === '#' || src.indexOf('data:') === 0) return;
-      // Hide existing images in the anchor so WoWonder JS still finds them
-      Array.prototype.forEach.call(aEl.querySelectorAll('img'), function(im) {
-        im.style.setProperty('display', 'none', 'important');
-        im.style.position = 'absolute';
-        im.style.opacity = '0';
-        im.style.pointerEvents = 'none';
+      // Hide all existing children (keep for WoWonder JS hooks)
+      Array.prototype.forEach.call(aEl.children, function(child) {
+        child.style.setProperty('display', 'none', 'important');
+        child.style.position = 'absolute';
+        child.style.opacity = '0';
+        child.style.pointerEvents = 'none';
       });
-      // Size anchor to exactly fit the hexagon canvas (override WoWonder's 60x60)
-      aEl.style.setProperty('display', 'inline-block', 'important');
-      aEl.style.setProperty('width', w + 'px', 'important');
-      aEl.style.setProperty('height', h + 'px', 'important');
-      aEl.style.setProperty('overflow', 'visible', 'important');
-      aEl.style.setProperty('border-radius', '0', 'important');
-      aEl.style.setProperty('background', 'none', 'important');
-      aEl.style.setProperty('box-shadow', 'none', 'important');
-      aEl.style.setProperty('padding', '0', 'important');
-      aEl.style.setProperty('position', 'relative', 'important');
-      // Generate unique class and append hex div
+      // Apply Vikinger user-avatar.small classes
+      aEl.classList.add('user-avatar', 'small', 'no-outline', 'no-stats');
+      // Build: .user-avatar-content > unique-hex-div[data-src]
       var uid = 'hxav' + Math.random().toString(36).substr(2, 9);
-      var div = document.createElement('div');
-      div.className = uid;
-      div.setAttribute('data-src', src);
-      div.style.cssText = 'display:inline-block;flex-shrink:0;';
-      aEl.appendChild(div);
+      var content = document.createElement('div');
+      content.className = 'user-avatar-content';
+      var hexDiv = document.createElement('div');
+      hexDiv.className = uid;
+      hexDiv.setAttribute('data-src', src);
+      content.appendChild(hexDiv);
+      aEl.appendChild(content);
+      new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, roundedCornerRadius: 1, clip: true});
+    }
+
+    // Wrap standalone img.avatar.pull-left in a Vikinger user-avatar.small div
+    function makeHexImg(im, w, h) {
+      if (!im || im.dataset.hexDone) return;
+      if (typeof XM_Hexagon === 'undefined') return;
+      var src = im.getAttribute('src') || '';
+      if (!src || src === '#' || src.indexOf('data:') === 0) return;
+      im.dataset.hexDone = '1';
+      var wrapper = document.createElement('div');
+      wrapper.className = 'user-avatar small no-stats';
+      wrapper.style.cssText = 'display:inline-block;vertical-align:middle;margin-right:8px;flex-shrink:0;';
+      var uid = 'hxcm' + Math.random().toString(36).substr(2, 9);
+      var content = document.createElement('div');
+      content.className = 'user-avatar-content';
+      var hexDiv = document.createElement('div');
+      hexDiv.className = uid;
+      hexDiv.setAttribute('data-src', src);
+      content.appendChild(hexDiv);
+      wrapper.appendChild(content);
+      im.style.setProperty('display', 'none', 'important');
+      im.parentNode.insertBefore(wrapper, im);
       new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, roundedCornerRadius: 1, clip: true});
     }
 
     function run() {
-      // Post heading avatars
+      // Post heading avatars (anchor)
       document.querySelectorAll('.post-heading .image a.avatar:not([data-hex-done]), .post-heading .image a.wow_post_usr_ava:not([data-hex-done])').forEach(function(a) {
         makeHex(a, HEX_W, HEX_H);
       });
-      // Comment avatars — img.avatar.pull-left (standalone img, not in anchor)
+      // Comment avatars — standalone img.avatar.pull-left
       document.querySelectorAll('img.avatar.pull-left:not([data-hex-done])').forEach(function(im) {
         if (im.closest('.pic-info-cont') || im.closest('.card.hovercard')) return;
-        var src = im.getAttribute('src') || '';
-        if (!src || src === '#' || typeof XM_Hexagon === 'undefined') return;
-        im.dataset.hexDone = '1';
-        var uid = 'hxcm' + Math.random().toString(36).substr(2, 9);
-        var div = document.createElement('div');
-        div.className = uid;
-        div.setAttribute('data-src', src);
-        div.style.cssText = 'display:inline-block;';
-        im.style.cssText = 'display:none!important;';
-        im.parentNode.insertBefore(div, im);
-        new XM_Hexagon({container: '.' + uid, width: HEX_W, height: HEX_H, roundedCorners: true, roundedCornerRadius: 1, clip: true});
+        makeHexImg(im, HEX_W, HEX_H);
       });
-      // Create-post / other small avatar anchor links
+      // Create-post box and other small avatar anchors
       document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(function(a) {
         if (a.closest('.pic-info-cont') || a.closest('.card.hovercard') || a.closest('.post-heading')) return;
         makeHex(a, HEX_W, HEX_H);
