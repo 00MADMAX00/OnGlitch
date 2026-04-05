@@ -31,8 +31,8 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .problackback{display:none!important;height:0!important;margin:0!important;padding:0!important;}
 /* Info bar — pic-info-cont */
 .wo_user_profile .pic-info-cont{height:126px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;}
-/* Profile avatar — Vikinger hexagon, centered, overlapping cover */
-.wo_user_profile .pic-info-cont .user-avatar.flip.big{position:absolute!important;top:-116px!important;left:50%!important;margin-left:-74px!important;transform:none!important;width:148px!important;height:164px!important;z-index:10!important;}
+/* Profile avatar — Vikinger hexagon, centered, overlapping cover (82px = 164/2 so avatar straddles boundary) */
+.wo_user_profile .pic-info-cont .user-avatar.flip.big{position:absolute!important;top:-82px!important;left:50%!important;margin-left:-74px!important;transform:none!important;width:148px!important;height:164px!important;z-index:10!important;}
 /* Hexagon sub-elements (same as Vikinger original) */
 .wo_user_profile .user-avatar.big{width:148px;height:164px;}
 .wo_user_profile .user-avatar .user-avatar-border{position:absolute;top:0;left:0;z-index:1;}
@@ -57,10 +57,10 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 /* Info (name + username) — centered in info bar */
 .wo_user_profile .pic-info-cont .info{position:absolute!important;top:8px!important;left:50%!important;transform:translateX(-50%)!important;text-align:center!important;white-space:nowrap!important;z-index:5;pointer-events:auto;}
 .wo_user_profile .pic-info-cont .info .title{display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;font-family:'Rajdhani',sans-serif!important;flex-wrap:wrap!important;}
-.wo_user_profile .pic-info-cont .info .title a{font-size:1.5rem!important;font-weight:700!important;color:#3e3f5e!important;text-decoration:none!important;font-family:'Rajdhani',sans-serif!important;}
+.wo_user_profile .pic-info-cont .info .title a{font-size:1.5rem!important;font-weight:700!important;color:#3e3f5e!important;text-decoration:none!important;font-family:'Rajdhani',sans-serif!important;text-shadow:none!important;}
 .wo_user_profile .pic-info-cont .info .title .verified-color{fill:#23d2e2;width:18px;height:18px;vertical-align:middle;}
 .wo_user_profile .pic-info-cont .info .title .badge-pro{border-radius:4px;padding:2px 5px;font-size:.6rem;line-height:1.2;vertical-align:middle;}
-.wo_user_profile .pic-info-cont .info > p{margin-top:4px!important;margin-bottom:0!important;color:#adafca!important;font-size:.75rem!important;font-weight:700!important;text-transform:uppercase!important;letter-spacing:.04em!important;font-family:'Rajdhani',sans-serif!important;}
+.wo_user_profile .pic-info-cont .info > p{margin-top:2px!important;margin-bottom:0!important;color:#adafca!important;font-size:1rem!important;font-weight:600!important;text-transform:none!important;letter-spacing:0!important;font-family:'Rajdhani',sans-serif!important;line-height:1.3!important;}
 .wo_user_profile .pic-info-cont .info > p a{color:#adafca;text-decoration:none;}
 /* Stats — Vikinger sizes */
 .user-stats{display:flex;justify-content:center;}
@@ -98,8 +98,10 @@ if ($wo['loggedin'] && $IsOwnerUser) {
   .wo_user_profile .pic-info-cont .options-buttons{top:-36px!important;right:6px!important;gap:4px!important;}
   .wo_user_profile .pic-info-cont .options-buttons .btn{height:34px!important;padding:0 12px!important;font-size:.8rem!important;}
 }
-/* Section navigation */
-.section-navigation{padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;width:100%!important;flex:0 0 100%!important;overflow:hidden!important;}
+/* Section navigation — same visual width as profile-container */
+.section-navigation{padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin-bottom:16px!important;width:100%!important;flex:0 0 100%!important;overflow:hidden!important;box-sizing:border-box!important;max-width:100%!important;}
+/* Hide redundant right sidebar info widget (gender/posts/location already in header) */
+.wo_user_profile .right_user_info{display:none!important;}
 .section-menu{height:72px!important;display:flex!important;align-items:stretch!important;}
 .section-menu-item{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;flex:1!important;height:72px!important;position:relative!important;text-decoration:none!important;color:inherit!important;border-bottom:4px solid transparent;transition:border-color .2s;overflow:hidden!important;padding:0 8px!important;}
 .section-menu-item+.section-menu-item::before{content:'';position:absolute;left:0;top:28px;width:1px;height:28px;background:#eaeaf5;}
@@ -273,11 +275,21 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
         <div class="user-avatar-progress-border">
           <div class="hexagon-border-124-136"></div>
         </div>
-        <!-- USER AVATAR BADGE (profile completion %) -->
+        <!-- USER AVATAR BADGE (gender) -->
+        <?php
+          $__gender_raw = strtolower(trim($wo['user_profile']['gender'] ?? ''));
+          if ($__gender_raw === 'male') {
+            $__badge_symbol = '♂'; $__badge_colors = "['#41efff','#615dfa']"; $__badge_inner = '#3a3786';
+          } elseif ($__gender_raw === 'female') {
+            $__badge_symbol = '♀'; $__badge_colors = "['#ff6ec7','#f8468d']"; $__badge_inner = '#c0156b';
+          } else {
+            $__badge_symbol = '⚥'; $__badge_colors = "['#c084fc','#7c3aed']"; $__badge_inner = '#5b21b6';
+          }
+        ?>
         <div class="user-avatar-badge">
           <div class="user-avatar-badge-border"><div class="hexagon-40-44"></div></div>
           <div class="user-avatar-badge-content"><div class="hexagon-dark-32-34"></div></div>
-          <p class="user-avatar-badge-text"><?php if (isset($wo['pr_complition'])) echo is_array($wo['pr_complition']) ? array_sum($wo['pr_complition']) : $wo['pr_complition']; ?></p>
+          <p class="user-avatar-badge-text"><?php echo $__badge_symbol; ?></p>
         </div>
         <?php if($IsOwner === true) { ?>
 						<form action="#" method="post" class="profile-avatar-changer wo_profile_pic_hover">
@@ -344,10 +356,9 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather"><path fill="red" d="M10 4A4 4 0 0 0 6 8A4 4 0 0 0 10 12A4 4 0 0 0 14 8A4 4 0 0 0 10 4M17.5 13C15 13 13 15 13 17.5C13 20 15 22 17.5 22C20 22 22 20 22 17.5C22 15 20 13 17.5 13M10 14C5.58 14 2 15.79 2 18V20H11.5A6.5 6.5 0 0 1 11 17.5A6.5 6.5 0 0 1 11.95 14.14C11.32 14.06 10.68 14 10 14M17.5 14.5C19.16 14.5 20.5 15.84 20.5 17.5C20.5 18.06 20.35 18.58 20.08 19L16 14.92C16.42 14.65 16.94 14.5 17.5 14.5M14.92 16L19 20.08C18.58 20.35 18.06 20.5 17.5 20.5C15.84 20.5 14.5 19.16 14.5 17.5C14.5 16.94 14.65 16.42 14.92 16Z"></path></svg>
           <?php } ?>
         </div>
+        <p><a href="#">@<?php echo $wo['user_profile']['username']; ?></a></p>
         <?php if(!empty($wo['user_profile']['website'])): ?>
         <p><a href="<?php echo htmlspecialchars($wo['user_profile']['website']); ?>" target="_blank" rel="noopener"><?php echo htmlspecialchars(preg_replace('#^https?://#', '', rtrim($wo['user_profile']['website'],'/'))); ?></a></p>
-        <?php else: ?>
-        <p><a href="#">@<?php echo $wo['user_profile']['username']; ?></a></p>
         <?php endif; ?>
       </div>
       <!-- /INFO -->
@@ -575,19 +586,25 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
     new XM_Hexagon({container:'.hexagon-progress-124-136',width:124,height:136,lineWidth:8,roundedCorners:true,gradient:{colors:['#41efff','#615dfa']},scale:{start:0,end:1,stop:.74}});
     new XM_Hexagon({container:'.hexagon-border-124-136',width:124,height:136,lineWidth:8,roundedCorners:true,lineColor:'#e7e8ee'});
     new XM_Hexagon({container:'.hexagon-image-100-110',width:100,height:110,roundedCorners:true,clip:true});
-    new XM_Hexagon({container:'.hexagon-40-44',width:40,height:44,roundedCorners:true,roundedCornerRadius:1,fill:true});
-    new XM_Hexagon({container:'.hexagon-dark-32-34',width:32,height:34,roundedCorners:true,roundedCornerRadius:1,lineColor:'#45437f',fill:true});
+    // Badge hexagons — color-coded by gender (PHP-injected)
+    new XM_Hexagon({container:'.hexagon-40-44',width:40,height:44,roundedCorners:true,roundedCornerRadius:1,fill:true,gradient:{colors:<?php echo $__badge_colors; ?>}});
+    new XM_Hexagon({container:'.hexagon-dark-32-34',width:32,height:34,roundedCorners:true,roundedCornerRadius:1,lineColor:'<?php echo $__badge_inner; ?>',fill:true,fillColor:'<?php echo $__badge_inner; ?>'});
   })();
   </script>
 
   <!-- Hexagon avatars for all post/comment avatars (Vikinger style via XM_Hexagon) -->
   <script>
   (function hexifyPostAvatars() {
+    // Vikinger post/comment avatar size
+    var HEX_W = 30, HEX_H = 32;
+
     function makeHex(aEl, w, h) {
       if (!aEl || aEl.dataset.hexDone) return;
-      // If XM_Hexagon not ready yet, skip — MutationObserver retries will catch it
       if (typeof XM_Hexagon === 'undefined') return;
       aEl.dataset.hexDone = '1';
+      // Hide verified badge span so it doesn't show outside hexagon
+      var badge = aEl.querySelector('.verified-color');
+      if (badge) badge.style.cssText = 'display:none!important;';
       // Get the user image src — prefer non-blur img
       var img = aEl.querySelector('img:not(.blur_img)') || aEl.querySelector('img');
       if (!img) return;
@@ -606,13 +623,13 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
       div.setAttribute('data-src', src);
       div.style.cssText = 'display:inline-block;flex-shrink:0;';
       aEl.appendChild(div);
-      new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, clip: true});
+      new XM_Hexagon({container: '.' + uid, width: w, height: h, roundedCorners: true, roundedCornerRadius: 1, clip: true});
     }
 
     function run() {
       // Post heading avatars
       document.querySelectorAll('.post-heading .image a.avatar:not([data-hex-done]), .post-heading .image a.wow_post_usr_ava:not([data-hex-done])').forEach(function(a) {
-        makeHex(a, 36, 40);
+        makeHex(a, HEX_W, HEX_H);
       });
       // Comment avatars — img.avatar.pull-left (standalone img, not in anchor)
       document.querySelectorAll('img.avatar.pull-left:not([data-hex-done])').forEach(function(im) {
@@ -627,12 +644,12 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
         div.style.cssText = 'display:inline-block;';
         im.style.cssText = 'display:none!important;';
         im.parentNode.insertBefore(div, im);
-        new XM_Hexagon({container: '.' + uid, width: 36, height: 40, roundedCorners: true, clip: true});
+        new XM_Hexagon({container: '.' + uid, width: HEX_W, height: HEX_H, roundedCorners: true, roundedCornerRadius: 1, clip: true});
       });
       // Create-post / other small avatar anchor links
       document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(function(a) {
         if (a.closest('.pic-info-cont') || a.closest('.card.hovercard') || a.closest('.post-heading')) return;
-        makeHex(a, 36, 40);
+        makeHex(a, HEX_W, HEX_H);
       });
     }
 
@@ -647,9 +664,15 @@ img.avatar.pull-left{clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,
     tryRun(0);
     setTimeout(run, 800);
     setTimeout(run, 2000);
-    // Watch for dynamically loaded posts
+    // Watch for dynamically loaded posts/comments
     if (window.MutationObserver) {
-      var obs = new MutationObserver(function() { setTimeout(run, 200); });
+      var obs = new MutationObserver(function(mutations) {
+        var needsRun = false;
+        mutations.forEach(function(m) {
+          if (m.addedNodes.length) needsRun = true;
+        });
+        if (needsRun) setTimeout(run, 150);
+      });
       obs.observe(document.body, {childList: true, subtree: true});
     }
   })();
