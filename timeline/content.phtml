@@ -30,7 +30,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 /* Hide gradient overlay */
 .wo_user_profile .problackback{display:none!important;height:0!important;margin:0!important;padding:0!important;}
 /* Info bar — pic-info-cont */
-.wo_user_profile .pic-info-cont{height:200px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;}
+.wo_user_profile .pic-info-cont{height:150px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;}
 /* Profile avatar — Vikinger hexagon, centered, overlapping cover (82px = 164/2 so avatar straddles boundary) */
 .wo_user_profile .pic-info-cont .user-avatar.flip.big{position:absolute!important;top:-82px!important;left:50%!important;margin-left:-74px!important;transform:none!important;width:148px!important;height:164px!important;z-index:10!important;}
 /* Hexagon sub-elements (same as Vikinger original) */
@@ -40,8 +40,8 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .user-avatar .user-avatar-progress,.wo_user_profile .user-avatar .user-avatar-progress-border{position:absolute;top:14px;left:12px;}
 .wo_user_profile .user-avatar .user-avatar-progress{z-index:3;}
 .wo_user_profile .user-avatar .user-avatar-progress-border{z-index:2;}
-/* Hide progress ring on main profile avatar — prevents blue line bleeding into info bar */
-.wo_user_profile .pic-info-cont .user-avatar .user-avatar-progress,.wo_user_profile .pic-info-cont .user-avatar .user-avatar-progress-border{display:none!important;}
+/* White strip to block the ring's bottom-vertex tip from bleeding onto white bar (avatar image ends at y=55 in bar, ring tip is y=64-72) */
+.wo_user_profile .pic-info-cont::before{content:'';position:absolute;top:56px;left:calc(50% - 76px);width:152px;height:20px;background:#fff;z-index:11;pointer-events:none;}
 .wo_user_profile .user-avatar .user-avatar-badge{display:flex;justify-content:center;align-items:center;width:40px;height:44px;position:absolute;top:102px;right:8px;z-index:4;}
 .wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-border{position:absolute;top:0;left:0;z-index:4;}
 .wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-content{position:absolute;top:5px;left:4px;z-index:5;}
@@ -662,15 +662,22 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
 
     function run() {
       // Post heading avatars (anchor)
-      document.querySelectorAll('.post-heading .image a.avatar:not([data-hex-done]), .post-heading .image a.wow_post_usr_ava:not([data-hex-done])').forEach(function(a) {
+      // All anchor avatars in post headings (covers .avatar, .wow_post_usr_ava, bare links)
+      document.querySelectorAll('.post-heading .image a:not([data-hex-done])').forEach(function(a) {
+        if (a.closest('.pic-info-cont') || a.closest('.card.hovercard')) return;
         makeHex(a, HEX_W, HEX_H);
       });
-      // Comment avatars — standalone img.avatar.pull-left
-      document.querySelectorAll('img.avatar.pull-left:not([data-hex-done])').forEach(function(im) {
-        if (im.closest('.pic-info-cont') || im.closest('.card.hovercard')) return;
+      // Any wow_post_usr_ava anywhere on page
+      document.querySelectorAll('a.wow_post_usr_ava:not([data-hex-done])').forEach(function(a) {
+        if (a.closest('.pic-info-cont') || a.closest('.card.hovercard')) return;
+        makeHex(a, HEX_W, HEX_H);
+      });
+      // Standalone img.avatar (comment / activity feed)
+      document.querySelectorAll('img.avatar:not([data-hex-done])').forEach(function(im) {
+        if (im.closest('.pic-info-cont') || im.closest('.card.hovercard') || im.closest('a')) return;
         makeHexImg(im, HEX_W, HEX_H);
       });
-      // Create-post box and other small avatar anchors
+      // Create-post box and other small avatar anchors (not in post-heading / header)
       document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(function(a) {
         if (a.closest('.pic-info-cont') || a.closest('.card.hovercard') || a.closest('.post-heading')) return;
         makeHex(a, HEX_W, HEX_H);
@@ -688,6 +695,7 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
     tryRun(0);
     setTimeout(run, 800);
     setTimeout(run, 2000);
+    setTimeout(run, 4000);
     // Watch for dynamically loaded posts/comments
     if (window.MutationObserver) {
       var obs = new MutationObserver(function(mutations) {
