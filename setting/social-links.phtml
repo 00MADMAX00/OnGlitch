@@ -139,28 +139,44 @@
 </div>
 <script type="text/javascript">
 $(function() {
-  $('form.setting-profile-form').ajaxForm({
-    url: Wo_Ajax_Requests_File() + '?f=update_socialinks_setting',
-    beforeSend: function() {
-      $('.wo_settings_page').find('.add_wow_loader').addClass('btn-loading');
-    },
-    success: function(data) {
+  $('form.setting-profile-form').on('submit', function(e) {
+    e.preventDefault();
+    var $form = $(this);
+    $form.find('.add_wow_loader').addClass('btn-loading');
+
+    /* Step 1: Save streaming/gaming fields via the profile setting endpoint
+       These fields are not handled by update_socialinks_setting, so we post them
+       separately to update_profile_setting which saves any posted field to Wo_Users */
+    var streamingData = {
+      twitch:          $form.find('[name="twitch"]').val(),
+      kick:            $form.find('[name="kick"]').val(),
+      rumble:          $form.find('[name="rumble"]').val(),
+      tiktok:          $form.find('[name="tiktok"]').val(),
+      discord:         $form.find('[name="discord"]').val(),
+      steam:           $form.find('[name="steam"]').val(),
+      facebook_gaming: $form.find('[name="facebook_gaming"]').val(),
+      trovo:           $form.find('[name="trovo"]').val(),
+      dlive:           $form.find('[name="dlive"]').val(),
+      user_id:         $form.find('[name="user_id"]').val(),
+      hash_id:         $form.find('[name="hash_id"]').val()
+    };
+    $.post(Wo_Ajax_Requests_File() + '?f=update_profile_setting', streamingData);
+
+    /* Step 2: Save standard social fields via the normal endpoint */
+    $.post(Wo_Ajax_Requests_File() + '?f=update_socialinks_setting', $form.serialize(), function(data) {
+      scrollToTop();
       if (data.status == 200) {
-        scrollToTop();
         $('.setting-profile-alert').html('<div class="alert alert-success">' + data.message + '</div>');
         $('.alert-success').fadeIn('fast', function() {
-          $(this).delay(2500).slideUp(500, function() {
-            $(this).remove();
-          });
+          $(this).delay(2500).slideUp(500, function() { $(this).remove(); });
         });
       } else if (data.errors) {
         var errors = data.errors.join("<br>");
-        scrollToTop();
         $('.setting-profile-alert').html('<div class="alert alert-danger">' + errors + '</div>');
         $('.alert-danger').fadeIn(300);
       }
-      $('.wo_settings_page').find('.add_wow_loader').removeClass('btn-loading');
-    }
+      $form.find('.add_wow_loader').removeClass('btn-loading');
+    });
   });
 });
 </script>

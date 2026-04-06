@@ -429,12 +429,12 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
       </a>
       <?php if ($wo['config']['video_upload'] == 1) { ?>
       <a class="section-menu-item<?php echo ($__tab==='videos')?' active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=videos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=videos">
-        <svg class="section-menu-item-icon" viewBox="0 0 20 20"><path d="M8.405,7c0.102,0,0.219,0.037,0.347,0.115l3.908,2.4c0.439,0.267,0.462,0.704,0.021,0.971l-3.928,2.4C8.624,12.964,8.507,13,8.405,13C8.157,13,8,12.782,8,12.408V7.593C8,7.217,8.157,7,8.405,7z"/><rect x="0" y="0" width="20" height="20" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg class="section-menu-item-icon" viewBox="0 0 20 20"><path d="M16,3c1.103,0,2,0.897,2,2v10c0,1.103-0.897,2-2,2H4c-1.103,0-2-0.897-2-2V5c0-1.103,0.897-2,2-2H16 M16,1H4C1.791,1,0,2.791,0,5v10c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4V5C20,2.791,18.209,1,16,1L16,1z"/><path d="M8.405,7c0.102,0,0.219,0.037,0.347,0.115l3.908,2.4c0.439,0.267,0.462,0.704,0.021,0.971l-3.928,2.4C8.624,12.964,8.507,13,8.405,13C8.157,13,8,12.782,8,12.408V7.593C8,7.217,8.157,7,8.405,7 M8.405,5C7.034,5,6,6.115,6,7.593v4.815C6,13.886,7.034,15,8.405,15c0.477,0,0.943-0.137,1.386-0.405l3.932-2.402c0.796-0.481,1.276-1.297,1.277-2.177c0.001-0.888-0.486-1.715-1.304-2.21L9.798,5.411C9.348,5.137,8.881,5,8.405,5L8.405,5z"/></svg>
         <span class="section-menu-item-text"><?php echo $wo['lang']['videos'];?></span>
       </a>
       <?php } if($wo['config']['reels_upload']) {?>
       <a class="section-menu-item<?php echo ($__tab==='reels')?' active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=reels');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=reels">
-        <svg class="section-menu-item-icon" viewBox="0 0 20 20"><polygon points="8,10 8,16 14,13"/><rect x="0" y="0" width="20" height="20" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg class="section-menu-item-icon" viewBox="0 0 20 20"><path d="M16,0H4C1.791,0,0,1.791,0,4v12c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4V4C20,1.791,18.209,0,16,0zM4,2h12c1.103,0,2,0.897,2,2v1h-2V4c0-0.552-0.448-1-1-1H5C4.448,3,4,3.448,4,4v1H2V4C2,2.897,2.897,2,4,2z M18,6v2H2V6H18z M4,18c-1.103,0-2-0.897-2-2v-8h16v8c0,1.103-0.897,2-2,2H4z"/><polygon points="8,10 8,16 14,13"/></svg>
         <span class="section-menu-item-text"><?php echo $wo['lang']['reels'];?></span>
       </a>
       <?php } ?>
