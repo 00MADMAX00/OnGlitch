@@ -170,9 +170,9 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 							<input type="hidden" name="user_id" id="user-id" value="<?php echo $wo['user_profile']['user_id'];?>">
 						</form>
                     <?php } ?>
+                    <p class="profile-username-handle">@<?php echo $wo['user_profile']['username']; ?></p>
                 </div>
                 <div class="info">
-                    <p class="profile-username-handle">@<?php echo $wo['user_profile']['username']; ?></p>
                     <div class="title">
                         <a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'];?>">
                         <?php echo $wo['user_profile']['name']; ?>

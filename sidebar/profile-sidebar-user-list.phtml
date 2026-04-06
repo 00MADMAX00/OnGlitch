@@ -1,15 +1,7 @@
-<div class="sidebar_user_data sidebar_user_hex">
+<div class="sidebar_user_data wo-sidebar-hex-wrap">
 	<a href="<?php echo $wo['UsersList']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['UsersList']['username']?>" data-toggle="tooltip" title="<?php echo $wo['UsersList']['user_name'];?>">
-		<div class="user-avatar xsmall no-outline wo-hex-sidebar-avatar">
-			<div class="user-avatar-content">
-				<div class="hexagon-image-30-32" data-src="<?php echo $wo['UsersList']['avatar']?>"></div>
-			</div>
-			<div class="user-avatar-progress">
-				<div class="hexagon-progress-40-44"></div>
-			</div>
-			<div class="user-avatar-progress-border">
-				<div class="hexagon-border-40-44"></div>
-			</div>
-		</div>
+		<span class="wo-hex-avatar-frame">
+			<img src="<?php echo $wo['UsersList']['avatar']?>" alt="<?php echo htmlspecialchars($wo['UsersList']['user_name'], ENT_QUOTES); ?>" class="wo-hex-avatar-img">
+		</span>
 	</a>
 </div>
