@@ -594,10 +594,9 @@ if (!empty($wo['reactions_types'])) {
 .slide_menu_backdrop {
     pointer-events: auto !important;
 }
-/* Mobile nav sidebar — hidden by default, shown when body has side_open class */
+/* ── Navigation sidebar ── hidden by default, slide in when body.side_open ── */
 .left-sidebar.wo_new_left_side {
     pointer-events: auto !important;
-    display: none !important;
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
@@ -606,28 +605,69 @@ if (!empty($wo['reactions_types'])) {
     background: #fff !important;
     z-index: 99999 !important;
     overflow-y: auto !important;
-    box-shadow: 4px 0 20px rgba(0,0,0,0.15) !important;
-    padding-top: 60px !important;
+    box-shadow: 4px 0 24px rgba(94,92,154,0.15) !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s ease !important;
+    padding-bottom: 24px !important;
 }
 body.side_open .left-sidebar.wo_new_left_side {
-    display: block !important;
+    transform: translateX(0) !important;
 }
 .left-sidebar.wo_new_left_side a {
     pointer-events: auto !important;
 }
-/* Backdrop covers the rest of the screen when sidebar is open */
+.left-sidebar.wo_new_left_side ul {
+    padding: 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+}
+.left-sidebar.wo_new_left_side li a {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 10px 20px !important;
+    color: #3e3f5e !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: background 0.15s !important;
+    font-size: 14px !important;
+}
+.left-sidebar.wo_new_left_side li a:hover {
+    background: #f8f8fb !important;
+    color: #615dfa !important;
+}
+.left-sidebar.wo_new_left_side li a svg,
+.left-sidebar.wo_new_left_side li a img.icon {
+    width: 20px !important;
+    height: 20px !important;
+    flex-shrink: 0 !important;
+    opacity: 0.6;
+}
+/* Logo / brand area at top */
+.left-sidebar.wo_new_left_side .side_brand {
+    display: flex !important;
+    align-items: center !important;
+    padding: 16px 20px 12px !important;
+    border-bottom: 1px solid #eaeaf5 !important;
+    margin-bottom: 8px !important;
+}
+/* Backdrop — dark overlay behind sidebar */
 .slide_menu_backdrop {
-    display: none !important;
+    pointer-events: auto !important;
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    background: rgba(21,21,31,0.6) !important;
+    background: rgba(21,21,31,0.55) !important;
     z-index: 99998 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: opacity 0.3s ease, visibility 0.3s ease !important;
 }
 body.side_open .slide_menu_backdrop {
-    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* ===== End OnGlitch Vikinger Profile Fixes ===== */

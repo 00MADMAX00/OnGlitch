@@ -268,6 +268,25 @@ The `update_socialinks_setting` WoWonder endpoint saves the social links form. T
 
 ---
 
+## Custom AJAX Endpoint: `onglitch_save.phtml`
+
+A dedicated save endpoint was created at `/onglitch_save.phtml` (loaded by WoWonder via `ajax_loading.php?link1=onglitch_save`).
+
+This handles custom saves that WoWonder's standard endpoints don't support:
+
+```
+POST ajax_loading.php?link1=onglitch_save
+Body: { action: 'save_streaming', twitch: '...', kick: '...', ... }
+Body: { action: 'toggle_profile_completion', hide: '1' }
+```
+
+- **`save_streaming`**: Updates the 9 streaming columns on `Wo_Users` for the current user
+- **`toggle_profile_completion`**: Sets `hide_profile_completion` to 0 or 1 on `Wo_Users`
+
+Authentication: requires `$wo['loggedin']` to be true (standard WoWonder session).
+
+---
+
 ## Working Branch
 
 All work is on branch: `cursor/timeline-page-redesign-a431`  

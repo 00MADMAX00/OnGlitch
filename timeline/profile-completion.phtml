@@ -1,14 +1,4 @@
-<?php
-/* Handle server-side hide/show save */
-if (!empty($_POST['wo_pc_action']) && $wo['loggedin'] && !empty($wo['user']['user_id'])) {
-    global $db;
-    $__hide = (int)$_POST['wo_pc_action'] === 1 ? 1 : 0;
-    $db->where('user_id', $wo['user']['user_id'])->update('Wo_Users', ['hide_profile_completion' => $__hide]);
-    header('Content-Type: application/json');
-    echo json_encode(['status' => 200]);
-    exit;
-}
-?>
+<?php /* Profile completion save is handled by onglitch_save.phtml endpoint */ ?>
 <div class="col-md-12" id="wo-profile-completion-wrap">
 	<div class="page-margin mt-0 wow_content profile-completion-bar bar-<?php echo array_sum($wo['pr_complition']);?>" data-profile-completion="<?php echo array_sum($wo['pr_complition']); ?>">
 		<div class="hdr">
@@ -103,12 +93,12 @@ if (!empty($_POST['wo_pc_action']) && $wo['loggedin'] && !empty($wo['user']['use
 		} else {
 			jQuery('#wo-profile-completion-wrap').slideDown(300);
 		}
-		/* Save server-side: POST to ajax_loading.php with the timeline URL so WoWonder
-		   loads the timeline/profile-completion template which handles wo_pc_action */
-		var _pcUrl = typeof Wo_Ajax_Requests_Filee === 'function'
-			? Wo_Ajax_Requests_Filee() + '?link1=timeline&u=<?php echo $wo['user']['username']; ?>'
-			: window.location.href;
-		jQuery.post(_pcUrl, { wo_pc_action: action, url: '?link1=timeline&u=<?php echo $wo['user']['username']; ?>' });
+		/* Save via dedicated OnGlitch save endpoint */
+		jQuery.post(Wo_Ajax_Requests_Filee() + '?link1=onglitch_save', {
+			action: 'toggle_profile_completion',
+			url:    '?link1=onglitch_save',
+			hide:   action
+		});
 	}
 
 	new CircleProgress('.progresss', {

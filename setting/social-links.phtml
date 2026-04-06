@@ -21,21 +21,7 @@ foreach ($__streaming_data as $__k => $__v) {
     $wo['setting'][$__k] = $__v;
 }
 
-/* If this is the AJAX save request for streaming fields, handle it here */
-if (!empty($_POST['wo_save_streaming']) && $wo['loggedin'] && !empty($wo['user']['user_id'])) {
-    $__update = [];
-    foreach ($__streaming_cols as $__col) {
-        if (array_key_exists($__col, $_POST)) {
-            $__update[$__col] = Wo_Secure(trim($_POST[$__col]));
-        }
-    }
-    if (!empty($__update)) {
-        $db->where('user_id', $wo['user']['user_id'])->update('Wo_Users', $__update);
-    }
-    header('Content-Type: application/json');
-    echo json_encode(['status' => 200, 'message' => 'Saved']);
-    exit;
-}
+/* Streaming fields are now saved via onglitch_save.phtml endpoint */
 ?>
 <div class="page-margin mt-0">
 	<div class="wow_content popular_posts_hdr">
@@ -183,12 +169,10 @@ $(function() {
     var $form = $(this);
     $form.find('.add_wow_loader').addClass('btn-loading');
 
-    /* Step 1: Save streaming/gaming fields via our direct DB handler.
-       We POST to ajax_loading.php with the social-links page URL so WoWonder
-       loads our template which handles the wo_save_streaming flag at the top. */
+    /* Step 1: Save streaming/gaming fields via dedicated OnGlitch save endpoint */
     var streamingData = {
-      wo_save_streaming: 1,
-      url: '?link1=setting&page=social-links',
+      action:          'save_streaming',
+      url:             '?link1=onglitch_save',
       twitch:          $form.find('[name="twitch"]').val(),
       kick:            $form.find('[name="kick"]').val(),
       rumble:          $form.find('[name="rumble"]').val(),
@@ -199,8 +183,7 @@ $(function() {
       trovo:           $form.find('[name="trovo"]').val(),
       dlive:           $form.find('[name="dlive"]').val()
     };
-    /* Use WoWonder's ajax_loading.php — same endpoint that handles all AJAX page loads */
-    $.post(typeof Wo_Ajax_Requests_Filee === 'function' ? Wo_Ajax_Requests_Filee() + '?link1=setting&page=social-links' : window.location.href, streamingData);
+    $.post(Wo_Ajax_Requests_Filee() + '?link1=onglitch_save', streamingData);
 
     /* Step 2: Save standard social fields (facebook, twitter, vk, etc.) via WoWonder */
     $.post(Wo_Ajax_Requests_File() + '?f=update_socialinks_setting', $form.serialize(), function(data) {

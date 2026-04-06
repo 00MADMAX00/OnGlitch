@@ -1,0 +1,48 @@
+<?php
+/**
+ * OnGlitch custom save endpoint
+ * Called via WoWonder's ajax_loading.php as: ?link1=onglitch_save
+ * Handles saving custom fields that WoWonder's standard endpoints don't support.
+ */
+
+/* Must be logged in */
+if (!$wo['loggedin'] || empty($wo['user']['user_id'])) {
+    header('Content-Type: application/json');
+    echo json_encode(['status' => 403, 'message' => 'Not authenticated']);
+    exit;
+}
+
+global $db;
+$action = $_POST['action'] ?? '';
+$userId = (int)$wo['user']['user_id'];
+
+/* ── Action: save streaming/gaming social links ── */
+if ($action === 'save_streaming') {
+    $allowed = ['twitch','kick','rumble','tiktok','discord','steam','facebook_gaming','trovo','dlive'];
+    $update  = [];
+    foreach ($allowed as $col) {
+        if (array_key_exists($col, $_POST)) {
+            $update[$col] = Wo_Secure(trim($_POST[$col]));
+        }
+    }
+    if (!empty($update)) {
+        $db->where('user_id', $userId)->update('Wo_Users', $update);
+    }
+    header('Content-Type: application/json');
+    echo json_encode(['status' => 200, 'message' => 'Streaming links saved']);
+    exit;
+}
+
+/* ── Action: toggle profile completion bar visibility ── */
+if ($action === 'toggle_profile_completion') {
+    $hide = isset($_POST['hide']) && $_POST['hide'] == '1' ? 1 : 0;
+    $db->where('user_id', $userId)->update('Wo_Users', ['hide_profile_completion' => $hide]);
+    header('Content-Type: application/json');
+    echo json_encode(['status' => 200, 'hide' => $hide]);
+    exit;
+}
+
+/* ── Unknown action ── */
+header('Content-Type: application/json');
+echo json_encode(['status' => 400, 'message' => 'Unknown action']);
+exit;
