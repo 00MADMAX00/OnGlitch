@@ -639,5 +639,62 @@ if (!empty($wo['reactions_types'])) {
         font-size: 14px !important;
     }
 }
+/* === Gender-based avatar ring gradients === */
+
+/* Female: pink gradient ring */
+.pic-info-cont .user-avatar.wo-gender-female {
+    position: relative;
+}
+.pic-info-cont .user-avatar.wo-gender-female::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6eb4 0%, #ff1a8c 100%);
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    z-index: 0;
+    opacity: 0.9;
+}
+
+/* Non-binary / other: purple gradient ring */
+.pic-info-cont .user-avatar.wo-gender-other {
+    position: relative;
+}
+.pic-info-cont .user-avatar.wo-gender-other::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b86cff 0%, #7c3aed 100%);
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    z-index: 0;
+    opacity: 0.9;
+}
+
+/* Male: existing blue gradient - keep default, just ensure z-index is fine */
+.pic-info-cont .user-avatar.wo-gender-male {
+    position: relative;
+}
+
+/* Ensure the avatar image sits above the pseudo ring */
+.pic-info-cont .user-avatar > img,
+.pic-info-cont .user-avatar .user-avatar-content,
+.pic-info-cont .user-avatar form {
+    position: relative;
+    z-index: 1;
+}
+
+/* === Hovercard / Stats container — rounded bottom corners === */
+.card.hovercard {
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+    overflow: hidden;
+}
+
+.wo_user_profile .card.hovercard {
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+}
+
 /* ===== End OnGlitch Timeline Redesign Fixes ===== */
 </style>

@@ -112,8 +112,18 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 
 			<div class="problackback"></div>
 
+			<?php
+            $profile_gender = strtolower($wo['user_profile']['gender'] ?? '');
+            if ($profile_gender === 'male') {
+                $wo_gender_class = 'wo-gender-male';
+            } elseif ($profile_gender === 'female') {
+                $wo_gender_class = 'wo-gender-female';
+            } else {
+                $wo_gender_class = 'wo-gender-other';
+            }
+            ?>
 			<div class="pic-info-cont">
-                <div class="user-avatar flip <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo($wo['story_seen_class']); ?><?php } ?>">
+                <div class="user-avatar flip <?php echo $wo_gender_class; ?> <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo($wo['story_seen_class']); ?><?php } ?>">
                     <div class="user-avatar-uploading-container">
                         <div class="user-avatar-uploading-progress">
                             <div class="ball-pulse"><div></div><div></div><div></div></div>
