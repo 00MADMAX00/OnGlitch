@@ -196,7 +196,7 @@
 	  
 	  <link rel="preconnect" href="https://fonts.googleapis.com">
 	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Roboto:wght@400;500&family=Mulish:wght@700&family=Source+Sans+Pro&family=Montserrat:wght@500&family=Inter&family=Rubik:wght@500&display=swap" rel="stylesheet">
+	  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Roboto:wght@400;500&family=Mulish:wght@700&family=Source+Sans+Pro&family=Montserrat:wght@500&family=Inter&family=Rubik:wght@500&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 	  <?php if ($wo['page'] == 'messages') { ?>
 	  <link href="<?php echo $wo['config']['theme_url'];?>/stylesheet/Krub.css?version=<?php echo $wo['config']['version']; ?>" rel="stylesheet">
@@ -293,6 +293,21 @@
         if (typeof XM_Hexagon === 'undefined') return;
         /* Standard small avatar hexagons used in sidebar, publisher-box, posts, comments */
         var IMG_W = 30, IMG_H = 32, RNG_W = 40, RNG_H = 44;
+        /* Batch queue — all pending hex renders fire in a single rAF */
+        var _hexQueue = [];
+        var _hexFlushPending = false;
+        function _flushHexQueue() {
+          _hexFlushPending = false;
+          var _rc = (window._woProfileGenderColors && window._woProfileGenderColors.length) ? window._woProfileGenderColors : ['#41efff','#615dfa'];
+          var batch = _hexQueue.splice(0);
+          for (var qi = 0; qi < batch.length; qi++) {
+            var q = batch[qi];
+            try {
+              new XM_Hexagon({containerElement: q.imgDiv, width:IMG_W, height:IMG_H, roundedCorners:true, roundedCornerRadius:1, clip:true});
+              new XM_Hexagon({containerElement: q.rngDiv, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, gradient:{colors:_rc}, scale:{start:0,end:1,stop:.8}});
+            } catch(e) {}
+          }
+        }
         function buildVikingerHex(src, href) {
           var imgUid = 'hxi' + Math.random().toString(36).substr(2,8);
           var rngUid = 'hxr' + Math.random().toString(36).substr(2,8);
@@ -306,13 +321,16 @@
           var rngDiv = document.createElement('div'); rngDiv.className = rngUid;
           progress.appendChild(rngDiv);
           el.appendChild(content); el.appendChild(progress);
-          /* Init hexagons after DOM insertion — use containerElement for DOM nodes */
-          setTimeout(function() {
-            if (typeof XM_Hexagon === 'undefined') return;
-            var _rc = (window._woProfileGenderColors && window._woProfileGenderColors.length) ? window._woProfileGenderColors : ['#41efff','#615dfa'];
-            new XM_Hexagon({containerElement: imgDiv, width:IMG_W, height:IMG_H, roundedCorners:true, roundedCornerRadius:1, clip:true});
-            new XM_Hexagon({containerElement: rngDiv, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, gradient:{colors:_rc}, scale:{start:0,end:1,stop:.8}});
-          }, 0);
+          /* Queue this hex render — will be batched and flushed in a single rAF frame */
+          _hexQueue.push({imgDiv: imgDiv, rngDiv: rngDiv});
+          if (!_hexFlushPending) {
+            _hexFlushPending = true;
+            if (typeof requestAnimationFrame !== 'undefined') {
+              requestAnimationFrame(_flushHexQueue);
+            } else {
+              setTimeout(_flushHexQueue, 16);
+            }
+          }
           return el;
         }
         function hexifyEl(aEl) {
@@ -366,10 +384,10 @@
         document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(hexifyEl);
         document.querySelectorAll('img.avatar:not([data-hex-done])').forEach(hexifyImg);
       }
-      /* Run once on initial page load — single call, no redundant timeouts */
-      $(document).ready(function() { Wo_InitVikHexagons(); });
+      /* Run after page is fully rendered — deferred so it doesn't block initial paint */
+      $(window).on('load', function() { setTimeout(Wo_InitVikHexagons, 100); });
       /* Re-run once after every WoWonder AJAX navigation */
-      $(document).on('wo_ajax_page_loaded', function() { setTimeout(Wo_InitVikHexagons, 300); });
+      $(document).on('wo_ajax_page_loaded', function() { setTimeout(Wo_InitVikHexagons, 200); });
       /* MutationObserver: only watch for NEW posts/comments added to the feed,
          NOT the entire subtree — prevents firing on every keystroke, GIF load, etc. */
       if (window.MutationObserver) {
