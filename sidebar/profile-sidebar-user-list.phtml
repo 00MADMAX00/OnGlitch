@@ -1,5 +1,15 @@
 <div class="sidebar_user_data">
 	<a href="<?php echo $wo['UsersList']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['UsersList']['username']?>" data-toggle="tooltip" title="<?php echo $wo['UsersList']['user_name'];?>">
-		<img src="<?php echo $wo['UsersList']['avatar']?>">
+		<div class="user-avatar small no-outline">
+			<div class="user-avatar-content">
+				<div class="hexagon-image-30-32" data-src="<?php echo $wo['UsersList']['avatar']?>"></div>
+			</div>
+			<div class="user-avatar-progress">
+				<div class="hexagon-progress-40-44"></div>
+			</div>
+			<div class="user-avatar-progress-border">
+				<div class="hexagon-border-40-44"></div>
+			</div>
+		</div>
 	</a>
 </div>
