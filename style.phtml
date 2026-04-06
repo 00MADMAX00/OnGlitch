@@ -573,19 +573,67 @@ if (!empty($wo['reactions_types'])) {
     background: #e4e6eb;
 }
 
-/* Gender-based avatar ring — outline on the WoWonder .flip profile avatar */
-/* Male: blue (default, no override needed) */
-/* Female: pink */
-.pic-info-cont .user-avatar.flip.wo-gender-female img {
-    outline: 4px solid #ff1a8c;
-    outline-offset: 2px;
-    filter: drop-shadow(0 0 8px #ff6eb4);
+/* ===== Gender floating hexagon badge on profile avatar ===== */
+
+/* Make the avatar container a positioning context */
+.pic-info-cont .user-avatar.flip {
+    position: relative;
+    display: inline-block;
 }
-/* Other / no gender: purple */
-.pic-info-cont .user-avatar.flip.wo-gender-other img {
-    outline: 4px solid #7c3aed;
-    outline-offset: 2px;
-    filter: drop-shadow(0 0 8px #b86cff);
+
+/* Shared badge styles */
+.pic-info-cont .user-avatar.flip::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    z-index: 10;
+    pointer-events: none;
+    /* White ring so it lifts off the avatar */
+    box-shadow: 0 0 0 3px #fff, 0 4px 14px rgba(0,0,0,0.25);
+    display: none; /* hidden by default — shown per gender below */
+}
+
+/* Male: blue/cyan gradient badge */
+.pic-info-cont .user-avatar.flip.wo-gender-male::after {
+    display: block;
+    background: linear-gradient(135deg, #41efff 0%, #615dfa 100%);
+}
+
+/* Female: pink gradient badge */
+.pic-info-cont .user-avatar.flip.wo-gender-female::after {
+    display: block;
+    background: linear-gradient(135deg, #ff6eb4 0%, #ff1a8c 100%);
+}
+
+/* Other / no gender: purple gradient badge */
+.pic-info-cont .user-avatar.flip.wo-gender-other::after {
+    display: block;
+    background: linear-gradient(135deg, #b86cff 0%, #7c3aed 100%);
+}
+
+/* Gender SVG icon floating badge — rendered via a separate injected element */
+.wo-gender-badge-icon {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    z-index: 11;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+.wo-gender-badge-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: #fff;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
 }
 
 /* Stats card — rounded bottom corners on the profile header card */

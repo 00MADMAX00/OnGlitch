@@ -131,6 +131,21 @@ if ($wo['loggedin'] && $IsOwnerUser) {
                     </div>
                     <img id="updateImage-<?php echo $wo['user_profile']['user_id']?>" class="pointer <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?><?php echo($wo['story_seen_class']); ?> see_all_stories<?php } ?>" alt="<?php echo $wo['user_profile']['name']?> Profile Picture" loading="eager" fetchpriority="high" src="<?php echo $wo['user_profile']['avatar']?>" <?php if ($wo['have_stories'] == true && $wo['story_seen_class'] != 'seen_story' && $wo['loggedin'] == true) { ?> data_story_user_id="<?php echo $wo['user_profile']['user_id']?>"  data_story_type="user" <?php } else{ ?> onclick="Wo_OpenProfilePicture('<?php echo $wo['user_profile']['avatar_org']?>');" <?php } ?> />
 
+                    <!-- Gender floating badge icon -->
+                    <?php if ($profile_gender === 'female'): ?>
+                    <span class="wo-gender-badge-icon" title="Female">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a6 6 0 1 1 0 12A6 6 0 0 1 12 2zm0 14v2m-3 2h6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+                    </span>
+                    <?php elseif ($profile_gender === 'male'): ?>
+                    <span class="wo-gender-badge-icon" title="Male">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="14" r="5" stroke="#fff" stroke-width="2.2" fill="none"/><path d="M19 5l-5.5 5.5M19 5h-5m5 0v5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                    </span>
+                    <?php else: ?>
+                    <span class="wo-gender-badge-icon" title="Non-binary / Other">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="13" r="4.5" stroke="#fff" stroke-width="2.2" fill="none"/><path d="M12 8.5V2m-2.5 3L12 2l2.5 3" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 17.5V22m-2.5-2L12 22l2.5-2" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                    </span>
+                    <?php endif; ?>
+
                     <?php if($IsOwner === true) { ?>
 						<form action="#" method="post" class="profile-avatar-changer wo_profile_pic_hover">
 							<div class="profile_avatar">
