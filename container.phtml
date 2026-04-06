@@ -400,7 +400,10 @@
             <?php } ?>
            var box = $('#contnet');
            var ISAPI = $('#ISAPI').val();
+           var _ajaxNavLock = false; /* prevent double-click navigation */
            $(document).on('click', 'a[data-ajax]', function(e) {
+            /* Ignore if another ajax navigation is already in progress */
+            if (_ajaxNavLock) { e.preventDefault(); return false; }
             if (typeof(check_wallet) != 'undefined') {
               clearInterval(check_wallet);
             }
@@ -421,6 +424,7 @@
                       }
                    }
                }
+               _ajaxNavLock = true;
                Wo_StartBar();
                window.post = 0;
                var url = $(this).attr('data-ajax');
@@ -434,6 +438,7 @@
                         if (json_data.page == 'home') {
                             document.getElementById('posts').innerHTML = '<div class="posts_load"><div class="wo_loading_post"><div class="wo_post_skel_head"><div class="skel skel_avatar"></div><div><div class="skel skel_noti_name"></div><div class="skel skel_noti_time"></div></div></div><div class="wo_post_skel_body"><div class="skel skel_desc"></div><div class="skel skel_desc"></div><div class="skel skel_desc"></div></div><div class="wo_post_skel_foot"><div class="skel skel_action"></div><div class="skel skel_action"></div><div class="skel skel_action"></div></div></div><div class="wo_loading_post"><div class="wo_post_skel_head"><div class="skel skel_avatar"></div><div><div class="skel skel_noti_name"></div><div class="skel skel_noti_time"></div></div></div><div class="wo_post_skel_body"><div class="skel skel_desc"></div><div class="skel skel_desc"></div><div class="skel skel_desc"></div></div><div class="wo_post_skel_foot"><div class="skel skel_action"></div><div class="skel skel_action"></div><div class="skel skel_action"></div></div></div></div>';
                             loadposts();
+                            _ajaxNavLock = false;
                             window.history.pushState({state:'new'},'', websiteUrl);
                             $("html, body").animate({ scrollTop: 0 }, 100);
                             $('.user-details, .pac-container, .lightbox-container').remove();
@@ -468,6 +473,7 @@
                      }
                      //document.getElementById('#contnet').innerHTML = data;
                      box.html(data);
+                     _ajaxNavLock = false; /* release navigation lock */
                      /* Fire Vikinger hexagon init after AJAX content loads */
                      $(document).trigger('wo_ajax_page_loaded');
                      if (json_data.is_css_file == 1) {
@@ -542,11 +548,13 @@
                      contnet
                      $('#users-reacted-modal').modal("hide");
                  }).fail(function() {
+                    _ajaxNavLock = false;
                     <?php if ($wo['config']['membership_system'] == 1) { ?>
                       window.location.href = "<?php echo Wo_SeoLink('index.php?link1=go-pro'); ?>";
                     <?php } ?>
                   })
                   .always(function() {
+                    _ajaxNavLock = false;
                     Wo_FinishBar();
                   });
                  $('.user-details, .pac-container, .lightbox-container').remove();

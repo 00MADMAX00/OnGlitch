@@ -594,12 +594,40 @@ if (!empty($wo['reactions_types'])) {
 .slide_menu_backdrop {
     pointer-events: auto !important;
 }
-/* Mobile nav sidebar */
+/* Mobile nav sidebar — hidden by default, shown when body has side_open class */
 .left-sidebar.wo_new_left_side {
     pointer-events: auto !important;
+    display: none !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 280px !important;
+    height: 100vh !important;
+    background: #fff !important;
+    z-index: 99999 !important;
+    overflow-y: auto !important;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.15) !important;
+    padding-top: 60px !important;
+}
+body.side_open .left-sidebar.wo_new_left_side {
+    display: block !important;
 }
 .left-sidebar.wo_new_left_side a {
     pointer-events: auto !important;
+}
+/* Backdrop covers the rest of the screen when sidebar is open */
+.slide_menu_backdrop {
+    display: none !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(21,21,31,0.6) !important;
+    z-index: 99998 !important;
+}
+body.side_open .slide_menu_backdrop {
+    display: block !important;
 }
 
 /* ===== End OnGlitch Vikinger Profile Fixes ===== */

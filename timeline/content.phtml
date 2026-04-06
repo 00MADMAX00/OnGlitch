@@ -80,48 +80,51 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .pic-info-cont .options-buttons .btn.btn-default{background-color:#fff!important;color:#3e3f5e!important;box-shadow:0 0 0 2px #dedeea inset!important;}
 .wo_user_profile .pic-info-cont .options-buttons .profile-message-btn .btn{background-color:#23d2e2!important;color:#fff!important;box-shadow:4px 7px 12px 0 rgba(35,210,226,.2)!important;}
 @media(max-width:1200px){.wo_user_profile .pic-info-cont .options-buttons{right:12px!important;}}
-/* ===== MOBILE: keep desktop Vikinger layout — just scale it down ===== */
+/* ===== MOBILE: keep exact desktop Vikinger layout, scaled down ===== */
+/* Tablet (900px and below): minor tightening only */
 @media(max-width:900px){
-  /* Tighten padding on stats and social links */
-  .wo_user_profile .pic-info-cont .user-stats{left:8px!important;}
-  .wo_user_profile .user-stat.big{padding:0 14px!important;}
-  .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{right:8px!important;max-width:280px!important;}
-  .wo_user_profile .pic-info-cont .social-link{width:36px!important;height:36px!important;border-radius:8px!important;}
-  .wo_user_profile .pic-info-cont .social-link svg{width:16px!important;height:16px!important;}
+  .wo_user_profile .pic-info-cont .user-stats{left:16px!important;}
+  .wo_user_profile .user-stat.big{padding:0 16px!important;}
+  .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{right:16px!important;}
 }
+/* Small tablet / large phone (680px) */
 @media(max-width:680px){
-  /* Keep ALL absolute positioning — same layout as desktop, just smaller */
-  .wo_user_profile .pic-info-cont{height:160px!important;}
-  /* Avatar: keep centred */
+  .wo_user_profile .cardheader.user-cover{height:200px!important;}
+  .wo_user_profile .pic-info-cont{height:155px!important;}
+  /* Avatar centre */
   .wo_user_profile .pic-info-cont .user-avatar.flip.big{left:50%!important;margin-left:-74px!important;}
-  /* Stats: scale down and keep on left */
-  .wo_user_profile .pic-info-cont .user-stats{top:50px!important;left:4px!important;}
+  /* Stats — left side */
+  .wo_user_profile .pic-info-cont .user-stats{top:52px!important;left:4px!important;}
   .wo_user_profile .user-stat.big{padding:0 8px!important;}
-  .wo_user_profile .user-stat.big .user-stat-title{font-size:16px!important;}
+  .wo_user_profile .user-stat.big .user-stat-title{font-size:15px!important;}
   .wo_user_profile .user-stat.big .user-stat-text{font-size:9px!important;}
-  /* Name / info: centred, scaled */
-  .wo_user_profile .pic-info-cont .info{top:54px!important;width:240px!important;}
-  .wo_user_profile .pic-info-cont .info .title a{font-size:1.3rem!important;}
-  .wo_user_profile .pic-info-cont .info > p{font-size:.85rem!important;}
-  .wo_user_profile .pic-info-cont .info > p.wo-website-url-p a{font-size:.9rem!important;}
-  /* Social links: keep on right, smaller icons */
-  .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{top:50px!important;right:4px!important;max-width:200px!important;}
-  .wo_user_profile .pic-info-cont .profile-header-social-links{gap:5px!important;flex-wrap:wrap!important;}
+  /* Name + @user + URL — centred */
+  .wo_user_profile .pic-info-cont .info{top:58px!important;width:220px!important;}
+  .wo_user_profile .pic-info-cont .info .title a{font-size:1.25rem!important;}
+  .wo_user_profile .pic-info-cont .info > p{font-size:.82rem!important;}
+  .wo_user_profile .pic-info-cont .info > p.wo-website-url-p a{font-size:.88rem!important;}
+  /* Social icons — right side */
+  .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{top:52px!important;right:4px!important;max-width:192px!important;height:auto!important;}
+  .wo_user_profile .pic-info-cont .profile-header-social-links{flex-wrap:wrap!important;gap:5px!important;}
   .wo_user_profile .pic-info-cont .social-link{width:32px!important;height:32px!important;border-radius:7px!important;}
   .wo_user_profile .pic-info-cont .social-link svg{width:14px!important;height:14px!important;}
-  /* Edit/Activities buttons */
-  .wo_user_profile .pic-info-cont .options-buttons{top:-34px!important;right:4px!important;gap:4px!important;}
-  .wo_user_profile .pic-info-cont .options-buttons .btn{height:30px!important;padding:0 10px!important;font-size:.75rem!important;}
+  /* Edit/Activities */
+  .wo_user_profile .pic-info-cont .options-buttons{top:-32px!important;right:4px!important;gap:4px!important;}
+  .wo_user_profile .pic-info-cont .options-buttons .btn{height:28px!important;padding:0 10px!important;font-size:.72rem!important;}
 }
+/* Small phone (480px and below) */
 @media(max-width:480px){
   .wo_user_profile .cardheader.user-cover{height:160px!important;}
-  .wo_user_profile .pic-info-cont{height:150px!important;}
-  .wo_user_profile .pic-info-cont .user-stats{top:48px!important;left:2px!important;}
-  .wo_user_profile .user-stat.big{padding:0 6px!important;}
-  .wo_user_profile .user-stat.big .user-stat-title{font-size:14px!important;}
-  .wo_user_profile .pic-info-cont .info{top:50px!important;width:200px!important;}
-  .wo_user_profile .pic-info-cont .info .title a{font-size:1.15rem!important;}
-  .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{top:48px!important;right:2px!important;max-width:160px!important;}
+  .wo_user_profile .pic-info-cont{height:148px!important;}
+  .wo_user_profile .pic-info-cont .user-stats{top:50px!important;left:2px!important;}
+  .wo_user_profile .user-stat.big{padding:0 5px!important;}
+  .wo_user_profile .user-stat.big .user-stat-title{font-size:13px!important;}
+  .wo_user_profile .user-stat.big .user-stat-text{font-size:8px!important;}
+  .wo_user_profile .pic-info-cont .info{top:54px!important;width:180px!important;}
+  .wo_user_profile .pic-info-cont .info .title a{font-size:1.05rem!important;}
+  .wo_user_profile .pic-info-cont .info > p{font-size:.76rem!important;}
+  .wo_user_profile .pic-info-cont .info > p.wo-website-url-p a{font-size:.8rem!important;}
+  .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{top:50px!important;right:2px!important;max-width:152px!important;}
   .wo_user_profile .pic-info-cont .social-link{width:28px!important;height:28px!important;border-radius:6px!important;}
   .wo_user_profile .pic-info-cont .social-link svg{width:12px!important;height:12px!important;}
 }

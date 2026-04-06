@@ -1,10 +1,10 @@
 <?php
 /* Handle server-side hide/show save */
-if (!empty($_POST['wo_pc_action']) && !empty($_POST['hash_id'])) {
-    Wo_ValidateSession($_POST['hash_id']);
+if (!empty($_POST['wo_pc_action']) && $wo['loggedin'] && !empty($wo['user']['user_id'])) {
     global $db;
     $__hide = (int)$_POST['wo_pc_action'] === 1 ? 1 : 0;
     $db->where('user_id', $wo['user']['user_id'])->update('Wo_Users', ['hide_profile_completion' => $__hide]);
+    header('Content-Type: application/json');
     echo json_encode(['status' => 200]);
     exit;
 }
@@ -103,11 +103,12 @@ if (!empty($_POST['wo_pc_action']) && !empty($_POST['hash_id'])) {
 		} else {
 			jQuery('#wo-profile-completion-wrap').slideDown(300);
 		}
-		/* Save server-side via our direct DB handler in this template */
-		jQuery.post(window.location.href, {
-			wo_pc_action: action,
-			hash_id: jQuery('.main_session').val()
-		});
+		/* Save server-side: POST to ajax_loading.php with the timeline URL so WoWonder
+		   loads the timeline/profile-completion template which handles wo_pc_action */
+		var _pcUrl = typeof Wo_Ajax_Requests_Filee === 'function'
+			? Wo_Ajax_Requests_Filee() + '?link1=timeline&u=<?php echo $wo['user']['username']; ?>'
+			: window.location.href;
+		jQuery.post(_pcUrl, { wo_pc_action: action, url: '?link1=timeline&u=<?php echo $wo['user']['username']; ?>' });
 	}
 
 	new CircleProgress('.progresss', {
