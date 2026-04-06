@@ -518,15 +518,18 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
 		
 		<!-- Profile Percentage System -->
         <?php
-          /* Check hide_profile_completion directly from DB since $wo['user'] may not include it */
           $__hide_pc = false;
-          if ($IsOwnerUser === true && array_sum($wo['pr_complition']) < 100) {
-              global $db;
-              $__pc_row = $db->where('user_id', $wo['user']['user_id'])->getOne('Wo_Users', 'hide_profile_completion');
-              $__hide_pc = !empty($__pc_row['hide_profile_completion']);
+          if ($IsOwnerUser === true && !empty($wo['pr_complition']) && array_sum($wo['pr_complition']) < 100) {
+              try {
+                  global $db;
+                  $__pc_row = $db->where('user_id', $wo['user']['user_id'])->getOne('Wo_Users', 'hide_profile_completion');
+                  $__hide_pc = !empty($__pc_row['hide_profile_completion']);
+              } catch (Exception $__e) {
+                  $__hide_pc = false;
+              }
           }
         ?>
-        <?php if ($IsOwnerUser === true && array_sum($wo['pr_complition']) < 100 && !$__hide_pc): ?>
+        <?php if ($IsOwnerUser === true && !empty($wo['pr_complition']) && array_sum($wo['pr_complition']) < 100 && !$__hide_pc): ?>
             <?php echo Wo_LoadPage('timeline/profile-completion'); ?>
         <?php endif; ?>
 		

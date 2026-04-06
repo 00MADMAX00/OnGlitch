@@ -285,8 +285,10 @@
       <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
       <?php } ?>
 
-      <!-- Vikinger XM_Hexagon — loaded globally so avatars work on all pages -->
+      <!-- Vikinger XM_Hexagon — loaded in <head> so it is available when inline scripts run -->
       <script src="<?php echo $wo['config']['theme_url']; ?>/HTML/js/vendor/xm_hexagon.min.js"></script>
+      <!-- Preload hint so browser fetches it as high priority -->
+      <link rel="preload" href="<?php echo $wo['config']['theme_url']; ?>/HTML/js/vendor/xm_hexagon.min.js" as="script">
       <script>
       /* Global Vikinger hexagon initializer — runs after every page load and AJAX navigation */
       function Wo_InitVikHexagons() {
@@ -384,8 +386,8 @@
         document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(hexifyEl);
         document.querySelectorAll('img.avatar:not([data-hex-done])').forEach(hexifyImg);
       }
-      /* Run after page is fully rendered — deferred so it doesn't block initial paint */
-      $(window).on('load', function() { setTimeout(Wo_InitVikHexagons, 100); });
+      /* Run after DOM is ready — xm_hexagon.min.js is already loaded in <head> */
+      $(document).ready(function() { Wo_InitVikHexagons(); });
       /* Re-run once after every WoWonder AJAX navigation */
       $(document).on('wo_ajax_page_loaded', function() { setTimeout(Wo_InitVikHexagons, 200); });
       /* MutationObserver: only watch for NEW posts/comments added to the feed,
