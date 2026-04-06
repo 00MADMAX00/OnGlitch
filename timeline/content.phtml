@@ -24,7 +24,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .profile-cover-changer{position:absolute!important;top:12px;right:12px;display:flex;gap:6px;z-index:10;}
 .user-cover-reposition-container,.user-cover-reposition-w{width:100%;height:100%;}
 .wo_user_profile .problackback{display:none!important;height:0!important;margin:0!important;padding:0!important;}
-.wo_user_profile .pic-info-cont{height:148px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;}
+.wo_user_profile .pic-info-cont{height:148px!important;position:relative!important;overflow:visible!important;background:#fff!important;margin:0!important;padding:0!important;border:none!important;display:block!important;border-bottom-left-radius:12px!important;border-bottom-right-radius:12px!important;}
 .wo_user_profile .pic-info-cont .user-avatar.flip.big{position:absolute!important;top:-82px!important;left:50%!important;margin-left:-74px!important;transform:none!important;width:148px!important;height:164px!important;z-index:10!important;}
 .wo_user_profile .user-avatar.big{width:148px;height:164px;}
 .wo_user_profile .user-avatar .user-avatar-border{position:absolute;top:0;left:0;z-index:1;}
@@ -33,9 +33,9 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .user-avatar .user-avatar-progress{z-index:3;}
 .wo_user_profile .user-avatar .user-avatar-progress-border{z-index:2;}
 .wo_user_profile .pic-info-cont::before{content:'';position:absolute;top:56px;left:calc(50% - 76px);width:152px;height:20px;background:#fff;z-index:11;pointer-events:none;}
-.wo_user_profile .user-avatar .user-avatar-badge{display:flex;justify-content:center;align-items:center;width:40px;height:44px;position:absolute;top:102px;right:8px;z-index:4;}
-.wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-border{position:absolute;top:0;left:0;z-index:4;}
-.wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-content{position:absolute;top:5px;left:4px;z-index:5;}
+.wo_user_profile .user-avatar .user-avatar-badge{display:block;width:44px;height:48px;position:absolute;bottom:-6px;right:2px;z-index:15;}
+.wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-border{position:absolute;top:0;left:0;z-index:4;width:44px;height:48px;}
+.wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-content{position:absolute;top:6px;left:6px;z-index:5;width:32px;height:34px;display:flex;align-items:center;justify-content:center;}
 .wo_user_profile .user-avatar .user-avatar-badge .user-avatar-badge-text{color:#fff;font-size:1.1rem;font-weight:700;pointer-events:none;position:relative;z-index:6;line-height:1;margin:0;}
 .wo_user_profile .pic-info-cont .user-avatar.flip.big > img{display:none!important;position:absolute;opacity:0;pointer-events:none;}
 .wo_user_profile .user-avatar-uploading-container{display:none;}
@@ -44,15 +44,16 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar{display:flex!important;align-items:center!important;justify-content:center!important;width:148px!important;height:164px!important;background:rgba(0,0,0,.4)!important;gap:4px;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);}
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar .btn{background:none!important;border:none!important;color:#fff!important;padding:4px!important;min-height:0!important;box-shadow:none!important;}
 .wo_user_profile .pic-info-cont .wo_profile_pic_hover .profile_avatar svg{width:20px;height:20px;}
-.wo_user_profile .pic-info-cont .info{position:absolute!important;top:56px!important;left:50%!important;transform:translateX(-50%)!important;text-align:center!important;white-space:normal!important;width:340px!important;z-index:5;pointer-events:auto;}
+.wo_user_profile .pic-info-cont .info{position:absolute!important;top:52px!important;left:50%!important;transform:translateX(-50%)!important;text-align:center!important;white-space:normal!important;width:380px!important;z-index:5;pointer-events:auto;}
 .wo_user_profile .pic-info-cont .info .title{display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;font-family:'Rajdhani',sans-serif!important;flex-wrap:wrap!important;}
-.wo_user_profile .pic-info-cont .info .title a{font-size:1.75rem!important;font-weight:700!important;color:#3e3f5e!important;text-decoration:none!important;font-family:'Rajdhani',sans-serif!important;text-shadow:none!important;}
-.wo_user_profile .pic-info-cont .info .title .verified-color{fill:#23d2e2;width:20px;height:20px;vertical-align:middle;}
-.wo_user_profile .pic-info-cont .info .title .badge-pro{border-radius:4px;padding:2px 6px;font-size:.65rem;line-height:1.2;vertical-align:middle;}
-.wo_user_profile .pic-info-cont .info > p{margin-top:3px!important;margin-bottom:0!important;color:#adafca!important;font-size:1.05rem!important;font-weight:600!important;text-transform:none!important;letter-spacing:0!important;font-family:'Rajdhani',sans-serif!important;line-height:1.4!important;}
+.wo_user_profile .pic-info-cont .info .title a{font-size:2rem!important;font-weight:700!important;color:#3e3f5e!important;text-decoration:none!important;font-family:'Rajdhani',sans-serif!important;text-shadow:none!important;white-space:nowrap!important;}
+.wo_user_profile .pic-info-cont .info .title .verified-color{fill:#23d2e2;width:22px;height:22px;vertical-align:middle;}
+.wo_user_profile .pic-info-cont .info .title .badge-pro-img img{height:26px!important;width:auto!important;vertical-align:middle!important;}
+.wo_user_profile .pic-info-cont .info > p{margin-top:2px!important;margin-bottom:0!important;color:#adafca!important;font-size:1rem!important;font-weight:600!important;text-transform:none!important;letter-spacing:0!important;font-family:'Rajdhani',sans-serif!important;line-height:1.4!important;}
 .wo_user_profile .pic-info-cont .info > p a{color:#adafca;text-decoration:none;}
-/* Website URL: large, prominent, brand colour */
-.wo_user_profile .pic-info-cont .info > p:last-child a{color:#615dfa!important;font-size:1.1rem!important;font-weight:700!important;}
+/* Website URL — large, prominent, brand colour */
+.wo_user_profile .pic-info-cont .info > p.wo-website-url-p a{color:#615dfa!important;font-size:1.15rem!important;font-weight:700!important;text-decoration:none!important;}
+.wo_user_profile .pic-info-cont .info > p.wo-website-url-p a:hover{text-decoration:underline!important;}
 .user-stats{display:flex;justify-content:center;}
 .user-stats .user-stat{position:relative;}
 .user-stats .user-stat::after{content:'';width:1px;height:20px;background-color:#eaeaf5;position:absolute;top:8px;right:0;}
@@ -196,7 +197,7 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
         <div class="user-avatar-progress-border"><div class="hexagon-border-124-136"></div></div>
         <div class="user-avatar-badge">
           <div class="user-avatar-badge-border"><div class="hexagon-40-44"></div></div>
-          <div class="user-avatar-badge-content" style="position:absolute;top:5px;left:4px;z-index:5;display:flex;align-items:center;justify-content:center;width:32px;height:34px;">
+          <div class="user-avatar-badge-content">
             <img src="<?php echo $__badge_img; ?>" width="20" height="20" style="object-fit:contain;display:block;" alt="gender" loading="lazy">
           </div>
         </div>
@@ -240,8 +241,11 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
           $__ws = $wo['user_profile']['website'] ?? '';
           if (empty($__ws)) $__ws = $wo['user_profile']['details']['website'] ?? '';
           if (!empty($__ws)):
+            /* Strip protocol, add www. if not already present */
+            $__ws_display = preg_replace('#^https?://(www\.)?#i', '', rtrim($__ws, '/'));
+            $__ws_href = (preg_match('#^https?://#i', $__ws) ? $__ws : 'https://' . $__ws);
         ?>
-        <p><a href="<?php echo htmlspecialchars($__ws); ?>" target="_blank" rel="noopener"><?php echo htmlspecialchars(preg_replace('#^https?://#', '', rtrim($__ws,'/'))); ?></a></p>
+        <p class="wo-website-url-p"><a href="<?php echo htmlspecialchars($__ws_href, ENT_QUOTES); ?>" target="_blank" rel="noopener">www.<?php echo htmlspecialchars($__ws_display, ENT_QUOTES); ?></a></p>
         <?php endif; ?>
       </div>
 
