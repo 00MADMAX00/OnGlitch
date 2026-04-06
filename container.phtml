@@ -366,16 +366,35 @@
         document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(hexifyEl);
         document.querySelectorAll('img.avatar:not([data-hex-done])').forEach(hexifyImg);
       }
-      /* Run on initial page load */
-      $(document).ready(function() { Wo_InitVikHexagons(); setTimeout(Wo_InitVikHexagons, 800); setTimeout(Wo_InitVikHexagons, 2000); });
-      /* Re-run after every WoWonder AJAX navigation (box.html(data) replaces #contnet) */
-      $(document).on('wo_ajax_page_loaded', function() { setTimeout(Wo_InitVikHexagons, 300); setTimeout(Wo_InitVikHexagons, 1000); });
-      /* MutationObserver for dynamically loaded content */
+      /* Run once on initial page load — single call, no redundant timeouts */
+      $(document).ready(function() { Wo_InitVikHexagons(); });
+      /* Re-run once after every WoWonder AJAX navigation */
+      $(document).on('wo_ajax_page_loaded', function() { setTimeout(Wo_InitVikHexagons, 300); });
+      /* MutationObserver: only watch for NEW posts/comments added to the feed,
+         NOT the entire subtree — prevents firing on every keystroke, GIF load, etc. */
       if (window.MutationObserver) {
+        var _hexObsTimer = null;
         var _hexObs = new MutationObserver(function(m) {
-          var n = false; m.forEach(function(x){ if(x.addedNodes.length) n=true; }); if(n) setTimeout(Wo_InitVikHexagons, 150);
+          var hasNewAvatars = false;
+          m.forEach(function(x) {
+            if (!x.addedNodes.length) return;
+            x.addedNodes.forEach(function(node) {
+              if (node.nodeType === 1 && (
+                node.classList && (node.classList.contains('sun_post') || node.classList.contains('post-container') || node.classList.contains('sidebar_user_data')) ||
+                (node.querySelector && (node.querySelector('.hexagon-image-30-32, .hexagon-progress-40-44, a.avatar, a.wow_post_usr_ava, img.avatar')))
+              )) { hasNewAvatars = true; }
+            });
+          });
+          if (hasNewAvatars) {
+            clearTimeout(_hexObsTimer);
+            _hexObsTimer = setTimeout(Wo_InitVikHexagons, 400);
+          }
         });
-        $(document).ready(function(){ if(document.getElementById('contnet')) _hexObs.observe(document.getElementById('contnet'), {childList:true,subtree:true}); });
+        /* Only watch direct children of #contnet, not the full subtree */
+        $(document).ready(function(){
+          var contnet = document.getElementById('contnet');
+          if (contnet) _hexObs.observe(contnet, {childList:true, subtree:false});
+        });
       }
       </script>
 
