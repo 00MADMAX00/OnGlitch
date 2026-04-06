@@ -169,10 +169,10 @@ $(function() {
     var $form = $(this);
     $form.find('.add_wow_loader').addClass('btn-loading');
 
-    /* Step 1: Save streaming/gaming fields via dedicated OnGlitch save endpoint */
+    /* Step 1: Save streaming/gaming fields via update_profile_setting
+       This is WoWonder's own profile update endpoint — saves any POST field
+       that exists as a column on Wo_Users */
     var streamingData = {
-      action:          'save_streaming',
-      url:             '?link1=onglitch_save',
       twitch:          $form.find('[name="twitch"]').val(),
       kick:            $form.find('[name="kick"]').val(),
       rumble:          $form.find('[name="rumble"]').val(),
@@ -181,9 +181,11 @@ $(function() {
       steam:           $form.find('[name="steam"]').val(),
       facebook_gaming: $form.find('[name="facebook_gaming"]').val(),
       trovo:           $form.find('[name="trovo"]').val(),
-      dlive:           $form.find('[name="dlive"]').val()
+      dlive:           $form.find('[name="dlive"]').val(),
+      user_id:         $form.find('[name="user_id"]').val(),
+      hash_id:         $form.find('[name="hash_id"]').val()
     };
-    $.post(Wo_Ajax_Requests_Filee() + '?link1=onglitch_save', streamingData);
+    $.post(Wo_Ajax_Requests_File() + '?f=update_profile_setting', streamingData);
 
     /* Step 2: Save standard social fields (facebook, twitter, vk, etc.) via WoWonder */
     $.post(Wo_Ajax_Requests_File() + '?f=update_socialinks_setting', $form.serialize(), function(data) {

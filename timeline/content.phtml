@@ -80,53 +80,95 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .pic-info-cont .options-buttons .btn.btn-default{background-color:#fff!important;color:#3e3f5e!important;box-shadow:0 0 0 2px #dedeea inset!important;}
 .wo_user_profile .pic-info-cont .options-buttons .profile-message-btn .btn{background-color:#23d2e2!important;color:#fff!important;box-shadow:4px 7px 12px 0 rgba(35,210,226,.2)!important;}
 @media(max-width:1200px){.wo_user_profile .pic-info-cont .options-buttons{right:12px!important;}}
-/* ===== MOBILE: keep exact desktop Vikinger layout, scaled down ===== */
-/* Tablet (900px and below): minor tightening only */
-@media(max-width:900px){
-  .wo_user_profile .pic-info-cont .user-stats{left:16px!important;}
-  .wo_user_profile .user-stat.big{padding:0 16px!important;}
-  .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{right:16px!important;}
-}
-/* Small tablet / large phone (680px) */
+/* =====================================================================
+   MOBILE LAYOUT ≤ 680px
+   3-row stacked layout under the hexagon avatar:
+     Row 1 — Name · @username · Website URL   (centered)
+     Row 2 — Stats: Posts | Following | Followers | Flag  (centered)
+     Row 3 — Social icons   (centered, wrap)
+   ===================================================================== */
 @media(max-width:680px){
-  .wo_user_profile .cardheader.user-cover{height:200px!important;}
-  .wo_user_profile .pic-info-cont{height:155px!important;}
-  /* Avatar centre */
-  .wo_user_profile .pic-info-cont .user-avatar.flip.big{left:50%!important;margin-left:-74px!important;}
-  /* Stats — left side */
-  .wo_user_profile .pic-info-cont .user-stats{top:52px!important;left:4px!important;}
-  .wo_user_profile .user-stat.big{padding:0 8px!important;}
-  .wo_user_profile .user-stat.big .user-stat-title{font-size:15px!important;}
+  /* Container becomes a flex column so rows stack naturally */
+  .wo_user_profile .card.hovercard{overflow:visible!important;}
+  .wo_user_profile .pic-info-cont{
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    /* Top padding pushes rows below the avatar which overhangs from above */
+    padding-top:88px!important;
+    padding-bottom:14px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    gap:6px!important;
+  }
+  /* Avatar: stays absolute, centred horizontally */
+  .wo_user_profile .pic-info-cont .user-avatar.flip.big{
+    position:absolute!important;
+    top:-82px!important;
+    left:50%!important;
+    margin-left:-74px!important;
+    z-index:10!important;
+  }
+  /* ── ROW 1: Name + @username + URL ── */
+  .wo_user_profile .pic-info-cont .info{
+    position:static!important;
+    transform:none!important;
+    width:100%!important;
+    max-width:340px!important;
+    text-align:center!important;
+    padding:0 8px!important;
+    order:1!important;
+  }
+  .wo_user_profile .pic-info-cont .info .title a{font-size:1.4rem!important;}
+  .wo_user_profile .pic-info-cont .info > p{font-size:.9rem!important;margin-top:1px!important;}
+  .wo_user_profile .pic-info-cont .info > p.wo-website-url-p a{font-size:.95rem!important;}
+  /* ── ROW 2: Stats ── */
+  .wo_user_profile .pic-info-cont .user-stats{
+    position:static!important;
+    display:flex!important;
+    justify-content:center!important;
+    flex-wrap:nowrap!important;
+    gap:0!important;
+    order:2!important;
+    width:100%!important;
+  }
+  .wo_user_profile .user-stat.big{padding:0 12px!important;}
+  .wo_user_profile .user-stat.big .user-stat-title{font-size:16px!important;}
   .wo_user_profile .user-stat.big .user-stat-text{font-size:9px!important;}
-  /* Name + @user + URL — centred */
-  .wo_user_profile .pic-info-cont .info{top:58px!important;width:220px!important;}
-  .wo_user_profile .pic-info-cont .info .title a{font-size:1.25rem!important;}
-  .wo_user_profile .pic-info-cont .info > p{font-size:.82rem!important;}
-  .wo_user_profile .pic-info-cont .info > p.wo-website-url-p a{font-size:.88rem!important;}
-  /* Social icons — right side */
-  .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{top:52px!important;right:4px!important;max-width:192px!important;height:auto!important;}
-  .wo_user_profile .pic-info-cont .profile-header-social-links{flex-wrap:wrap!important;gap:5px!important;}
-  .wo_user_profile .pic-info-cont .social-link{width:32px!important;height:32px!important;border-radius:7px!important;}
-  .wo_user_profile .pic-info-cont .social-link svg{width:14px!important;height:14px!important;}
-  /* Edit/Activities */
-  .wo_user_profile .pic-info-cont .options-buttons{top:-32px!important;right:4px!important;gap:4px!important;}
-  .wo_user_profile .pic-info-cont .options-buttons .btn{height:28px!important;padding:0 10px!important;font-size:.72rem!important;}
+  /* ── ROW 3: Social icons ── */
+  .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{
+    position:static!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    display:flex!important;
+    justify-content:center!important;
+    order:3!important;
+  }
+  .wo_user_profile .pic-info-cont .profile-header-social-links{
+    flex-wrap:wrap!important;
+    justify-content:center!important;
+    gap:6px!important;
+  }
+  .wo_user_profile .pic-info-cont .social-link{width:36px!important;height:36px!important;border-radius:8px!important;}
+  .wo_user_profile .pic-info-cont .social-link svg{width:16px!important;height:16px!important;}
+  /* Edit/Activities buttons stay at top-right corner */
+  .wo_user_profile .pic-info-cont .options-buttons{
+    position:absolute!important;
+    top:-38px!important;
+    right:8px!important;
+    gap:4px!important;
+    order:0!important;
+  }
+  .wo_user_profile .pic-info-cont .options-buttons .btn{height:30px!important;padding:0 10px!important;font-size:.75rem!important;}
 }
-/* Small phone (480px and below) */
-@media(max-width:480px){
-  .wo_user_profile .cardheader.user-cover{height:160px!important;}
-  .wo_user_profile .pic-info-cont{height:148px!important;}
-  .wo_user_profile .pic-info-cont .user-stats{top:50px!important;left:2px!important;}
-  .wo_user_profile .user-stat.big{padding:0 5px!important;}
-  .wo_user_profile .user-stat.big .user-stat-title{font-size:13px!important;}
-  .wo_user_profile .user-stat.big .user-stat-text{font-size:8px!important;}
-  .wo_user_profile .pic-info-cont .info{top:54px!important;width:180px!important;}
-  .wo_user_profile .pic-info-cont .info .title a{font-size:1.05rem!important;}
-  .wo_user_profile .pic-info-cont .info > p{font-size:.76rem!important;}
-  .wo_user_profile .pic-info-cont .info > p.wo-website-url-p a{font-size:.8rem!important;}
-  .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{top:50px!important;right:2px!important;max-width:152px!important;}
-  .wo_user_profile .pic-info-cont .social-link{width:28px!important;height:28px!important;border-radius:6px!important;}
-  .wo_user_profile .pic-info-cont .social-link svg{width:12px!important;height:12px!important;}
+/* ── Very small phones ≤ 400px ── */
+@media(max-width:400px){
+  .wo_user_profile .pic-info-cont .info .title a{font-size:1.2rem!important;}
+  .wo_user_profile .user-stat.big{padding:0 8px!important;}
+  .wo_user_profile .user-stat.big .user-stat-title{font-size:14px!important;}
+  .wo_user_profile .pic-info-cont .social-link{width:32px!important;height:32px!important;}
 }
 .wo_user_profile .section-navigation{display:block!important;padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin:16px 0 0 0!important;width:100%!important;box-sizing:border-box!important;}
 .wo_user_profile .right_user_info{display:none!important;}
