@@ -1,3 +1,42 @@
+<?php
+/* Load the streaming columns directly from DB so they appear in the form even if
+   WoWonder's $wo['setting'] query doesn't include them */
+global $db;
+$__streaming_cols = ['twitch','kick','rumble','tiktok','discord','steam','facebook_gaming','trovo','dlive'];
+$__streaming_data = [];
+if (!empty($wo['setting']['user_id'])) {
+    try {
+        $__row = $db->where('user_id', $wo['setting']['user_id'])->getOne('Wo_Users', implode(',', $__streaming_cols));
+        if ($__row) {
+            foreach ($__streaming_cols as $__col) {
+                $__streaming_data[$__col] = $__row[$__col] ?? '';
+            }
+        }
+    } catch (Exception $__e) {
+        foreach ($__streaming_cols as $__col) { $__streaming_data[$__col] = ''; }
+    }
+}
+/* Merge into $wo['setting'] so form values load correctly */
+foreach ($__streaming_data as $__k => $__v) {
+    $wo['setting'][$__k] = $__v;
+}
+
+/* If this is the AJAX save request for streaming fields, handle it here */
+if (!empty($_POST['wo_save_streaming']) && !empty($_POST['hash_id'])) {
+    Wo_ValidateSession($_POST['hash_id']);
+    $__update = [];
+    foreach ($__streaming_cols as $__col) {
+        if (isset($_POST[$__col])) {
+            $__update[$__col] = Wo_Secure($_POST[$__col]);
+        }
+    }
+    if (!empty($__update)) {
+        $db->where('user_id', $wo['user']['user_id'])->update('Wo_Users', $__update);
+    }
+    echo json_encode(['status' => 200, 'message' => 'Saved']);
+    exit;
+}
+?>
 <div class="page-margin mt-0">
 	<div class="wow_content popular_posts_hdr">
 		<h2><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.36364H13L7.99465 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 8.63636L1 8.63636L6.00535 13" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>&nbsp;<?php echo $wo['lang']['social_links']; ?></h2>
@@ -144,10 +183,9 @@ $(function() {
     var $form = $(this);
     $form.find('.add_wow_loader').addClass('btn-loading');
 
-    /* Step 1: Save streaming/gaming fields via the profile setting endpoint
-       These fields are not handled by update_socialinks_setting, so we post them
-       separately to update_profile_setting which saves any posted field to Wo_Users */
+    /* Step 1: Save streaming/gaming fields via our direct DB handler in this template */
     var streamingData = {
+      wo_save_streaming: 1,
       twitch:          $form.find('[name="twitch"]').val(),
       kick:            $form.find('[name="kick"]').val(),
       rumble:          $form.find('[name="rumble"]').val(),
@@ -157,12 +195,11 @@ $(function() {
       facebook_gaming: $form.find('[name="facebook_gaming"]').val(),
       trovo:           $form.find('[name="trovo"]').val(),
       dlive:           $form.find('[name="dlive"]').val(),
-      user_id:         $form.find('[name="user_id"]').val(),
       hash_id:         $form.find('[name="hash_id"]').val()
     };
-    $.post(Wo_Ajax_Requests_File() + '?f=update_profile_setting', streamingData);
+    $.post(window.location.href, streamingData);
 
-    /* Step 2: Save standard social fields via the normal endpoint */
+    /* Step 2: Save standard social fields (facebook, twitter, vk, etc.) via WoWonder */
     $.post(Wo_Ajax_Requests_File() + '?f=update_socialinks_setting', $form.serialize(), function(data) {
       scrollToTop();
       if (data.status == 200) {

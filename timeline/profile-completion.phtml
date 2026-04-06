@@ -1,3 +1,14 @@
+<?php
+/* Handle server-side hide/show save */
+if (!empty($_POST['wo_pc_action']) && !empty($_POST['hash_id'])) {
+    Wo_ValidateSession($_POST['hash_id']);
+    global $db;
+    $__hide = (int)$_POST['wo_pc_action'] === 1 ? 1 : 0;
+    $db->where('user_id', $wo['user']['user_id'])->update('Wo_Users', ['hide_profile_completion' => $__hide]);
+    echo json_encode(['status' => 200]);
+    exit;
+}
+?>
 <div class="col-md-12" id="wo-profile-completion-wrap">
 	<div class="page-margin mt-0 wow_content profile-completion-bar bar-<?php echo array_sum($wo['pr_complition']);?>" data-profile-completion="<?php echo array_sum($wo['pr_complition']); ?>">
 		<div class="hdr">
@@ -84,23 +95,19 @@
 
 	function woToggleProfileCompletion(checkbox) {
 		var key = 'wo_hide_pc_<?php echo $wo['user']['id']; ?>';
-		if (checkbox.checked) {
-			/* Save to localStorage immediately for this device */
-			localStorage.setItem(key, '1');
+		var action = checkbox.checked ? 1 : 0;
+		/* Save to localStorage for instant cross-tab response */
+		if (action) { localStorage.setItem(key, '1'); } else { localStorage.removeItem(key); }
+		if (action) {
 			jQuery('#wo-profile-completion-wrap').slideUp(300);
-			/* Also save server-side via WoWonder's general update endpoint */
-			jQuery.post(Wo_Ajax_Requests_File() + '?f=update_user_setting', {
-				hide_profile_completion: 1,
-				hash_id: jQuery('.main_session').val()
-			});
 		} else {
-			localStorage.removeItem(key);
 			jQuery('#wo-profile-completion-wrap').slideDown(300);
-			jQuery.post(Wo_Ajax_Requests_File() + '?f=update_user_setting', {
-				hide_profile_completion: 0,
-				hash_id: jQuery('.main_session').val()
-			});
 		}
+		/* Save server-side via our direct DB handler in this template */
+		jQuery.post(window.location.href, {
+			wo_pc_action: action,
+			hash_id: jQuery('.main_session').val()
+		});
 	}
 
 	new CircleProgress('.progresss', {
