@@ -1577,11 +1577,14 @@ function Wo_PostSticker(self){
 
   var image_holder = $("#image-holder");
   image_holder.empty();
-  image_holder.append('<span class="thumb-image-delete" id="image_to_gif"><span onclick="DeleteGif()" class="pointer thumb-image-delete-btn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg></span><img src="'+$(self).attr('data-gif')+'" class="thumb-image"></span>')
+  /* Use the thumbnail src URL (not data-gif full URL) — matches what comment/reply GIFs
+     use via Wo_RegisterComment2/Wo_RegisterReply2, avoids query-string issues with Wo_IsUrl */
+  var gifUrl = $(self).attr('src') || $(self).attr('data-gif');
+  image_holder.append('<span class="thumb-image-delete" id="image_to_gif"><span onclick="DeleteGif()" class="pointer thumb-image-delete-btn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg></span><img src="'+gifUrl+'" class="thumb-image"></span>')
   image_holder.show();
   $('.create-album').css('display', 'none');
   $("#photo-form").slideDown(200);
-  $('#postSticker').val($(self).attr('data-gif'));
+  $('#postSticker').val(gifUrl);
   // Wo_Delay(function(){
   //    Wo_GetPRecordLink();
   // },500)
