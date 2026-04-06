@@ -105,8 +105,6 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
 </style>
 
-<!-- Vikinger Hexagon JS -->
-<script src="/themes/onglitch/HTML/js/vendor/xm_hexagon.min.js"></script>
 
 <div class="row page-margin profile wo_user_profile" data-page="timeline" data-id="<?php echo $wo['user_profile']['user_id'];?>">
 
@@ -337,82 +335,19 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
   </div>
 
   <script>
+  /* Init the large profile hexagon avatar — profile-specific sizes only */
   (function(){
-    if(typeof XM_Hexagon === 'undefined') return;
-    new XM_Hexagon({container:'.hexagon-148-164',width:148,height:164,roundedCorners:true,fill:true});
-    new XM_Hexagon({container:'.hexagon-progress-124-136',width:124,height:136,lineWidth:8,roundedCorners:true,gradient:{colors:<?php echo $__badge_colors; ?>},scale:{start:0,end:1,stop:.74}});
-    new XM_Hexagon({container:'.hexagon-border-124-136',width:124,height:136,lineWidth:8,roundedCorners:true,lineColor:'#e7e8ee'});
-    new XM_Hexagon({container:'.hexagon-image-100-110',width:100,height:110,roundedCorners:true,clip:true});
-    new XM_Hexagon({container:'.hexagon-40-44',width:40,height:44,roundedCorners:true,roundedCornerRadius:1,fill:true});
-  })();
-  </script>
-  <script>
-  (function hexifyPostAvatars(){
-    var IMG_W=30,IMG_H=32,RNG_W=40,RNG_H=44;
-    function buildVikingerAvatar(src,href){
-      var imgUid='hxi'+Math.random().toString(36).substr(2,8);
-      var rngUid='hxr'+Math.random().toString(36).substr(2,8);
-      var el=document.createElement(href?'a':'div');
-      el.className='user-avatar small no-outline';
-      if(href)el.href=href;
-      var content=document.createElement('div');content.className='user-avatar-content';
-      var imgDiv=document.createElement('div');imgDiv.className=imgUid;imgDiv.setAttribute('data-src',src);
-      content.appendChild(imgDiv);
-      var progress=document.createElement('div');progress.className='user-avatar-progress';
-      var rngDiv=document.createElement('div');rngDiv.className=rngUid;
-      progress.appendChild(rngDiv);
-      el.appendChild(content);el.appendChild(progress);
-      setTimeout(function(){
-        if(typeof XM_Hexagon==='undefined')return;
-        new XM_Hexagon({container:'.'+imgUid,width:IMG_W,height:IMG_H,roundedCorners:true,roundedCornerRadius:1,clip:true});
-        new XM_Hexagon({container:'.'+rngUid,width:RNG_W,height:RNG_H,lineWidth:3,roundedCorners:true,roundedCornerRadius:1,gradient:{colors:['#41efff','#615dfa']},scale:{start:0,end:1,stop:.8}});
-      },0);
-      return el;
+    function initProfileHex() {
+      if(typeof XM_Hexagon === 'undefined') { setTimeout(initProfileHex, 200); return; }
+      new XM_Hexagon({container:'.hexagon-148-164',width:148,height:164,roundedCorners:true,fill:true});
+      new XM_Hexagon({container:'.hexagon-progress-124-136',width:124,height:136,lineWidth:8,roundedCorners:true,gradient:{colors:<?php echo $__badge_colors; ?>},scale:{start:0,end:1,stop:.74}});
+      new XM_Hexagon({container:'.hexagon-border-124-136',width:124,height:136,lineWidth:8,roundedCorners:true,lineColor:'#e7e8ee'});
+      new XM_Hexagon({container:'.hexagon-image-100-110',width:100,height:110,roundedCorners:true,clip:true});
+      new XM_Hexagon({container:'.hexagon-40-44',width:40,height:44,roundedCorners:true,roundedCornerRadius:1,fill:true});
+      /* Also trigger global init so post avatars get hexified */
+      if(typeof Wo_InitVikHexagons === 'function') Wo_InitVikHexagons();
     }
-    function makeHex(aEl){
-      if(!aEl||aEl.dataset.hexDone)return;
-      if(typeof XM_Hexagon==='undefined')return;
-      aEl.dataset.hexDone='1';
-      var img=aEl.querySelector('img:not(.blur_img)')||aEl.querySelector('img');
-      if(!img)return;
-      var src=img.getAttribute('src')||'';
-      if(!src||src==='#'||src.indexOf('data:')===0)return;
-      var v=buildVikingerAvatar(src,aEl.getAttribute('href'));
-      aEl.parentNode.insertBefore(v,aEl);
-      aEl.style.setProperty('display','none','important');
-    }
-    function makeHexImg(im){
-      if(!im||im.dataset.hexDone)return;
-      if(typeof XM_Hexagon==='undefined')return;
-      var src=im.getAttribute('src')||'';
-      if(!src||src==='#'||src.indexOf('data:')===0)return;
-      im.dataset.hexDone='1';
-      var v=buildVikingerAvatar(src,null);
-      im.parentNode.insertBefore(v,im);
-      im.style.setProperty('display','none','important');
-    }
-    function run(){
-      function skip(el){return!!(el.closest('.pic-info-cont'));}
-      document.querySelectorAll('.post-heading .image a:not([data-hex-done])').forEach(function(a){if(!skip(a))makeHex(a);});
-      document.querySelectorAll('a.wow_post_usr_ava:not([data-hex-done])').forEach(function(a){if(!skip(a))makeHex(a);});
-      document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(function(a){if(!skip(a))makeHex(a);});
-      document.querySelectorAll('img.avatar:not([data-hex-done])').forEach(function(im){
-        if(skip(im))return;
-        var aEl=im.closest('a');
-        if(aEl&&!aEl.dataset.hexDone)makeHex(aEl);
-        else if(!aEl)makeHexImg(im);
-      });
-    }
-    function tryRun(attempt){
-      if(typeof XM_Hexagon!=='undefined'){run();}
-      else if(attempt<10){setTimeout(function(){tryRun(attempt+1);},200);}
-    }
-    tryRun(0);
-    setTimeout(run,800);setTimeout(run,2000);setTimeout(run,4000);
-    if(window.MutationObserver){
-      var obs=new MutationObserver(function(m){var n=false;m.forEach(function(x){if(x.addedNodes.length)n=true;});if(n)setTimeout(run,150);});
-      obs.observe(document.body,{childList:true,subtree:true});
-    }
+    initProfileHex();
   })();
   </script>
 
@@ -423,46 +358,46 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
     <div class="section-menu" id="section-navigation-slider">
       <a class="section-menu-item<?php echo ($__tab==='timeline')?' active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username'];?>">
         <svg class="section-menu-item-icon" viewBox="0 0 20 20"><path d="M16,0H4C1.791,0,0,1.791,0,4v12c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4V4C20,1.791,18.209,0,16,0zM18,16c0,1.103-0.897,2-2,2H4c-1.103,0-2-0.897-2-2V4c0-1.103,0.897-2,2-2h12c1.103,0,2,0.897,2,2V16z"/><polygon points="18,5 2,5 2,7 5,7 5,18 7,18 7,7 13,7 13,18 15,18 15,7 18,7"/></svg>
-        <p class="section-menu-item-text"><?php echo $wo['lang']['timeline'];?></p>
+        <span class="section-menu-item-text"><?php echo $wo['lang']['timeline'];?></span>
       </a>
       <?php if ($wo['config']['groups'] == 1) {?>
       <a class="section-menu-item<?php echo ($__tab==='groups')?' active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=groups');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=groups">
         <svg class="section-menu-item-icon" viewBox="0 0 20 20"><path d="M10,2c1.654,0,3,1.346,3,3s-1.346,3-3,3S7,6.654,7,5S8.346,2,10,2 M10,0C7.238,0,5,2.238,5,5s2.238,5,5,5s5-2.238,5-5S12.762,0,10,0L10,0z"/><path d="M3,20v-2c0-2.205,1.794-4,4-4h6c2.206,0,4,1.795,4,4v2h2v-2c0-3.313-2.687-6-6-6H7c-3.313,0-6,2.687-6,6v2H3z"/></svg>
-        <p class="section-menu-item-text"><?php echo $wo['lang']['groups'];?></p>
+        <span class="section-menu-item-text"><?php echo $wo['lang']['groups'];?></span>
       </a>
       <?php } if ($wo['config']['pages'] == 1) {?>
       <a class="section-menu-item<?php echo ($__tab==='likes')?' active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=likes');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=likes">
         <svg class="section-menu-item-icon" viewBox="0 0 20 20"><path d="M10,3.656C8.5,1.313,5.5,0.5,3.5,2.5s-2,5.5,0,7.5L10,17l6.5-7c2-2,2-5.5,0-7.5S11.5,1.313,10,3.656z"/></svg>
-        <p class="section-menu-item-text"><?php echo $wo['lang']['likes'];?></p>
+        <span class="section-menu-item-text"><?php echo $wo['lang']['likes'];?></span>
       </a>
       <?php } if ($wo['config']['connectivitySystem'] == 1) {?>
       <a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=followers');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=followers">
         <svg class="section-menu-item-icon" viewBox="0 0 20 20"><path d="M10,0C4.477,0,0,4.478,0,10c0,5.523,4.477,10,10,10c5.522,0,10-4.477,10-10C20,4.478,15.522,0,10,0z M10,18c-4.418,0-8-3.582-8-8c0-4.418,3.582-8,8-8s8,3.582,8,8C18,14.418,14.418,18,10,18z M10,13c-1.305,0-2.403-0.838-2.816-2H5.101c0.464,2.282,2.48,4,4.899,4s4.436-1.718,4.899-4h-2.083C12.403,12.162,11.305,13,10,13z M7,7H5v2h2V7z M13,9h2V7h-2V9z"/></svg>
-        <p class="section-menu-item-text"><?php echo $wo['lang']['friends_btn'];?></p>
+        <span class="section-menu-item-text"><?php echo $wo['lang']['friends_btn'];?></span>
       </a>
       <?php } if ($wo['config']['connectivitySystem'] == 0) {?>
       <a class="section-menu-item<?php echo ($__tab==='following')?' active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=following');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=following">
         <svg class="section-menu-item-icon" viewBox="0 0 20 20"><path d="M12,0C8.686,0,6,2.686,6,6s2.686,6,6,6s6-2.686,6-6S15.314,0,12,0z M12,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S14.206,10,12,10z"/><path d="M2,21v-1c0-3.309,2.691-6,6-6h8c3.309,0,6,2.691,6,6v1h-2v-1c0-2.206-1.794-4-4-4H8c-2.206,0-4,1.794-4,4v1H2z"/><path d="M3,9H1V7H3V5h2v2h2v2H5v2H3V9z"/></svg>
-        <p class="section-menu-item-text"><?php echo $wo['lang']['following'];?></p>
+        <span class="section-menu-item-text"><?php echo $wo['lang']['following'];?></span>
       </a>
       <a class="section-menu-item" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=followers');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=followers">
         <svg class="section-menu-item-icon" viewBox="0 0 20 20"><path d="M10,0C4.477,0,0,4.478,0,10c0,5.523,4.477,10,10,10c5.522,0,10-4.477,10-10C20,4.478,15.522,0,10,0z M10,18c-4.418,0-8-3.582-8-8c0-4.418,3.582-8,8-8s8,3.582,8,8C18,14.418,14.418,18,10,18z M10,13c-1.305,0-2.403-0.838-2.816-2H5.101c0.464,2.282,2.48,4,4.899,4s4.436-1.718,4.899-4h-2.083C12.403,12.162,11.305,13,10,13z M7,7H5v2h2V7z M13,9h2V7h-2V9z"/></svg>
-        <p class="section-menu-item-text"><?php echo $wo['lang']['followers'];?></p>
+        <span class="section-menu-item-text"><?php echo $wo['lang']['followers'];?></span>
       </a>
       <?php } ?>
       <a class="section-menu-item<?php echo ($__tab==='photos')?' active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=photos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=photos">
         <svg class="section-menu-item-icon" viewBox="0 0 20 20"><path d="M16,0H4C1.791,0,0,1.791,0,4v12c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4V4C20,1.791,18.209,0,16,0zM4,2h12c1.103,0,2,0.897,2,2v6.407L16.703,9.11c-0.75-0.751-1.734-1.126-2.718-1.126c-0.984,0-1.968,0.375-2.719,1.126l-2.98,2.98l-0.259-0.259c-0.563-0.563-1.301-0.844-2.039-0.844s-1.476,0.282-2.04,0.844L2,13.782V4C2,2.897,2.897,2,4,2z M16,18H4c-0.918,0-1.686-0.625-1.919-1.47l3.282-3.283c0.226-0.226,0.489-0.259,0.626-0.259c0.137,0,0.399,0.033,0.625,0.258l0.259,0.259l1.414,1.414L9.7,13.505l2.981-2.981c0.348-0.348,0.811-0.54,1.304-0.54c0.492,0,0.955,0.192,1.304,0.541L18,13.234V16C18,17.103,17.103,18,16,18z"/><path d="M6,9c1.657,0,3-1.344,3-3c0-1.657-1.343-3-3-3S3,4.343,3,6C3,7.656,4.343,9,6,9z M6,5c0.551,0,1,0.449,1,1c0,0.552-0.449,1-1,1S5,6.552,5,6C5,5.449,5.449,5,6,5z"/></svg>
-        <p class="section-menu-item-text"><?php echo $wo['lang']['photos'];?></p>
+        <span class="section-menu-item-text"><?php echo $wo['lang']['photos'];?></span>
       </a>
       <?php if ($wo['config']['video_upload'] == 1) { ?>
       <a class="section-menu-item<?php echo ($__tab==='videos')?' active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=videos');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=videos">
         <svg class="section-menu-item-icon" viewBox="0 0 20 20"><path d="M8.405,7c0.102,0,0.219,0.037,0.347,0.115l3.908,2.4c0.439,0.267,0.462,0.704,0.021,0.971l-3.928,2.4C8.624,12.964,8.507,13,8.405,13C8.157,13,8,12.782,8,12.408V7.593C8,7.217,8.157,7,8.405,7z"/><rect x="0" y="0" width="20" height="20" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-        <p class="section-menu-item-text"><?php echo $wo['lang']['videos'];?></p>
+        <span class="section-menu-item-text"><?php echo $wo['lang']['videos'];?></span>
       </a>
       <?php } if($wo['config']['reels_upload']) {?>
       <a class="section-menu-item<?php echo ($__tab==='reels')?' active':''; ?>" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user_profile']['username'] . '&type=reels');?>" data-ajax="?link1=timeline&u=<?php echo $wo['user_profile']['username']?>&type=reels">
         <svg class="section-menu-item-icon" viewBox="0 0 20 20"><polygon points="8,10 8,16 14,13"/><rect x="0" y="0" width="20" height="20" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-        <p class="section-menu-item-text"><?php echo $wo['lang']['reels'];?></p>
+        <span class="section-menu-item-text"><?php echo $wo['lang']['reels'];?></span>
       </a>
       <?php } ?>
     </div>

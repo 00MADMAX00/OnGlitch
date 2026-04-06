@@ -524,5 +524,63 @@ if (!empty($wo['reactions_types'])) {
 }*/
 <?php }?>
 
-/* ===== OnGlitch: profile-completion hide UI ===== */
-/* ===== End OnGlitch ===== */</style>
+/* ===== OnGlitch Vikinger Profile Fixes ===== */
+
+/* Rounded bottom corners on the profile header card */
+.wo_user_profile .card.hovercard {
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+    overflow: visible !important;
+}
+
+/* Rounded bottom corners on the section navigation bar */
+.wo_user_profile .section-navigation {
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+    overflow: hidden;
+}
+
+/* Hide the WoWonder right_user_info sidebar stats block —
+   stats are already displayed in the Vikinger header */
+.wo_user_profile .right_user_info {
+    display: none !important;
+}
+
+/* Ensure Vikinger small avatar dimensions work inside WoWonder contexts */
+.user-avatar.small {
+    display: inline-block !important;
+    width: 50px !important;
+    height: 56px !important;
+    position: relative !important;
+    overflow: visible !important;
+    border-radius: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    vertical-align: middle !important;
+    flex-shrink: 0 !important;
+}
+.user-avatar.small .user-avatar-content {
+    position: absolute !important;
+    top: 12px !important;
+    left: 10px !important;
+    z-index: 3 !important;
+}
+.user-avatar.small .user-avatar-progress,
+.user-avatar.small .user-avatar-progress-border {
+    position: absolute !important;
+    top: 6px !important;
+    left: 5px !important;
+    z-index: 2 !important;
+}
+
+/* section-menu-item: ensure pointer events work on the full tab area */
+.section-menu-item {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+.section-menu-item * {
+    pointer-events: none !important;
+}
+
+/* ===== End OnGlitch Vikinger Profile Fixes ===== */
+</style>

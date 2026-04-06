@@ -285,6 +285,96 @@
       <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
       <?php } ?>
 
+      <!-- Vikinger XM_Hexagon — loaded globally so avatars work on all pages -->
+      <script src="<?php echo $wo['config']['theme_url']; ?>/HTML/js/vendor/xm_hexagon.min.js"></script>
+      <script>
+      /* Global Vikinger hexagon initializer — runs after every page load and AJAX navigation */
+      function Wo_InitVikHexagons() {
+        if (typeof XM_Hexagon === 'undefined') return;
+        /* Standard small avatar hexagons used in sidebar, publisher-box, posts, comments */
+        var IMG_W = 30, IMG_H = 32, RNG_W = 40, RNG_H = 44;
+        function buildVikingerHex(src, href) {
+          var imgUid = 'hxi' + Math.random().toString(36).substr(2,8);
+          var rngUid = 'hxr' + Math.random().toString(36).substr(2,8);
+          var el = document.createElement(href ? 'a' : 'div');
+          el.className = 'user-avatar small no-outline';
+          if (href) el.href = href;
+          var content = document.createElement('div'); content.className = 'user-avatar-content';
+          var imgDiv = document.createElement('div'); imgDiv.className = imgUid; imgDiv.setAttribute('data-src', src);
+          content.appendChild(imgDiv);
+          var progress = document.createElement('div'); progress.className = 'user-avatar-progress';
+          var rngDiv = document.createElement('div'); rngDiv.className = rngUid;
+          progress.appendChild(rngDiv);
+          el.appendChild(content); el.appendChild(progress);
+          /* Init hexagons after DOM insertion */
+          setTimeout(function() {
+            if (typeof XM_Hexagon === 'undefined') return;
+            new XM_Hexagon({container:'.'+imgUid, width:IMG_W, height:IMG_H, roundedCorners:true, roundedCornerRadius:1, clip:true});
+            new XM_Hexagon({container:'.'+rngUid, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, gradient:{colors:['#41efff','#615dfa']}, scale:{start:0,end:1,stop:.8}});
+          }, 0);
+          return el;
+        }
+        function hexifyEl(aEl) {
+          if (!aEl || aEl.dataset.hexDone) return;
+          /* Skip the main big profile avatar */
+          if (aEl.closest('.pic-info-cont')) return;
+          aEl.dataset.hexDone = '1';
+          var img = aEl.querySelector('img:not(.blur_img)') || aEl.querySelector('img');
+          if (!img) return;
+          var src = img.getAttribute('src') || '';
+          if (!src || src === '#' || src.indexOf('data:') === 0) return;
+          var v = buildVikingerHex(src, aEl.getAttribute('href') || null);
+          aEl.parentNode.insertBefore(v, aEl);
+          aEl.style.setProperty('display', 'none', 'important');
+        }
+        function hexifyImg(im) {
+          if (!im || im.dataset.hexDone) return;
+          if (im.closest('.pic-info-cont')) return;
+          var src = im.getAttribute('src') || '';
+          if (!src || src === '#' || src.indexOf('data:') === 0) return;
+          im.dataset.hexDone = '1';
+          var aEl = im.closest('a');
+          if (aEl && !aEl.dataset.hexDone) { hexifyEl(aEl); return; }
+          if (!aEl) {
+            var v = buildVikingerHex(src, null);
+            im.parentNode.insertBefore(v, im);
+            im.style.setProperty('display', 'none', 'important');
+          }
+        }
+        /* Initialise the pre-built Vikinger hexagon divs (sidebar, publisher-box) */
+        document.querySelectorAll('.hexagon-image-30-32[data-src]:not([data-hex-init])').forEach(function(el) {
+          el.setAttribute('data-hex-init', '1');
+          var src = el.getAttribute('data-src');
+          if (!src) return;
+          new XM_Hexagon({container: el, width:IMG_W, height:IMG_H, roundedCorners:true, roundedCornerRadius:1, clip:true});
+        });
+        document.querySelectorAll('.hexagon-progress-40-44:not([data-hex-init])').forEach(function(el) {
+          el.setAttribute('data-hex-init', '1');
+          new XM_Hexagon({container: el, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, gradient:{colors:['#41efff','#615dfa']}, scale:{start:0,end:1,stop:.8}});
+        });
+        document.querySelectorAll('.hexagon-border-40-44:not([data-hex-init])').forEach(function(el) {
+          el.setAttribute('data-hex-init', '1');
+          new XM_Hexagon({container: el, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, lineColor:'#e7e8ee'});
+        });
+        /* Convert raw img.avatar / a.avatar / a.wow_post_usr_ava to Vikinger hexagons */
+        document.querySelectorAll('.post-heading .image a:not([data-hex-done])').forEach(hexifyEl);
+        document.querySelectorAll('a.wow_post_usr_ava:not([data-hex-done])').forEach(hexifyEl);
+        document.querySelectorAll('a.avatar:not([data-hex-done])').forEach(hexifyEl);
+        document.querySelectorAll('img.avatar:not([data-hex-done])').forEach(hexifyImg);
+      }
+      /* Run on initial page load */
+      $(document).ready(function() { Wo_InitVikHexagons(); setTimeout(Wo_InitVikHexagons, 800); setTimeout(Wo_InitVikHexagons, 2000); });
+      /* Re-run after every WoWonder AJAX navigation (box.html(data) replaces #contnet) */
+      $(document).on('wo_ajax_page_loaded', function() { setTimeout(Wo_InitVikHexagons, 300); setTimeout(Wo_InitVikHexagons, 1000); });
+      /* MutationObserver for dynamically loaded content */
+      if (window.MutationObserver) {
+        var _hexObs = new MutationObserver(function(m) {
+          var n = false; m.forEach(function(x){ if(x.addedNodes.length) n=true; }); if(n) setTimeout(Wo_InitVikHexagons, 150);
+        });
+        $(document).ready(function(){ if(document.getElementById('contnet')) _hexObs.observe(document.getElementById('contnet'), {childList:true,subtree:true}); });
+      }
+      </script>
+
       <script type="text/javascript">
          <?php echo $wo['config']['header_cc']; ?>
          function Wo_Ajax_Requests_File(){
@@ -374,6 +464,8 @@
                      }
                      //document.getElementById('#contnet').innerHTML = data;
                      box.html(data);
+                     /* Fire Vikinger hexagon init after AJAX content loads */
+                     $(document).trigger('wo_ajax_page_loaded');
                      if (json_data.is_css_file == 1) {
                        $('.styled-profile').remove();
                        $('footer').append(json_data.css_file);
