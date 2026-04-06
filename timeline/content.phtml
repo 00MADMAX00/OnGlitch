@@ -64,7 +64,7 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .user-stat.big .user-stat-title{font-size:22px!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;}
 .user-stat .user-stat-text{font-size:10px;color:#adafca;margin:4px 0 0;}
 .user-stat.big .user-stat-text{font-size:12px!important;color:#adafca!important;margin:4px 0 0!important;}
-.wo_user_profile .pic-info-cont .user-stats{position:absolute!important;top:54px!important;left:40px!important;overflow:visible;flex-wrap:nowrap;}
+.wo_user_profile .pic-info-cont .wo-profile-stats{position:absolute!important;top:54px!important;left:40px!important;overflow:visible;display:flex!important;align-items:center!important;flex-wrap:nowrap!important;}
 .profile-header-social-links{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px;}
 .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{width:auto;max-width:352px;height:44px;margin:0!important;position:absolute!important;top:54px!important;right:32px!important;left:auto!important;overflow:visible!important;display:block!important;}
 .wo_user_profile .pic-info-cont .profile-header-social-links{display:flex!important;gap:8px;flex-wrap:nowrap;padding-top:0;align-items:center;}
@@ -81,28 +81,29 @@ if ($wo['loggedin'] && $IsOwnerUser) {
 .wo_user_profile .pic-info-cont .options-buttons .profile-message-btn .btn{background-color:#23d2e2!important;color:#fff!important;box-shadow:4px 7px 12px 0 rgba(35,210,226,.2)!important;}
 @media(max-width:1200px){.wo_user_profile .pic-info-cont .options-buttons{right:12px!important;}}
 /* =====================================================================
-   MOBILE LAYOUT ≤ 680px
-   3-row stacked layout under the hexagon avatar:
-     Row 1 — Name · @username · Website URL   (centered)
-     Row 2 — Stats: Posts | Following | Followers | Flag  (centered)
-     Row 3 — Social icons   (centered, wrap)
+   MOBILE LAYOUT ≤ 680px — 3-row stacked layout
+   Row 1: Name + @username + Website URL  (centred)
+   Row 2: Stats (Posts | Following | Followers | Flag)  (centred row)
+   Row 3: Social icons  (centred, wrapping)
+   The avatar (position:absolute; top:-82px) floats above Row 1.
    ===================================================================== */
 @media(max-width:680px){
-  /* Container becomes a flex column so rows stack naturally */
   .wo_user_profile .card.hovercard{overflow:visible!important;}
+
+  /* pic-info-cont: flex column, space at top for the absolute avatar */
   .wo_user_profile .pic-info-cont{
     position:relative!important;
     height:auto!important;
     min-height:0!important;
-    /* Top padding pushes rows below the avatar which overhangs from above */
-    padding-top:88px!important;
-    padding-bottom:14px!important;
+    padding-top:90px!important;
+    padding-bottom:16px!important;
     display:flex!important;
     flex-direction:column!important;
     align-items:center!important;
-    gap:6px!important;
+    gap:8px!important;
   }
-  /* Avatar: stays absolute, centred horizontally */
+
+  /* Avatar: absolute, centred */
   .wo_user_profile .pic-info-cont .user-avatar.flip.big{
     position:absolute!important;
     top:-82px!important;
@@ -110,35 +111,42 @@ if ($wo['loggedin'] && $IsOwnerUser) {
     margin-left:-74px!important;
     z-index:10!important;
   }
+
   /* ── ROW 1: Name + @username + URL ── */
   .wo_user_profile .pic-info-cont .info{
     position:static!important;
     transform:none!important;
     width:100%!important;
-    max-width:340px!important;
+    max-width:360px!important;
     text-align:center!important;
-    padding:0 8px!important;
+    padding:0 12px!important;
     order:1!important;
   }
-  .wo_user_profile .pic-info-cont .info .title a{font-size:1.4rem!important;}
-  .wo_user_profile .pic-info-cont .info > p{font-size:.9rem!important;margin-top:1px!important;}
-  .wo_user_profile .pic-info-cont .info > p.wo-website-url-p a{font-size:.95rem!important;}
-  /* ── ROW 2: Stats ── */
-  .wo_user_profile .pic-info-cont .user-stats{
+  .wo_user_profile .pic-info-cont .info .title a{font-size:1.5rem!important;white-space:normal!important;}
+  .wo_user_profile .pic-info-cont .info > p{font-size:.92rem!important;margin-top:2px!important;}
+  .wo_user_profile .pic-info-cont .info > p.wo-website-url-p a{font-size:1rem!important;}
+
+  /* ── ROW 2: Stats — override the absolute positioning completely ── */
+  .wo_user_profile .pic-info-cont .wo-profile-stats{
     position:static!important;
+    top:auto!important;
+    left:auto!important;
     display:flex!important;
     justify-content:center!important;
+    align-items:center!important;
     flex-wrap:nowrap!important;
-    gap:0!important;
-    order:2!important;
     width:100%!important;
+    order:2!important;
   }
-  .wo_user_profile .user-stat.big{padding:0 12px!important;}
-  .wo_user_profile .user-stat.big .user-stat-title{font-size:16px!important;}
-  .wo_user_profile .user-stat.big .user-stat-text{font-size:9px!important;}
+  .wo_user_profile .user-stat.big{padding:0 14px!important;}
+  .wo_user_profile .user-stat.big .user-stat-title{font-size:18px!important;}
+  .wo_user_profile .user-stat.big .user-stat-text{font-size:10px!important;}
+
   /* ── ROW 3: Social icons ── */
   .wo_user_profile .pic-info-cont .profile-header-social-links-wrap{
     position:static!important;
+    top:auto!important;
+    right:auto!important;
     width:100%!important;
     max-width:100%!important;
     height:auto!important;
@@ -151,9 +159,10 @@ if ($wo['loggedin'] && $IsOwnerUser) {
     justify-content:center!important;
     gap:6px!important;
   }
-  .wo_user_profile .pic-info-cont .social-link{width:36px!important;height:36px!important;border-radius:8px!important;}
-  .wo_user_profile .pic-info-cont .social-link svg{width:16px!important;height:16px!important;}
-  /* Edit/Activities buttons stay at top-right corner */
+  .wo_user_profile .pic-info-cont .social-link{width:38px!important;height:38px!important;border-radius:9px!important;}
+  .wo_user_profile .pic-info-cont .social-link svg{width:17px!important;height:17px!important;}
+
+  /* Edit/Activities: absolute top-right */
   .wo_user_profile .pic-info-cont .options-buttons{
     position:absolute!important;
     top:-38px!important;
@@ -163,12 +172,13 @@ if ($wo['loggedin'] && $IsOwnerUser) {
   }
   .wo_user_profile .pic-info-cont .options-buttons .btn{height:30px!important;padding:0 10px!important;font-size:.75rem!important;}
 }
-/* ── Very small phones ≤ 400px ── */
-@media(max-width:400px){
-  .wo_user_profile .pic-info-cont .info .title a{font-size:1.2rem!important;}
-  .wo_user_profile .user-stat.big{padding:0 8px!important;}
-  .wo_user_profile .user-stat.big .user-stat-title{font-size:14px!important;}
-  .wo_user_profile .pic-info-cont .social-link{width:32px!important;height:32px!important;}
+
+/* ── Very small phones ≤ 380px ── */
+@media(max-width:380px){
+  .wo_user_profile .pic-info-cont .info .title a{font-size:1.3rem!important;}
+  .wo_user_profile .user-stat.big{padding:0 9px!important;}
+  .wo_user_profile .user-stat.big .user-stat-title{font-size:15px!important;}
+  .wo_user_profile .pic-info-cont .social-link{width:34px!important;height:34px!important;}
 }
 .wo_user_profile .section-navigation{display:block!important;padding:0 28px!important;border-radius:12px!important;background:#fff!important;box-shadow:0 0 40px 0 rgba(94,92,154,.06)!important;margin:16px 0 0 0!important;width:100%!important;box-sizing:border-box!important;}
 .wo_user_profile .right_user_info{display:none!important;}
@@ -350,7 +360,7 @@ img.avatar.pull-left{clip-path:none!important;border-radius:0!important;}
         <?php endif; ?>
       </div>
 
-      <div class="user-stats" style="position:absolute;top:54px;left:40px;display:flex;align-items:center;">
+      <div class="user-stats wo-profile-stats">
         <div class="user-stat big">
           <p class="user-stat-title" style="font-family:'Rajdhani',sans-serif!important;font-size:22px!important;font-weight:700!important;color:#3e3f5e!important;margin:0!important;line-height:1.2!important;"><?php echo number_format($wo['user_profile']['details']['post_count']); ?></p>
           <p class="user-stat-text" style="font-family:'Rajdhani',sans-serif!important;font-size:12px!important;font-weight:700!important;color:#adafca!important;text-transform:uppercase!important;margin:4px 0 0!important;letter-spacing:.04em!important;"><?php echo TextForMode('posts'); ?></p>

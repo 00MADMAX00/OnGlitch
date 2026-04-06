@@ -93,11 +93,11 @@
 		} else {
 			jQuery('#wo-profile-completion-wrap').slideDown(300);
 		}
-		/* Save via update_profile_setting — WoWonder's own profile field saver */
-		jQuery.post(Wo_Ajax_Requests_File() + '?f=update_profile_setting', {
-			hide_profile_completion: action,
-			user_id: <?php echo (int)$wo['user']['user_id']; ?>,
-			hash_id: jQuery('.main_session').val()
+		/* Save via onglitch_save endpoint — does direct $db->update() on Wo_Users */
+		jQuery.post(Wo_Ajax_Requests_Filee() + '?link1=onglitch_save', {
+			action: 'toggle_profile_completion',
+			url:    '?link1=onglitch_save',
+			hide:   action
 		});
 	}
 
