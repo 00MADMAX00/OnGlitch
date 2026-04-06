@@ -51,7 +51,74 @@
 				</div>
 			</div>
 		</div>
-		
+
+		<!-- Streaming & Gaming Platforms -->
+		<div class="row">
+			<div class="col-md-6">
+				<div class="wow_form_fields">
+					<label for="twitch">Twitch</label>
+					<input id="twitch" name="twitch" type="text" class="form-control input-md" value="<?php echo htmlspecialchars($wo['setting']['twitch'] ?? '', ENT_QUOTES);?>" placeholder="<?php echo $wo['lang']['username'];?>">
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="wow_form_fields">
+					<label for="kick">Kick</label>
+					<input id="kick" name="kick" type="text" class="form-control input-md" value="<?php echo htmlspecialchars($wo['setting']['kick'] ?? '', ENT_QUOTES);?>" placeholder="<?php echo $wo['lang']['username'];?>">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="wow_form_fields">
+					<label for="rumble">Rumble</label>
+					<input id="rumble" name="rumble" type="text" class="form-control input-md" value="<?php echo htmlspecialchars($wo['setting']['rumble'] ?? '', ENT_QUOTES);?>" placeholder="<?php echo $wo['lang']['username'];?>">
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="wow_form_fields">
+					<label for="tiktok">TikTok</label>
+					<input id="tiktok" name="tiktok" type="text" class="form-control input-md" value="<?php echo htmlspecialchars($wo['setting']['tiktok'] ?? '', ENT_QUOTES);?>" placeholder="<?php echo $wo['lang']['username'];?>">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="wow_form_fields">
+					<label for="discord">Discord</label>
+					<input id="discord" name="discord" type="text" class="form-control input-md" value="<?php echo htmlspecialchars($wo['setting']['discord'] ?? '', ENT_QUOTES);?>" placeholder="Server invite code or username">
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="wow_form_fields">
+					<label for="steam">Steam</label>
+					<input id="steam" name="steam" type="text" class="form-control input-md" value="<?php echo htmlspecialchars($wo['setting']['steam'] ?? '', ENT_QUOTES);?>" placeholder="<?php echo $wo['lang']['username'];?>">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="wow_form_fields">
+					<label for="facebook_gaming">Facebook Gaming</label>
+					<input id="facebook_gaming" name="facebook_gaming" type="text" class="form-control input-md" value="<?php echo htmlspecialchars($wo['setting']['facebook_gaming'] ?? '', ENT_QUOTES);?>" placeholder="<?php echo $wo['lang']['username'];?>">
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="wow_form_fields">
+					<label for="trovo">Trovo</label>
+					<input id="trovo" name="trovo" type="text" class="form-control input-md" value="<?php echo htmlspecialchars($wo['setting']['trovo'] ?? '', ENT_QUOTES);?>" placeholder="<?php echo $wo['lang']['username'];?>">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="wow_form_fields">
+					<label for="dlive">DLive</label>
+					<input id="dlive" name="dlive" type="text" class="form-control input-md" value="<?php echo htmlspecialchars($wo['setting']['dlive'] ?? '', ENT_QUOTES);?>" placeholder="<?php echo $wo['lang']['username'];?>">
+				</div>
+			</div>
+		</div>
+		<!-- End Streaming & Gaming Platforms -->
+
 		<?php
 			$fields = Wo_GetProfileFields('social');
 			if (count($fields) > 0) {

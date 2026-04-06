@@ -1,10 +1,16 @@
-<div class="col-md-12">
+<div class="col-md-12" id="wo-profile-completion-wrap">
 	<div class="page-margin mt-0 wow_content profile-completion-bar bar-<?php echo array_sum($wo['pr_complition']);?>" data-profile-completion="<?php echo array_sum($wo['pr_complition']); ?>">
 		<div class="hdr">
 			<div class="progresss"></div>
 			&nbsp;&nbsp;&nbsp;&nbsp;
-			<div>
-				<h3><?php echo $wo['lang']['pr_completion']; ?></h3>
+			<div style="flex:1;">
+				<div style="display:flex;justify-content:space-between;align-items:center;">
+					<h3><?php echo $wo['lang']['pr_completion']; ?></h3>
+					<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;color:#9aa4b4;font-weight:500;" title="Check to hide this section permanently">
+						<input type="checkbox" id="wo-hide-profile-completion" style="width:16px;height:16px;cursor:pointer;" onchange="woToggleProfileCompletion(this)">
+						Hide
+					</label>
+				</div>
 				<div class="body">
 					<?php if (empty($wo['pr_complition'][1])): ?>
 						<div class="step" id="add-profile-avatar">
@@ -56,18 +62,34 @@
 						</a>
 					<?php endif; ?>
 				</div>
+				</div>
 			</div>
 		</div>
 	</div>
-
-	
 
 	<script>
 	jQuery(document).ready(function($) {
 		$("#add-profile-avatar").click(function(event) {
 			$('.profile-avatar-changer').find('input').trigger('click');
 		});
+
+		// Check localStorage — hide immediately if user previously dismissed
+		if (localStorage.getItem('wo_hide_profile_completion_<?php echo $wo['user']['id']; ?>') === '1') {
+			$('#wo-profile-completion-wrap').hide();
+			$('#wo-hide-profile-completion').prop('checked', true);
+		}
 	});
+
+	function woToggleProfileCompletion(checkbox) {
+		var key = 'wo_hide_profile_completion_<?php echo $wo['user']['id']; ?>';
+		if (checkbox.checked) {
+			localStorage.setItem(key, '1');
+			jQuery('#wo-profile-completion-wrap').slideUp(300);
+		} else {
+			localStorage.removeItem(key);
+			jQuery('#wo-profile-completion-wrap').slideDown(300);
+		}
+	}
 
 	new CircleProgress('.progresss', {
 		max: 100,

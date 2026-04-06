@@ -588,8 +588,14 @@ if (!empty($wo['reactions_types'])) {
     filter: drop-shadow(0 0 8px #b86cff);
 }
 
-/* Stats card — rounded bottom corners */
+/* Stats card — rounded bottom corners on the profile header card */
 .card.hovercard {
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+    overflow: hidden;
+}
+/* Tab nav bar below hovercard — also round its bottom corners */
+.profile-container .user-bottom-nav {
     border-bottom-left-radius: 16px !important;
     border-bottom-right-radius: 16px !important;
     overflow: hidden;

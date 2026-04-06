@@ -868,7 +868,33 @@
 		 <?php if ($wo['loggedin'] == true && Wo_IsMobile() == true) { ?>
 			<?php echo Wo_LoadPage( 'sidebar/left-sidebar-mobile'); ?>
 		 <?php } ?>
-		 
+
+		 <?php if ($wo['loggedin'] == true): ?>
+		 <!-- Vikinger Mobile Navigation Panel — required by sidebar.js -->
+		 <nav id="navigation-widget-mobile" class="navigation-widget navigation-widget-mobile sidebar left hidden" data-simplebar>
+		   <div class="navigation-widget-close-button">
+		     <svg class="navigation-widget-close-button-icon icon-back-arrow" style="width:20px;height:20px;fill:currentColor;">
+		       <use xlink:href="#svg-back-arrow"></use>
+		     </svg>
+		   </div>
+		   <div class="navigation-widget-info-wrap">
+		     <div class="navigation-widget-info">
+		       <a class="user-avatar small no-outline" href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user']['username']); ?>">
+		         <div class="user-avatar-content">
+		           <div class="hexagon-image-30-32" data-src="<?php echo $wo['user']['avatar']; ?>"></div>
+		         </div>
+		         <div class="user-avatar-progress"><div class="hexagon-progress-40-44"></div></div>
+		         <div class="user-avatar-progress-border"><div class="hexagon-border-40-44"></div></div>
+		       </a>
+		       <p class="navigation-widget-info-title"><a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['user']['username']); ?>"><?php echo $wo['user']['name']; ?></a></p>
+		       <p class="navigation-widget-info-text">@<?php echo $wo['user']['username']; ?></p>
+		     </div>
+		     <a href="<?php echo $wo['config']['site_url']; ?>?logout" class="navigation-widget-info-button button small secondary"><?php echo $wo['lang']['logout']; ?></a>
+		   </div>
+		   <?php echo Wo_LoadPage('sidebar/left-sidebar-mobile'); ?>
+		 </nav>
+		 <?php endif; ?>
+
          <div id="contnet" class="effect-load"><?php echo $wo['content'];?></div>
          <?php
             $footer_ad = Wo_GetAd('footer', false);
