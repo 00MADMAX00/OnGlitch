@@ -597,16 +597,34 @@ if (!empty($wo['reactions_types'])) {
 
 /* Mobile responsiveness */
 @media (max-width: 767px) {
+    /* Username handle centered below avatar */
     .pic-info-cont .profile-username-handle {
         text-align: center;
     }
-    .wo-profile-website-item,
-    .user-social-links.wo-profile-social-links {
-        justify-content: center;
-        text-align: center;
+
+    /* Website URL: block centered, full width */
+    .wo-profile-website-item {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 6px;
     }
     .wo-profile-website-url {
         font-size: 14px !important;
+        text-align: center;
+    }
+
+    /* Social links: centered row wrapping under website URL */
+    .user-social-links.wo-profile-social-links {
+        justify-content: center !important;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 6px 0 !important;
+    }
+    .wo-profile-social-links .social-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
     }
 }
 
