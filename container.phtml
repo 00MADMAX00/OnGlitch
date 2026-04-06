@@ -306,11 +306,12 @@
           var rngDiv = document.createElement('div'); rngDiv.className = rngUid;
           progress.appendChild(rngDiv);
           el.appendChild(content); el.appendChild(progress);
-          /* Init hexagons after DOM insertion */
+          /* Init hexagons after DOM insertion — use containerElement for DOM nodes */
           setTimeout(function() {
             if (typeof XM_Hexagon === 'undefined') return;
-            new XM_Hexagon({container:'.'+imgUid, width:IMG_W, height:IMG_H, roundedCorners:true, roundedCornerRadius:1, clip:true});
-            new XM_Hexagon({container:'.'+rngUid, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, gradient:{colors:['#41efff','#615dfa']}, scale:{start:0,end:1,stop:.8}});
+            var _rc = (window._woProfileGenderColors && window._woProfileGenderColors.length) ? window._woProfileGenderColors : ['#41efff','#615dfa'];
+            new XM_Hexagon({containerElement: imgDiv, width:IMG_W, height:IMG_H, roundedCorners:true, roundedCornerRadius:1, clip:true});
+            new XM_Hexagon({containerElement: rngDiv, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, gradient:{colors:_rc}, scale:{start:0,end:1,stop:.8}});
           }, 0);
           return el;
         }
@@ -342,19 +343,22 @@
           }
         }
         /* Initialise the pre-built Vikinger hexagon divs (sidebar, publisher-box) */
+        /* XM_Hexagon requires containerElement (DOM element) not container (CSS selector) when passing el directly */
         document.querySelectorAll('.hexagon-image-30-32[data-src]:not([data-hex-init])').forEach(function(el) {
           el.setAttribute('data-hex-init', '1');
           var src = el.getAttribute('data-src');
           if (!src) return;
-          new XM_Hexagon({container: el, width:IMG_W, height:IMG_H, roundedCorners:true, roundedCornerRadius:1, clip:true});
+          new XM_Hexagon({containerElement: el, width:IMG_W, height:IMG_H, roundedCorners:true, roundedCornerRadius:1, clip:true});
         });
+        /* Use gender-specific colour on timeline pages, blue/cyan on all others */
+        var _ringColors = (window._woProfileGenderColors && window._woProfileGenderColors.length) ? window._woProfileGenderColors : ['#41efff','#615dfa'];
         document.querySelectorAll('.hexagon-progress-40-44:not([data-hex-init])').forEach(function(el) {
           el.setAttribute('data-hex-init', '1');
-          new XM_Hexagon({container: el, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, gradient:{colors:['#41efff','#615dfa']}, scale:{start:0,end:1,stop:.8}});
+          new XM_Hexagon({containerElement: el, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, gradient:{colors:_ringColors}, scale:{start:0,end:1,stop:.8}});
         });
         document.querySelectorAll('.hexagon-border-40-44:not([data-hex-init])').forEach(function(el) {
           el.setAttribute('data-hex-init', '1');
-          new XM_Hexagon({container: el, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, lineColor:'#e7e8ee'});
+          new XM_Hexagon({containerElement: el, width:RNG_W, height:RNG_H, lineWidth:3, roundedCorners:true, roundedCornerRadius:1, lineColor:'#e7e8ee'});
         });
         /* Convert raw img.avatar / a.avatar / a.wow_post_usr_ava to Vikinger hexagons */
         document.querySelectorAll('.post-heading .image a:not([data-hex-done])').forEach(hexifyEl);
