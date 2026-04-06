@@ -526,7 +526,7 @@ if (!empty($wo['reactions_types'])) {
 
 /* ===== OnGlitch Timeline Redesign Fixes ===== */
 
-/* Username handle sits directly under the avatar image */
+/* @username handle — sits directly under the avatar image, separate from the name row */
 .pic-info-cont .profile-username-handle {
     font-size: 12px;
     color: #9aa4b4;
@@ -537,11 +537,10 @@ if (!empty($wo['reactions_types'])) {
     width: 100%;
 }
 
-/* Website URL - large and prominent */
+/* Website URL — large and prominent */
 .wo-profile-website-item {
     padding: 8px 0 !important;
 }
-
 .wo-profile-website-url {
     font-size: 15px !important;
     font-weight: 600 !important;
@@ -549,7 +548,6 @@ if (!empty($wo['reactions_types'])) {
     word-break: break-all;
     text-decoration: none !important;
 }
-
 .wo-profile-website-url:hover {
     text-decoration: underline !important;
 }
@@ -561,7 +559,6 @@ if (!empty($wo['reactions_types'])) {
     gap: 4px;
     align-items: center;
 }
-
 .wo-profile-social-links .social-btn {
     display: inline-flex;
     align-items: center;
@@ -572,132 +569,45 @@ if (!empty($wo['reactions_types'])) {
     background: #f0f2f5;
     transition: background 0.2s;
 }
-
 .wo-profile-social-links .social-btn:hover {
     background: #e4e6eb;
 }
 
-/* Publisher box hex avatar sizing */
-.wo-post-pub-avatar {
-    flex-shrink: 0;
-    vertical-align: middle;
+/* Gender-based avatar ring — outline on the WoWonder .flip profile avatar */
+/* Male: blue (default, no override needed) */
+/* Female: pink */
+.pic-info-cont .user-avatar.flip.wo-gender-female img {
+    outline: 4px solid #ff1a8c;
+    outline-offset: 2px;
+    filter: drop-shadow(0 0 8px #ff6eb4);
+}
+/* Other / no gender: purple */
+.pic-info-cont .user-avatar.flip.wo-gender-other img {
+    outline: 4px solid #7c3aed;
+    outline-offset: 2px;
+    filter: drop-shadow(0 0 8px #b86cff);
 }
 
-/* Sidebar hex avatars — CSS hexagon frame */
-.wo-sidebar-hex-wrap {
-    display: inline-block;
-}
-
-.wo-hex-avatar-frame {
-    display: inline-block;
-    position: relative;
-    width: 46px;
-    height: 50px;
-    background: linear-gradient(135deg, #41efff, #615dfa);
-    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
-    padding: 2px;
-}
-
-.wo-hex-avatar-img {
-    display: block;
-    width: 42px;
-    height: 46px;
-    object-fit: cover;
-    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
-    position: absolute;
-    top: 2px;
-    left: 2px;
-}
-
-/* Mobile responsiveness: social links under website URL centered */
-@media (max-width: 767px) {
-    .pic-info-cont {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .pic-info-cont .profile-username-handle {
-        text-align: center;
-    }
-
-    .pic-info-cont .info {
-        align-items: center;
-        text-align: center;
-    }
-
-    .profile-social-wrap-mobile,
-    .options-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .wo-profile-website-item,
-    .user-social-links.wo-profile-social-links {
-        justify-content: center;
-        text-align: center;
-    }
-
-    .wo-profile-website-url {
-        font-size: 14px !important;
-    }
-}
-/* === Gender-based avatar ring gradients === */
-
-/* Female: pink gradient ring */
-.pic-info-cont .user-avatar.wo-gender-female {
-    position: relative;
-}
-.pic-info-cont .user-avatar.wo-gender-female::before {
-    content: '';
-    position: absolute;
-    inset: -5px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ff6eb4 0%, #ff1a8c 100%);
-    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
-    z-index: 0;
-    opacity: 0.9;
-}
-
-/* Non-binary / other: purple gradient ring */
-.pic-info-cont .user-avatar.wo-gender-other {
-    position: relative;
-}
-.pic-info-cont .user-avatar.wo-gender-other::before {
-    content: '';
-    position: absolute;
-    inset: -5px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #b86cff 0%, #7c3aed 100%);
-    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
-    z-index: 0;
-    opacity: 0.9;
-}
-
-/* Male: existing blue gradient - keep default, just ensure z-index is fine */
-.pic-info-cont .user-avatar.wo-gender-male {
-    position: relative;
-}
-
-/* Ensure the avatar image sits above the pseudo ring */
-.pic-info-cont .user-avatar > img,
-.pic-info-cont .user-avatar .user-avatar-content,
-.pic-info-cont .user-avatar form {
-    position: relative;
-    z-index: 1;
-}
-
-/* === Hovercard / Stats container — rounded bottom corners === */
+/* Stats card — rounded bottom corners */
 .card.hovercard {
     border-bottom-left-radius: 16px !important;
     border-bottom-right-radius: 16px !important;
     overflow: hidden;
 }
 
-.wo_user_profile .card.hovercard {
-    border-bottom-left-radius: 16px !important;
-    border-bottom-right-radius: 16px !important;
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+    .pic-info-cont .profile-username-handle {
+        text-align: center;
+    }
+    .wo-profile-website-item,
+    .user-social-links.wo-profile-social-links {
+        justify-content: center;
+        text-align: center;
+    }
+    .wo-profile-website-url {
+        font-size: 14px !important;
+    }
 }
 
 /* ===== End OnGlitch Timeline Redesign Fixes ===== */
