@@ -12,9 +12,19 @@ if (!empty($_GET['url'])) {
 	<div class="panel post panel-shadow sun_pub_box">
 		<div id="post-textarea"  onclick="Wo_ShowPosInfo();">
 			<div class="wo_pub_txtara_combo">
-				<?php //if ($wo['page'] != 'events') { ?>
-					<img class="post-avatar" src="<?php echo (empty($wo['page_profile']['avatar'])) ? $wo['user']['avatar'] : $wo['page_profile']['avatar'];?>">
-				<?php //} ?>
+			<?php //if ($wo['page'] != 'events') { ?>
+				<div class="user-avatar xsmall no-outline post-avatar-hex wo-post-pub-avatar">
+					<div class="user-avatar-content">
+						<div class="hexagon-image-30-32" data-src="<?php echo (empty($wo['page_profile']['avatar'])) ? $wo['user']['avatar'] : $wo['page_profile']['avatar'];?>"></div>
+					</div>
+					<div class="user-avatar-progress">
+						<div class="hexagon-progress-40-44"></div>
+					</div>
+					<div class="user-avatar-progress-border">
+						<div class="hexagon-border-40-44"></div>
+					</div>
+				</div>
+			<?php //} ?>
 				<div id="loading_indicator"></div>
 				<textarea onkeyup="textAreaAdjust(this, 70)" name="postText" class="form-control postText" cols="10" rows="3" placeholder="<?php echo TextForMode('publisher_box_placeholder'); ?>" dir="auto"><?php echo $url; ?></textarea>
 				
