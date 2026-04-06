@@ -3,7 +3,7 @@
 		<div class="container-fluid">
 			<div class="wow_hdr_innr_left">
 				<?php if ($wo['loggedin'] == true) { ?>
-					<div class="side_slide_menu navigation-widget-mobile-trigger"><svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.717 19.4453L4.00011 19.4453M4.00011 5.44531L11.0282 5.44531" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4.00041 12.4453L20 12.4453" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+					<div class="side_slide_menu" onclick="javascript:$('body').toggleClass('side_open');"><svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.717 19.4453L4.00011 19.4453M4.00011 5.44531L11.0282 5.44531" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4.00041 12.4453L20 12.4453" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 				<?php } ?>
 
 				<a class="brand header-brand" href="<?php echo $wo['config']['site_url']; ?>">
