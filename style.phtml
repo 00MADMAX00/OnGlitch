@@ -578,8 +578,28 @@ if (!empty($wo['reactions_types'])) {
     pointer-events: auto !important;
     cursor: pointer !important;
 }
-.section-menu-item * {
+/* Only disable pointer-events on DIRECT children (icon/text) — not globally */
+.section-menu-item > svg,
+.section-menu-item > span.section-menu-item-text {
     pointer-events: none !important;
+}
+
+/* Mobile: ensure the hamburger and nav are always clickable */
+.side_slide_menu {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+    touch-action: manipulation;
+}
+.slide_menu_backdrop {
+    pointer-events: auto !important;
+}
+/* Mobile nav sidebar */
+.left-sidebar.wo_new_left_side {
+    pointer-events: auto !important;
+}
+.left-sidebar.wo_new_left_side a {
+    pointer-events: auto !important;
 }
 
 /* ===== End OnGlitch Vikinger Profile Fixes ===== */

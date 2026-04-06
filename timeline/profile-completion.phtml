@@ -73,21 +73,33 @@
 			$('.profile-avatar-changer').find('input').trigger('click');
 		});
 
-		// Check localStorage — hide immediately if user previously dismissed
-		if (localStorage.getItem('wo_hide_profile_completion_<?php echo $wo['user']['id']; ?>') === '1') {
+		/* Check BOTH server-side setting AND localStorage for cross-device support */
+		var _pcKey = 'wo_hide_pc_<?php echo $wo['user']['id']; ?>';
+		var _pcHidden = localStorage.getItem(_pcKey) === '1' || '<?php echo !empty($wo['user']['hide_profile_completion']) ? "1" : "0"; ?>' === '1';
+		if (_pcHidden) {
 			$('#wo-profile-completion-wrap').hide();
 			$('#wo-hide-profile-completion').prop('checked', true);
 		}
 	});
 
 	function woToggleProfileCompletion(checkbox) {
-		var key = 'wo_hide_profile_completion_<?php echo $wo['user']['id']; ?>';
+		var key = 'wo_hide_pc_<?php echo $wo['user']['id']; ?>';
 		if (checkbox.checked) {
+			/* Save to localStorage immediately for this device */
 			localStorage.setItem(key, '1');
 			jQuery('#wo-profile-completion-wrap').slideUp(300);
+			/* Also save server-side via WoWonder's general update endpoint */
+			jQuery.post(Wo_Ajax_Requests_File() + '?f=update_user_setting', {
+				hide_profile_completion: 1,
+				hash_id: jQuery('.main_session').val()
+			});
 		} else {
 			localStorage.removeItem(key);
 			jQuery('#wo-profile-completion-wrap').slideDown(300);
+			jQuery.post(Wo_Ajax_Requests_File() + '?f=update_user_setting', {
+				hide_profile_completion: 0,
+				hash_id: jQuery('.main_session').val()
+			});
 		}
 	}
 
