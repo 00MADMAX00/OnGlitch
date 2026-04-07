@@ -629,7 +629,7 @@ body.side_open .slide_menu_backdrop {
 }
 
 /* Desktop only: keep the in-flow sidebar visible, hide backdrop */
-@media (min-width: 769px) {
+@media (min-width: 1101px) {
     div.leftcol .left-sidebar.wo_new_left_side {
         position: static !important;
         transform: none !important;
@@ -649,11 +649,31 @@ body.side_open .slide_menu_backdrop {
     .slide_menu_backdrop { display: none !important; }
 }
 
-/* Mobile: hide the leftcol desktop sidebar — navigation is handled by the slide-in panel only */
-@media (max-width: 768px) {
+/* Mobile/tablet: hide the leftcol desktop sidebar up to 1100px (covers Z Fold 6 open ~884px).
+   Navigation is handled exclusively by the slide-in panel on these screen sizes. */
+@media (max-width: 1100px) {
     div.leftcol {
         display: none !important;
     }
+}
+
+/* Close button inside the slide-in nav panel */
+.side_brand {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+.wo_nav_close_btn {
+    background: none !important;
+    border: none !important;
+    cursor: pointer !important;
+    padding: 6px !important;
+    color: #3e3f5e !important;
+    line-height: 1 !important;
+    flex-shrink: 0 !important;
+}
+.wo_nav_close_btn:hover {
+    color: #615dfa !important;
 }
 
 /* ===== End OnGlitch Vikinger Profile Fixes ===== */
