@@ -609,6 +609,15 @@ if (!empty($wo['reactions_types'])) {
         overflow: visible !important;
         padding-bottom: 0 !important;
         transition: none !important;
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    /* Belt-and-braces: also target via parent column so background always shows */
+    div.col-md-2.leftcol,
+    div.leftcol .left-sidebar.wo_new_left_side,
+    div.leftcol > .left-sidebar.wo_new_left_side {
+        background: #fff !important;
     }
     /* Fix B — suppress the mobile-panel instance that lands as a direct child
                of .content-container when Wo_IsMobile() guard is missing */
