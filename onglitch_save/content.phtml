@@ -1,0 +1,44 @@
+<?php
+/**
+ * OnGlitch custom save endpoint
+ * Routed by WoWonder as: ajax_loading.php?link1=onglitch_save
+ * Handles streaming/gaming social link fields that WoWonder's
+ * update_socialinks_setting does not know about.
+ *
+ * Clears WoWonder's output buffer so only our JSON is returned.
+ */
+
+/* Must be logged in */
+if (!$wo['loggedin'] || empty($wo['user']['user_id'])) {
+    while (ob_get_level()) ob_end_clean();
+    header('Content-Type: application/json');
+    echo json_encode(['status' => 403, 'message' => 'Not authenticated']);
+    exit;
+}
+
+$action = isset($_POST['action']) ? $_POST['action'] : '';
+$userId = (int)$wo['user']['user_id'];
+
+/* ── Save streaming / gaming social links ── */
+if ($action === 'save_streaming') {
+    $allowed = ['twitch', 'kick', 'rumble', 'tiktok', 'discord', 'steam', 'facebook_gaming', 'trovo', 'dlive'];
+    $update  = [];
+    foreach ($allowed as $col) {
+        if (array_key_exists($col, $_POST)) {
+            $update[$col] = Wo_Secure(trim($_POST[$col]));
+        }
+    }
+    if (!empty($update)) {
+        $db->where('user_id', $userId)->update('Wo_Users', $update);
+    }
+    while (ob_get_level()) ob_end_clean();
+    header('Content-Type: application/json');
+    echo json_encode(['status' => 200, 'message' => 'Streaming links saved']);
+    exit;
+}
+
+/* Unknown action */
+while (ob_get_level()) ob_end_clean();
+header('Content-Type: application/json');
+echo json_encode(['status' => 400, 'message' => 'Unknown action']);
+exit;
