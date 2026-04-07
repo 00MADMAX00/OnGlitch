@@ -582,27 +582,60 @@ if (!empty($wo['reactions_types'])) {
     pointer-events: none !important;
 }
 
-/* ===== PC sidebar fix =====
-   Two problems introduced by the cursor branch:
-   1. CSS made .left-sidebar.wo_new_left_side position:fixed + translateX(-100%),
-      hiding the desktop sidebar off-screen (shows gap, only visible after scrolling).
-   2. container.phtml lost its Wo_IsMobile() guard, so left-sidebar-mobile.phtml
-      now loads on desktop too — producing a second sidebar stacked on the first.
+/* ===== Navigation sidebar fixes =====
 
-   Fix A: Reset position to static on desktop so the in-flow sidebar works normally.
-   Fix B: The mobile nav panel is always a DIRECT child of .content-container (that
-          is exactly where container.phtml injects it). The desktop sidebar is always
-          nested deeper: .content-container → #contnet → .leftcol → .left-sidebar.
-          So we can safely hide the direct-child one on desktop. */
+   MOBILE PANEL (.content-container > .left-sidebar.wo_new_left_side)
+   — direct child of .content-container, injected by container.phtml
+   — must stay hidden off-screen and only slide in when body.side_open is set
+   — this is what the hamburger opens on all screen sizes
+
+   DESKTOP SIDEBAR (div.leftcol .left-sidebar.wo_new_left_side)
+   — nested inside col-md-2.leftcol by each page's content.phtml
+   — must always be visible in normal document flow on desktop */
+
+/* Mobile slide-in panel: hidden by default, revealed by hamburger */
+.content-container > .left-sidebar.wo_new_left_side {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 280px !important;
+    height: 100vh !important;
+    background: #fff !important;
+    z-index: 99999 !important;
+    overflow-y: auto !important;
+    box-shadow: 4px 0 24px rgba(94,92,154,0.15) !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s ease !important;
+    padding-bottom: 24px !important;
+}
+body.side_open .content-container > .left-sidebar.wo_new_left_side {
+    transform: translateX(0) !important;
+}
+
+/* Backdrop for mobile slide-in */
+.slide_menu_backdrop {
+    position: fixed !important;
+    top: 0 !important; left: 0 !important;
+    width: 100vw !important; height: 100vh !important;
+    background: rgba(21,21,31,0.55) !important;
+    z-index: 99998 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: opacity 0.3s ease, visibility 0.3s ease !important;
+}
+body.side_open .slide_menu_backdrop {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Desktop only: keep the in-flow sidebar visible, hide backdrop */
 @media (min-width: 769px) {
-    /* Fix A — keep desktop sidebar in document flow */
-    .left-sidebar.wo_new_left_side {
+    div.leftcol .left-sidebar.wo_new_left_side {
         position: static !important;
         transform: none !important;
         height: auto !important;
         width: 100% !important;
-        top: auto !important;
-        left: auto !important;
+        top: auto !important; left: auto !important;
         background: #fff !important;
         box-shadow: none !important;
         z-index: auto !important;
@@ -613,21 +646,7 @@ if (!empty($wo['reactions_types'])) {
         opacity: 1 !important;
         visibility: visible !important;
     }
-    /* Belt-and-braces: also target via parent column so background always shows */
-    div.col-md-2.leftcol,
-    div.leftcol .left-sidebar.wo_new_left_side,
-    div.leftcol > .left-sidebar.wo_new_left_side {
-        background: #fff !important;
-    }
-    /* Fix B — suppress the mobile-panel instance that lands as a direct child
-               of .content-container when Wo_IsMobile() guard is missing */
-    .content-container > .left-sidebar.wo_new_left_side {
-        display: none !important;
-    }
-    /* Hide the dark overlay — belongs to mobile slide-in only */
-    .slide_menu_backdrop {
-        display: none !important;
-    }
+    .slide_menu_backdrop { display: none !important; }
 }
 
 /* ===== End OnGlitch Vikinger Profile Fixes ===== */
