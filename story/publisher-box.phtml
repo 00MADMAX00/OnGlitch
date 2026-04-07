@@ -1575,15 +1575,23 @@ function Wo_PostSticker(self){
     return false;
   }
 
+  /* Use the full-size data-gif URL for better quality in the post,
+     fall back to src (thumbnail) if data-gif is not present */
+  var gifUrl = $(self).attr('data-gif') || $(self).attr('src');
+
+  /* Show preview in image-holder WITHOUT opening #photo-form.
+     Opening #photo-form triggers ajaxForm to switch to multipart/form-data
+     which can cause WoWonder's insert_new_post handler to misprocess the
+     postSticker field alongside empty file inputs — the GIF never saves. */
   var image_holder = $("#image-holder");
   image_holder.empty();
-  /* Use the thumbnail src URL (not data-gif full URL) — matches what comment/reply GIFs
-     use via Wo_RegisterComment2/Wo_RegisterReply2, avoids query-string issues with Wo_IsUrl */
-  var gifUrl = $(self).attr('src') || $(self).attr('data-gif');
-  image_holder.append('<span class="thumb-image-delete" id="image_to_gif"><span onclick="DeleteGif()" class="pointer thumb-image-delete-btn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg></span><img src="'+gifUrl+'" class="thumb-image"></span>')
+  image_holder.append('<span class="thumb-image-delete" id="image_to_gif"><span onclick="DeleteGif()" class="pointer thumb-image-delete-btn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg></span><img src="'+gifUrl+'" class="thumb-image" style="max-height:200px;border-radius:8px;display:block;"></span>');
+  /* Show the image-holder wrapper directly — no need to open #photo-form */
+  image_holder.closest('div').show();
   image_holder.show();
   $('.create-album').css('display', 'none');
-  $("#photo-form").slideDown(200);
+  /* Do NOT slideDown #photo-form — keeps form encoding as standard POST */
+  /* $("#photo-form").slideDown(200); — intentionally removed */
   $('#postSticker').val(gifUrl);
   // Wo_Delay(function(){
   //    Wo_GetPRecordLink();
