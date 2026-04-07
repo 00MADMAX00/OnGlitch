@@ -583,12 +583,19 @@ if (!empty($wo['reactions_types'])) {
 }
 
 /* ===== PC sidebar fix =====
-   The hamburger/side_open system turns the sidebar into a fixed slide-in panel.
-   On desktop the sidebar is rendered inside col-md-2.leftcol (document flow) and
-   must NEVER be hidden or taken out of flow — only the mobile overlay should use
-   position:fixed.  left-sidebar.phtml already skips rendering on mobile so we
-   only need this reset for ≥769 px. */
+   Two problems introduced by the cursor branch:
+   1. CSS made .left-sidebar.wo_new_left_side position:fixed + translateX(-100%),
+      hiding the desktop sidebar off-screen (shows gap, only visible after scrolling).
+   2. container.phtml lost its Wo_IsMobile() guard, so left-sidebar-mobile.phtml
+      now loads on desktop too — producing a second sidebar stacked on the first.
+
+   Fix A: Reset position to static on desktop so the in-flow sidebar works normally.
+   Fix B: The mobile nav panel is always a DIRECT child of .content-container (that
+          is exactly where container.phtml injects it). The desktop sidebar is always
+          nested deeper: .content-container → #contnet → .leftcol → .left-sidebar.
+          So we can safely hide the direct-child one on desktop. */
 @media (min-width: 769px) {
+    /* Fix A — keep desktop sidebar in document flow */
     .left-sidebar.wo_new_left_side {
         position: static !important;
         transform: none !important;
@@ -603,7 +610,12 @@ if (!empty($wo['reactions_types'])) {
         padding-bottom: 0 !important;
         transition: none !important;
     }
-    /* Hide the dark overlay on desktop — it belongs to the mobile slide-in only */
+    /* Fix B — suppress the mobile-panel instance that lands as a direct child
+               of .content-container when Wo_IsMobile() guard is missing */
+    .content-container > .left-sidebar.wo_new_left_side {
+        display: none !important;
+    }
+    /* Hide the dark overlay — belongs to mobile slide-in only */
     .slide_menu_backdrop {
         display: none !important;
     }
