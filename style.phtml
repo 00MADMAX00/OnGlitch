@@ -649,5 +649,12 @@ body.side_open .slide_menu_backdrop {
     .slide_menu_backdrop { display: none !important; }
 }
 
+/* Mobile: hide the leftcol desktop sidebar — navigation is handled by the slide-in panel only */
+@media (max-width: 768px) {
+    div.leftcol {
+        display: none !important;
+    }
+}
+
 /* ===== End OnGlitch Vikinger Profile Fixes ===== */
 </style>
