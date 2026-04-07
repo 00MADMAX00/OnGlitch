@@ -694,10 +694,13 @@
 
     // ===== SPACESHIP PARALLAX =====
     gsap.registerPlugin(ScrollTrigger);
+    /* scrub:true (=1) gives tighter coupling to scroll position — eliminates jerkiness.
+       will-change:transform tells browser to promote the element to its own GPU layer. */
+    document.getElementById('gz-spaceship').style.willChange = 'transform';
     var shipTravel = window.innerHeight + 300 + 200;
     gsap.to('#gz-spaceship', {
         y: shipTravel, ease: 'none',
-        scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1.5 }
+        scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: true }
     });
 
     // ===== CARD ENTRANCE - smooth float up =====
