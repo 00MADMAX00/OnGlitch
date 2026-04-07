@@ -582,5 +582,32 @@ if (!empty($wo['reactions_types'])) {
     pointer-events: none !important;
 }
 
+/* ===== PC sidebar fix =====
+   The hamburger/side_open system turns the sidebar into a fixed slide-in panel.
+   On desktop the sidebar is rendered inside col-md-2.leftcol (document flow) and
+   must NEVER be hidden or taken out of flow — only the mobile overlay should use
+   position:fixed.  left-sidebar.phtml already skips rendering on mobile so we
+   only need this reset for ≥769 px. */
+@media (min-width: 769px) {
+    .left-sidebar.wo_new_left_side {
+        position: static !important;
+        transform: none !important;
+        height: auto !important;
+        width: 100% !important;
+        top: auto !important;
+        left: auto !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        z-index: auto !important;
+        overflow: visible !important;
+        padding-bottom: 0 !important;
+        transition: none !important;
+    }
+    /* Hide the dark overlay on desktop — it belongs to the mobile slide-in only */
+    .slide_menu_backdrop {
+        display: none !important;
+    }
+}
+
 /* ===== End OnGlitch Vikinger Profile Fixes ===== */
 </style>
