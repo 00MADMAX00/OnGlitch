@@ -12,10 +12,11 @@
 -- Run this in phpMyAdmin → select your database → SQL tab → Go
 -- ============================================================
 
--- ── STEP 1: Ensure the columns exist ──────────────────────────────────
-ALTER TABLE `Wo_Langs`
-  ADD COLUMN IF NOT EXISTS `Hungarian_hu` LONGTEXT DEFAULT NULL,
-  ADD COLUMN IF NOT EXISTS `Georgian_ka`  LONGTEXT DEFAULT NULL;
+-- ── STEP 1: Add columns (run each line separately if one already exists) ──
+-- If you get "Duplicate column name" error on either line, that column
+-- already exists — just skip that line and continue with Step 2.
+ALTER TABLE `Wo_Langs` ADD COLUMN `Hungarian_hu` LONGTEXT DEFAULT NULL;
+ALTER TABLE `Wo_Langs` ADD COLUMN `Georgian_ka` LONGTEXT DEFAULT NULL;
 
 -- ── STEP 2: Seed both columns with English as a safe fallback ─────────
 -- This ensures no blank strings appear for untranslated keys.
